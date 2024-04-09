@@ -46,7 +46,7 @@
 .\objects\task_irq.o: ..\Apply\Task\Inc\task_irq.h
 .\objects\task_irq.o: ..\Apply\Task\Inc\task_sysinit.h
 .\objects\task_irq.o: ..\Apply\Task\Inc\task_userinit.h
-.\objects\task_irq.o: ..\Apply\Logic\Inc\usercode.h
+.\objects\task_irq.o: ..\Apply\Task\Inc\task_lwipudp.h
 .\objects\task_irq.o: ..\Driver\Inc\drv_hal_conf.h
 .\objects\task_irq.o: ..\Bsp\RTOS\FreeRTOS\CMSIS_RTOS_V2\cmsis_os.h
 .\objects\task_irq.o: ..\Bsp\RTOS\FreeRTOS\CMSIS_RTOS_V2\cmsis_os2.h
@@ -86,6 +86,7 @@
 .\objects\task_irq.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\task_irq.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\task_irq.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\task_irq.o: ..\Apply\Logic\Inc\usercode.h
 .\objects\task_irq.o: ..\Apply\Logic\Inc\config.h
 .\objects\task_irq.o: ..\Bsp\OCD\Inc\ocd_conf.h
 .\objects\task_irq.o: ..\Bsp\OCD\Inc\ocd_ethernet.h

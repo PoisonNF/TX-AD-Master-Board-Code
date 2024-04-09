@@ -31,9 +31,6 @@
 #include "ethernetif.h"
 #include "lwip/timeouts.h"
 #include "lwip/tcpip.h"
-#include "malloc.h"
-//#include "./SYSTEM/delay/delay.h"
-//#include "./SYSTEM/usart/usart.h"
 #include <stdio.h>
 #include "FreeRTOS.h"
 #include "semphr.h"
@@ -59,7 +56,7 @@ void lwip_periodic_handle(void *argument);                  /* DHCP线程 */
 void lwip_link_status_updated(struct netif *netif);         /* DHCP状态回调函数 */
 
 /**
- * @breif       lwip 默认IP设置
+ * @brief       lwip 默认IP设置
  * @param       lwipx  : lwip控制结构体指针
  * @retval      无
  */
@@ -99,7 +96,7 @@ void lwip_comm_default_ip_set(__lwip_dev *lwipx)
 }
 
 /**
- * @breif       LWIP初始化(LWIP启动的时候使用)
+ * @brief       LWIP初始化(LWIP启动的时候使用)
  * @param       无
  * @retval      0,成功
  *              1,内存错误
@@ -219,7 +216,7 @@ void lwip_link_status_updated(struct netif *netif)
 
 extern xSemaphoreHandle g_rx_semaphore; /* 定义一个信号量 */
 /**
- * @breif       当接收到数据后调用
+ * @brief       当接收到数据后调用
  * @param       无
  * @retval      无
  */
@@ -237,7 +234,7 @@ void lwip_pkt_handle(void)
 #if LWIP_DHCP
 
 /**
- * @breif       DHCP进程
+ * @brief       DHCP进程
  * @param       argument:传入的形参
  * @retval      无
  */
@@ -251,7 +248,7 @@ void lwip_periodic_handle(void *argument)
     uint8_t iptxt[20];
 
     while (1)
-    {//printf("123\r\n");
+    {
         switch (g_lwip_dhcp_state)
         {
             case LWIP_DHCP_START:

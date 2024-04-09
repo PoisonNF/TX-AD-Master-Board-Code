@@ -24,7 +24,6 @@
 
 #include "ocd_ethernet.h"
 #include "lwip_comm.h"
-#include "malloc.h"
 #include "drv_hal_conf.h"
 
 
@@ -162,7 +161,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef *heth)
 }
 
 /**
- * @breif       读取以太网芯片寄存器值
+ * @brief       读取以太网芯片寄存器值
  * @param       reg：读取的寄存器地址
  * @retval      无
  */
@@ -175,7 +174,7 @@ uint32_t ethernet_read_phy(uint16_t reg)
 }
 
 /**
- * @breif       向以太网芯片指定地址写入寄存器值
+ * @brief       向以太网芯片指定地址写入寄存器值
  * @param       reg   : 要写入的寄存器
  * @param       value : 要写入的寄存器
  * @retval      无
@@ -188,7 +187,7 @@ void ethernet_write_phy(uint16_t reg, uint16_t value)
 }
 
 /**
- * @breif       获得网络芯片的速度模式
+ * @brief       获得网络芯片的速度模式
  * @param       无
  * @retval      1:获取100M成功
                 0:失败
@@ -212,7 +211,7 @@ uint8_t ethernet_chip_get_speed(void)
 extern void lwip_pkt_handle(void);                  /* 在lwip_comm.c里面定义 */
 
 /**
- * @breif       中断服务函数
+ * @brief       中断服务函数
  * @param       无
  * @retval      无
  */
@@ -228,7 +227,7 @@ void ETH_IRQHandler(void)
 }
 
 /**
- * @breif       获取接收到的帧长度
+ * @brief       获取接收到的帧长度
  * @param       dma_rx_desc : 接收DMA描述符
  * @retval      frameLength : 接收到的帧长度
  */
@@ -247,7 +246,7 @@ uint32_t  ethernet_get_eth_rx_size(ETH_DMADescTypeDef *dma_rx_desc)
 }
 
 /**
- * @breif       为ETH底层驱动申请内存
+ * @brief       为ETH底层驱动申请内存
  * @param       无
  * @retval      0,正常
  *              1,失败
@@ -256,10 +255,10 @@ uint8_t ethernet_mem_malloc(void)
 {
     if ((g_eth_dma_rx_dscr_tab || g_eth_dma_tx_dscr_tab || g_eth_rx_buf || g_eth_tx_buf) == NULL)
     {
-        g_eth_dma_rx_dscr_tab = mymalloc(SRAMIN, ETH_RXBUFNB * sizeof(ETH_DMADescTypeDef));         /* 申请内存 */
-        g_eth_dma_tx_dscr_tab = mymalloc(SRAMIN, ETH_TXBUFNB * sizeof(ETH_DMADescTypeDef));         /* 申请内存 */
-        g_eth_rx_buf = mymalloc(SRAMIN, ETH_RX_BUF_SIZE * ETH_RXBUFNB);                             /* 申请内存 */
-        g_eth_tx_buf = mymalloc(SRAMIN, ETH_TX_BUF_SIZE * ETH_TXBUFNB);                             /* 申请内存 */
+        g_eth_dma_rx_dscr_tab = malloc(ETH_RXBUFNB * sizeof(ETH_DMADescTypeDef));         /* 申请内存 */
+        g_eth_dma_tx_dscr_tab = malloc(ETH_TXBUFNB * sizeof(ETH_DMADescTypeDef));         /* 申请内存 */
+        g_eth_rx_buf = malloc(ETH_RX_BUF_SIZE * ETH_RXBUFNB);                             /* 申请内存 */
+        g_eth_tx_buf = malloc(ETH_TX_BUF_SIZE * ETH_TXBUFNB);                             /* 申请内存 */
         
         if (!(uint32_t)&g_eth_dma_rx_dscr_tab || !(uint32_t)&g_eth_dma_tx_dscr_tab || !(uint32_t)&g_eth_rx_buf || !(uint32_t)&g_eth_tx_buf)
         {
@@ -272,14 +271,14 @@ uint8_t ethernet_mem_malloc(void)
 }
 
 /**
- * @breif       释放ETH 底层驱动申请的内存
+ * @brief       释放ETH 底层驱动申请的内存
  * @param       无
  * @retval      无
  */
 void ethernet_mem_free(void)
 {
-    myfree(SRAMIN, g_eth_dma_rx_dscr_tab);  /* 释放内存 */
-    myfree(SRAMIN, g_eth_dma_tx_dscr_tab);  /* 释放内存 */
-    myfree(SRAMIN, g_eth_rx_buf);           /* 释放内存 */
-    myfree(SRAMIN, g_eth_tx_buf);           /* 释放内存 */
+    free(g_eth_dma_rx_dscr_tab);  /* 释放内存 */
+    free(g_eth_dma_tx_dscr_tab);  /* 释放内存 */
+    free(g_eth_rx_buf);           /* 释放内存 */
+    free(g_eth_tx_buf);           /* 释放内存 */
 }

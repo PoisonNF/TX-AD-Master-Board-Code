@@ -86,6 +86,7 @@
 .\objects\usercode.o: ..\Apply\Task\Inc\task_irq.h
 .\objects\usercode.o: ..\Apply\Task\Inc\task_sysinit.h
 .\objects\usercode.o: ..\Apply\Task\Inc\task_userinit.h
+.\objects\usercode.o: ..\Apply\Task\Inc\task_lwipudp.h
 .\objects\usercode.o: ..\Bsp\OCD\Inc\ocd_conf.h
 .\objects\usercode.o: ..\Bsp\OCD\Inc\ocd_ethernet.h
 .\objects\usercode.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h

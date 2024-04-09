@@ -86,10 +86,10 @@
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_irq.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_sysinit.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_userinit.h
+.\objects\threadpool.o: ..\Apply\Task\Inc\task_lwipudp.h
 .\objects\threadpool.o: ..\Bsp\OCD\Inc\ocd_conf.h
 .\objects\threadpool.o: ..\Bsp\OCD\Inc\ocd_ethernet.h
 .\objects\threadpool.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h
 .\objects\threadpool.o: ..\Bsp\Dev\Inc\dev_conf.h
 .\objects\threadpool.o: ..\Bsp\Algo\Inc\algo_conf.h
 .\objects\threadpool.o: ..\Apply\Logic\Inc\config.h
-.\objects\threadpool.o: ..\Bsp\LWIP\arch\lwip_comm.h

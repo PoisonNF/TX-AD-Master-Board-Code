@@ -7,4 +7,6 @@
 #include "task_sysinit.h"
 #include "task_userinit.h"
 
+#include "task_lwipudp.h"
+
 #endif

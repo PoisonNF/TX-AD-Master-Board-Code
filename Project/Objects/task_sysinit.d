@@ -46,7 +46,7 @@
 .\objects\task_sysinit.o: ..\Apply\Task\Inc\task_irq.h
 .\objects\task_sysinit.o: ..\Apply\Task\Inc\task_sysinit.h
 .\objects\task_sysinit.o: ..\Apply\Task\Inc\task_userinit.h
-.\objects\task_sysinit.o: ..\Apply\Logic\Inc\config.h
+.\objects\task_sysinit.o: ..\Apply\Task\Inc\task_lwipudp.h
 .\objects\task_sysinit.o: ..\Driver\Inc\drv_hal_conf.h
 .\objects\task_sysinit.o: ..\Bsp\RTOS\FreeRTOS\CMSIS_RTOS_V2\cmsis_os.h
 .\objects\task_sysinit.o: ..\Bsp\RTOS\FreeRTOS\CMSIS_RTOS_V2\cmsis_os2.h
@@ -86,6 +86,7 @@
 .\objects\task_sysinit.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\task_sysinit.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\task_sysinit.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\task_sysinit.o: ..\Apply\Logic\Inc\config.h
 .\objects\task_sysinit.o: ..\Bsp\OCD\Inc\ocd_conf.h
 .\objects\task_sysinit.o: ..\Bsp\OCD\Inc\ocd_ethernet.h
 .\objects\task_sysinit.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h

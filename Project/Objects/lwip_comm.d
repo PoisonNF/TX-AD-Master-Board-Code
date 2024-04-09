@@ -90,8 +90,6 @@
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/sys.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\arch/sys_arch.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/tcpip.h
-.\objects\lwip_comm.o: ..\Bsp\MALLOC\malloc.h
-.\objects\lwip_comm.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h
 .\objects\lwip_comm.o: ..\Bsp\RTOS\FreeRTOS\include\FreeRTOS.h
 .\objects\lwip_comm.o: ..\Bsp\RTOS\FreeRTOS\include\FreeRTOSConfig.h
 .\objects\lwip_comm.o: ..\Bsp\RTOS\FreeRTOS\include\projdefs.h

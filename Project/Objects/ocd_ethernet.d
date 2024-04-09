@@ -44,8 +44,6 @@
 .\objects\ocd_ethernet.o: ..\Hardware\STM32F4XX\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h
 .\objects\ocd_ethernet.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h
 .\objects\ocd_ethernet.o: ..\Bsp\LWIP\arch\lwip_comm.h
-.\objects\ocd_ethernet.o: ..\Bsp\MALLOC\malloc.h
-.\objects\ocd_ethernet.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h
 .\objects\ocd_ethernet.o: ..\Driver\Inc\drv_hal_conf.h
 .\objects\ocd_ethernet.o: ..\Bsp\RTOS\FreeRTOS\CMSIS_RTOS_V2\cmsis_os.h
 .\objects\ocd_ethernet.o: ..\Bsp\RTOS\FreeRTOS\CMSIS_RTOS_V2\cmsis_os2.h
