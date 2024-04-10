@@ -8,5 +8,7 @@
 #include "task_userinit.h"
 
 #include "task_lwipudp.h"
+#include "task_powerdetect.h"
+#include "task_serialscreen.h"
 
 #endif

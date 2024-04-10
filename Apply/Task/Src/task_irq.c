@@ -84,7 +84,11 @@ void UART4_IRQHandler(void)
 */
 void UART5_IRQHandler(void)
 {
-
+    uint32_t Save_Status;
+    Save_Status = taskENTER_CRITICAL_FROM_ISR();      //中断级进入临界段
+	Drv_Uart_IRQHandler(&Uart5);
+	Drv_Uart_DMA_RxHandler(&Uart5);
+    taskEXIT_CRITICAL_FROM_ISR(Save_Status);       //中断级退出临界段
 }
 
 /**

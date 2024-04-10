@@ -6,15 +6,21 @@
 #include "algo_conf.h"		/* Algo层头文件配置 */
 #include "config.h"			/* I/O配置头文件配置 */
 
-#include "lwip_comm.h"
+/* 任务句柄 */
+TaskHandle_t Start_Task_Handler;             
+TaskHandle_t LWIP_Task_Handler;        
+TaskHandle_t LED_Task_Handler;         
+TaskHandle_t PowerDetect_Task_Handler; 
+TaskHandle_t SerialScreen_Task_Handler;
 
-TaskHandle_t Start_Task_Handler;             /* 任务句柄 */
-TaskHandle_t LWIP_Task_Handler;              /* 任务句柄 */
-TaskHandle_t LED_Task_Handler;               /* 任务句柄 */
+/* 信号量 */
+SemaphoreHandle_t PowerDetect_Sema;     //电源检测信号量
 
 /* 用户逻辑代码 */
 void UserLogic_Code(void)
 {
+    PowerDetect_Sema = xSemaphoreCreateBinary();    //创建二值信号量
+
     /* Start_Task */
     xTaskCreate((TaskFunction_t )Start_Task,
                 (const char *   )"Start_Task",
@@ -33,7 +39,7 @@ void UserLogic_Code(void)
  */
 void Start_Task(void *pvParameters)
 {
-    pvParameters = pvParameters;
+    UNUSED(pvParameters);
     
     while(lwip_comm_init() != 0)
     
@@ -47,7 +53,6 @@ void Start_Task(void *pvParameters)
         vTaskDelay(5);
     }
     
-    
     taskENTER_CRITICAL();           /* 进入临界区 */
 
     /* 创建lwIP UDP任务 */
@@ -58,13 +63,29 @@ void Start_Task(void *pvParameters)
                 (UBaseType_t    )LWIP_DMEO_TASK_PRIO,
                 (TaskHandle_t*  )&LWIP_Task_Handler);
 
-    /* LED指示灯任务 */
+    /* 创建LED网络指示灯任务 */
     xTaskCreate((TaskFunction_t )LED_Task,
                 (const char*    )"LED_Task",
                 (uint16_t       )LED_STK_SIZE,
                 (void*          )NULL,
                 (UBaseType_t    )LED_TASK_PRIO,
                 (TaskHandle_t*  )&LED_Task_Handler);
+
+    /* 创建电源检测任务 */
+    xTaskCreate((TaskFunction_t )PowerDetect_Task,
+                (const char*    )"PowerDetect_Task",
+                (uint16_t       )POWERDETECT_STK_SIZE,
+                (void*          )NULL,
+                (UBaseType_t    )POWERDETECT_TASK_PRIO,
+                (TaskHandle_t*  )&PowerDetect_Task_Handler);
+
+    /* 创建串口屏任务 */
+    xTaskCreate((TaskFunction_t )SerialScreen_Task,
+                (const char*    )"SerialScreen_Task",
+                (uint16_t       )SERIALSCREEN_STK_SIZE,
+                (void*          )NULL,
+                (UBaseType_t    )SERIALSCREEN_TASK_PRIO,
+                (TaskHandle_t*  )&SerialScreen_Task_Handler);  
        
 
     vTaskDelete(xTaskGetCurrentTaskHandle());   /* 删除开始任务 */

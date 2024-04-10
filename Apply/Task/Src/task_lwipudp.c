@@ -11,7 +11,7 @@
 #define LWIP_SEND_THREAD_PRIO       ( tskIDLE_PRIORITY + 3 )    /* 发送数据线程优先级 */
 
 /* UDP接收发送缓冲区 */
-uint8_t LwIP_UDP_RecvBuffer[LWIP_UDP_RX_BUFSIZE];
+uint8_t LwIP_UDP_RecvBuffer[LWIP_UDP_RX_BUFSIZE] = {0};
 uint8_t LwIP_UDP_SendBuffer[] = "Test UDP\r\n";
 
 /* Socket相关 */
@@ -25,7 +25,7 @@ socklen_t Socket_fd;                /* 定义一个Socket文件描述符 */
 static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
 {
     UNUSED(pvParameters);
-    uint16_t SendNum = 0;
+    int SendNum = 0;
 
     Local_info.sin_addr.s_addr = inet_addr(REMOTE_IP_ADDR);     //选定需要发送的远程IP地址
 
@@ -37,8 +37,11 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
                         sizeof(LwIP_UDP_SendBuffer),    //发送的数据长度
                         0,                              //发送的标志
                         (struct sockaddr *)&Local_info,
-                        sizeof(Local_info));                             
-        if(SendNum) printf("Send Complete!\r\n");
+                        sizeof(Local_info));
+        UNUSED(SendNum);
+#ifdef PRINTF_DEBUG             
+        if(SendNum != -1) printf("Send Complete!\r\n");
+#endif
 
         vTaskDelay(1000);
     }
@@ -60,7 +63,7 @@ static inline void S_LwIP_UDP_Create_Send_Thread(void)
 void Task_LwIP_UDP_Handle(void)
 {
     //BaseType_t LwIP_Err;    //返回值判断
-    uint16_t RecvNum = 0;
+    int RecvNum = 0;
 
     //创建UDP发送线程
     S_LwIP_UDP_Create_Send_Thread();        
@@ -81,10 +84,10 @@ void Task_LwIP_UDP_Handle(void)
     while(1)
     {
         //UDP接收处理
-        memset(&LwIP_UDP_RecvBuffer,0,sizeof(LwIP_UDP_RecvBuffer));
+        memset(LwIP_UDP_RecvBuffer,0,sizeof(LwIP_UDP_RecvBuffer));
 
         RecvNum = recv(Socket_fd,LwIP_UDP_RecvBuffer,sizeof(LwIP_UDP_RecvBuffer),0);
-        if(RecvNum) printf("%s\r\n",LwIP_UDP_RecvBuffer);
+        if(RecvNum != -1) printf("%s\r\n",LwIP_UDP_RecvBuffer);
 
         vTaskDelay(1);  //主动切换线程
     }

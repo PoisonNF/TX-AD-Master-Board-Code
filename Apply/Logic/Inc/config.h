@@ -8,11 +8,13 @@
 
 /* 用户句柄声明包含区 */
 
-extern tagGPIO_T demoGPIO[];
+extern tagGPIO_T LED[];
 
-extern tagUART_T demoUart;
+extern tagUART_T Uart1;
 
-extern tagDAC_T demoDAC[];
+extern tagUART_T Uart5;
 
-extern tagADC_T demoADC[1];
+extern tagADC_T PowerADC[];
+
+
 #endif

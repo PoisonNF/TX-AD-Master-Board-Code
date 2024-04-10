@@ -86,10 +86,15 @@
 .\objects\task_irq.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\task_irq.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\task_irq.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\task_irq.o: ..\Apply\Task\Inc\task_powerdetect.h
 .\objects\task_irq.o: ..\Apply\Logic\Inc\usercode.h
-.\objects\task_irq.o: ..\Apply\Logic\Inc\config.h
-.\objects\task_irq.o: ..\Bsp\OCD\Inc\ocd_conf.h
+.\objects\task_irq.o: ..\Bsp\LWIP\arch\lwip_comm.h
 .\objects\task_irq.o: ..\Bsp\OCD\Inc\ocd_ethernet.h
 .\objects\task_irq.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h
+.\objects\task_irq.o: ..\Bsp\RTOS\FreeRTOS\include\semphr.h
+.\objects\task_irq.o: ..\Bsp\RTOS\FreeRTOS\include\queue.h
+.\objects\task_irq.o: ..\Apply\Logic\Inc\config.h
+.\objects\task_irq.o: ..\Bsp\OCD\Inc\ocd_conf.h
 .\objects\task_irq.o: ..\Bsp\Algo\Inc\algo_conf.h
 .\objects\task_irq.o: ..\Bsp\Dev\Inc\dev_conf.h
+.\objects\task_irq.o: ..\Apply\Task\Inc\task_serialscreen.h

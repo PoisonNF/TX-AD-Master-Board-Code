@@ -427,6 +427,16 @@
               <FileType>1</FileType>
               <FilePath>..\Apply\Task\Src\task_lwipudp.c</FilePath>
             </File>
+            <File>
+              <FileName>task_powerdetect.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Apply\Task\Src\task_powerdetect.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_serialscreen.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Apply\Task\Src\task_serialscreen.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -41,6 +41,12 @@
                 "path": "../Apply/Task/Src/task_lwipudp.c"
               },
               {
+                "path": "../Apply/Task/Src/task_powerdetect.c"
+              },
+              {
+                "path": "../Apply/Task/Src/task_serialscreen.c"
+              },
+              {
                 "path": "../Apply/Task/Src/task_sysinit.c"
               },
               {
@@ -352,6 +358,12 @@
         "name": "FreeRTOS",
         "files": [
           {
+            "path": "../Bsp/RTOS/FreeRTOS/CMSIS_RTOS_V2/cmsis_os1.c"
+          },
+          {
+            "path": "../Bsp/RTOS/FreeRTOS/CMSIS_RTOS_V2/cmsis_os2.c"
+          },
+          {
             "path": "../Bsp/RTOS/FreeRTOS/croutine.c"
           },
           {
@@ -359,6 +371,12 @@
           },
           {
             "path": "../Bsp/RTOS/FreeRTOS/list.c"
+          },
+          {
+            "path": "../Bsp/RTOS/FreeRTOS/portable/MemMang/heap_4.c"
+          },
+          {
+            "path": "../Bsp/RTOS/FreeRTOS/portable/RVDS/ARM_CM4F/port.c"
           },
           {
             "path": "../Bsp/RTOS/FreeRTOS/queue.c"
@@ -371,18 +389,6 @@
           },
           {
             "path": "../Bsp/RTOS/FreeRTOS/timers.c"
-          },
-          {
-            "path": "../Bsp/RTOS/FreeRTOS/portable/MemMang/heap_4.c"
-          },
-          {
-            "path": "../Bsp/RTOS/FreeRTOS/portable/RVDS/ARM_CM4F/port.c"
-          },
-          {
-            "path": "../Bsp/RTOS/FreeRTOS/CMSIS_RTOS_V2/cmsis_os1.c"
-          },
-          {
-            "path": "../Bsp/RTOS/FreeRTOS/CMSIS_RTOS_V2/cmsis_os2.c"
           }
         ],
         "folders": []

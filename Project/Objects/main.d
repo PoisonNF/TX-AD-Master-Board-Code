@@ -84,4 +84,9 @@
 .\objects\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\main.o: ..\Apply\Task\Inc\task_userinit.h
 .\objects\main.o: ..\Apply\Logic\Inc\usercode.h
+.\objects\main.o: ..\Bsp\LWIP\arch\lwip_comm.h
+.\objects\main.o: ..\Bsp\OCD\Inc\ocd_ethernet.h
+.\objects\main.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h
+.\objects\main.o: ..\Bsp\RTOS\FreeRTOS\include\semphr.h
+.\objects\main.o: ..\Bsp\RTOS\FreeRTOS\include\queue.h
 .\objects\main.o: ..\Apply\Task\Inc\task_sysinit.h

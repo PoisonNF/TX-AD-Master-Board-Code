@@ -7,6 +7,8 @@
 ".\objects\task_sysinit.o"
 ".\objects\task_userinit.o"
 ".\objects\task_lwipudp.o"
+".\objects\task_powerdetect.o"
+".\objects\task_serialscreen.o"
 ".\objects\algo_pid.o"
 ".\objects\algo_func.o"
 ".\objects\dev_ps2.o"
