@@ -7,6 +7,12 @@ void Task_UserInit(void)
 {
     /* 初始化LED指示灯 */
 	Drv_GPIO_Init(LED, 1);
+
+    /* 初始化板卡控制引脚 */
+	Drv_GPIO_Init(Control, 12);
+
+    /* 初始化AD芯片同步引脚 */
+	Drv_GPIO_Init(SYNC, 1);
     
     /* 初始化调试串口 */
     Drv_Uart_DMAInit(&Uart1);
@@ -16,4 +22,7 @@ void Task_UserInit(void)
 
     /* 初始化电源检测ADC */
     Drv_ADC_Init(PowerADC,1);
+
+    /* 初始化CAN */
+    Drv_CAN_ITInit(&CAN);
 }

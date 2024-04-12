@@ -135,10 +135,9 @@ void TIM5_IRQHandler(void)
  * @brief 定时器6中断服务函数
  * @retval Null
 */
-void TIM6_IRQHandler(void)
+void TIM6_DAC_IRQHandler(void)
 {
-    /* 示例 */
-    //Drv_Timer_IRQHandler(&demoTIM);
+
 }
 
 /**
@@ -152,4 +151,63 @@ void TIM7_IRQHandler(void)
 }
 
 
+void CAN1_RX0_IRQHandler(void)
+{
+    uint32_t Save_Status;
+    Save_Status = taskENTER_CRITICAL_FROM_ISR();        //中断级进入临界段
+    Drv_CAN_IRQHandler(&CAN);
+    taskEXIT_CRITICAL_FROM_ISR(Save_Status);            //中断级退出临界段
+}
 
+void CAN1_TX_IRQHandler(void)
+{
+    uint32_t Save_Status;
+    Save_Status = taskENTER_CRITICAL_FROM_ISR();        //中断级进入临界段
+    Drv_CAN_IRQHandler(&CAN);
+    taskEXIT_CRITICAL_FROM_ISR(Save_Status);            //中断级退出临界段
+}
+
+static uint8_t CANReceBuffer[9] = {0};      //用于存放CAN接收的数据 
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan1)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    if(hcan1->Instance == CAN.tCANHandle.Instance)
+    {
+        /* CAN中断接收 */
+        if(Drv_CAN_ReceMsg(&CAN,CANReceBuffer))
+        {
+#ifdef PRINTF_DEBUG
+            printf("Recv:");
+            for(int i = 0; i< 8;i++)
+        	    printf("%x ", CANReceBuffer[i]);
+            printf("\r\n");
+#endif
+            /* 板卡插入检测 */
+            if(CANReceBuffer[0] == 0xA1 
+            && CANReceBuffer[1] == CAN.tCANRxHeader.StdId   //对应的ID号
+            && CANReceBuffer[2] == 0x4F
+            && CANReceBuffer[3] == 0x4B)    //板卡返回OK
+                xSemaphoreGiveFromISR(BoardDetect_Sema,NULL);
+            
+            CANReceBuffer[8] = CAN.tCANRxHeader.StdId;  /* 最后一个字节存储板卡ID号 */
+            
+            /* 将接收到的数据放入消息队列 */
+            xQueueSendFromISR(CANRecv_Queue, &CANReceBuffer, &xHigherPriorityTaskWoken);
+        }
+
+        memset(CANReceBuffer,0,9);
+        /* 如果有更高优先级的任务需要立即运行，则进行任务切换 */
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
+}
+
+// void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan)
+// {
+//     /* 
+//         加入发送完成后的操作 
+//     */
+
+//     //发送完成提示
+//   printf("TX Complete\r\n");
+// }

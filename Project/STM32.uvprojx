@@ -437,6 +437,16 @@
               <FileType>1</FileType>
               <FilePath>..\Apply\Task\Src\task_serialscreen.c</FilePath>
             </File>
+            <File>
+              <FileName>task_can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Apply\Task\Src\task_can.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_selfcheck.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Apply\Task\Src\task_selfcheck.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

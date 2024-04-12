@@ -149,4 +149,180 @@ tagADC_T PowerADC[] =
 	},
 };
 
+/* CAN */
+tagCAN_T CAN =
+{
+	/* CAN配置 */
+	.tCANHandle.Instance 								= CAN1,
+	.tCANHandle.Init.Prescaler 							= 7,							/* 分频系数 */
+	.tCANHandle.Init.Mode 								= CAN_MODE_NORMAL,				/* 模式设置 */
+	.tCANHandle.Init.SyncJumpWidth 						= CAN_SJW_1TQ,					/* 重新同步跳跃宽度 */
+	.tCANHandle.Init.TimeSeg1 							= CAN_BS1_10TQ,					/* Tbs1 */
+	.tCANHandle.Init.TimeSeg2 							= CAN_BS2_1TQ,					/* Tbs2 */
+	.tCANHandle.Init.TimeTriggeredMode 					= DISABLE,						/* 非时间触发通信模式 */
+	.tCANHandle.Init.AutoBusOff 						= DISABLE,						/* 软件自动离线管理 */
+	.tCANHandle.Init.AutoRetransmission 				= DISABLE,						/* 睡眠模式通过软件唤醒 */
+	.tCANHandle.Init.AutoWakeUp 						= DISABLE,						/* 禁止报文自动传送 */
+	.tCANHandle.Init.ReceiveFifoLocked 					= DISABLE,						/* 报文不锁定,新的覆盖旧的 */
+	.tCANHandle.Init.TransmitFifoPriority 				= DISABLE,						/* 优先级由报文标识符决定 */
+
+	/* CAN过滤器配置 */
+	.tCANFilter.FilterBank 								= 0,							/* 过滤器0 */
+	.tCANFilter.FilterMode 								= CAN_FILTERMODE_IDMASK,		/* 过滤器模式 */
+	.tCANFilter.FilterScale 							= CAN_FILTERSCALE_32BIT,		/* 过滤器位数 */
+	.tCANFilter.FilterIdHigh 							= 0x0000,
+	.tCANFilter.FilterIdLow 							= 0x0000,
+	.tCANFilter.FilterMaskIdHigh 						= 0x0000,
+	.tCANFilter.FilterMaskIdLow 						= 0x0000,
+	.tCANFilter.FilterFIFOAssignment 					= CAN_RX_FIFO0,					/* 过滤器关联到FIFO0 */
+	.tCANFilter.FilterActivation 						= ENABLE,						/* 激活过滤器0 */
+	.tCANFilter.SlaveStartFilterBank 					= 14,							/* 从CAN过滤器起始 */
+
+	/* CAN TX配置 */
+	.tCANTxHeader.StdId 								= 0x55,							/* 标准标识符 */
+	.tCANTxHeader.ExtId 								= 0x00,							/* 拓展标识符（29位） */
+	.tCANTxHeader.IDE 									= CAN_ID_STD,    				/* 使用标准帧 */
+	.tCANTxHeader.RTR 									= CAN_RTR_DATA,					/* 数据帧 */
+  
+	/* CAN 发送优先级 */
+	.ucTxPriority										= 9,							/* 发送主优先级 */
+	.ucTxSubPriority									= 1,							/* 发送次优先级 */
+
+	/* CAN 接收优先级 */
+	.ucRxPriority										= 5,							/* 接收主优先级 */
+	.ucRxSubPriority									= 1,							/* 接收次优先级 */
+	/* CAN GPIO配置 */
+	.tGPIO[0].tGPIOInit.Pin 							= GPIO_PIN_12,					/* GPIO引脚 */
+	.tGPIO[0].tGPIOInit.Mode 							= GPIO_MODE_AF_PP,				/* GPIO模式 */
+	.tGPIO[0].tGPIOInit.Pull 							= GPIO_PULLUP,					/* GPIO上下拉设置，是否需要上下拉看硬件 */
+	.tGPIO[0].tGPIOInit.Speed 							= GPIO_SPEED_FREQ_HIGH,			/* GPIO速度 */	
+	.tGPIO[0].tGPIOPort 								= GPIOA,						/* GPIO分组 */			
+
+	.tGPIO[1].tGPIOInit.Pin 							= GPIO_PIN_11,					/* GPIO引脚 */
+#ifdef STM32F1_SGA_ENABLE
+	.tGPIO[1].tGPIOInit.Mode 							= GPIO_MODE_AF_INPUT,			/* GPIO模式 */
+#endif
+#ifdef STM32F4_SGA_ENABLE
+	.tGPIO[1].tGPIOInit.Mode 							= GPIO_MODE_AF_PP,				/* GPIO模式 */
+#endif
+	.tGPIO[1].tGPIOInit.Pull 							= GPIO_PULLUP,					/* GPIO上下拉设置，是否需要上下拉看硬件 */
+	.tGPIO[1].tGPIOInit.Speed 							= GPIO_SPEED_FREQ_HIGH,			/* GPIO速度 */	
+	.tGPIO[1].tGPIOPort 								= GPIOA,						/* GPIO分组 */			
+};
+
+/* 板卡控制引脚 */
+tagGPIO_T Control[] =
+{
+	
+	[0]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_15,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOA,					/* GPIO分组 */
+	},
+    [1]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_10,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOC,					/* GPIO分组 */
+	},
+	[2]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_11,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOC,					/* GPIO分组 */
+	},
+	[3]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_0,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOD,					/* GPIO分组 */
+	},
+	[4]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_1,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOD,					/* GPIO分组 */
+	},
+	[5]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_4,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOD,					/* GPIO分组 */
+	},
+	[6]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_5,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOD,					/* GPIO分组 */
+	},
+	[7]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_6,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOD,					/* GPIO分组 */
+	},
+	[8]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_7,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOD,					/* GPIO分组 */
+	},
+	[9]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_9,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOG,					/* GPIO分组 */
+	},
+	[10]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_10,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOG,					/* GPIO分组 */
+	},
+	[11]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_12,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOG,					/* GPIO分组 */
+	},
+
+};
+
+/* SYNC控制引脚 */
+tagGPIO_T SYNC[] =
+{
+	[0]=
+	{ 
+		.tGPIOInit.Pin 		= GPIO_PIN_0,				/* GPIO引脚 */
+		.tGPIOInit.Mode 	= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+		.tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+		.tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */
+		.tGPIOPort 			= GPIOE,					/* GPIO分组 */
+	},
+};
 

@@ -98,3 +98,5 @@
 .\objects\usercode.o: ..\Bsp\Algo\Inc\algo_conf.h
 .\objects\usercode.o: ..\Bsp\Dev\Inc\dev_conf.h
 .\objects\usercode.o: ..\Apply\Task\Inc\task_serialscreen.h
+.\objects\usercode.o: ..\Apply\Task\Inc\task_can.h
+.\objects\usercode.o: ..\Apply\Task\Inc\task_selfcheck.h

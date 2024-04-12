@@ -71,6 +71,22 @@ void SerialScreen_Task(void *pvParameters)
     }
 }
 
+/**
+ * @brief CAN处理任务
+ * @param pvParameters : 传入参数(未用到)
+ * @retval Null
+ */
+void CAN_Task(void *pvParameters)
+{
+    UNUSED(pvParameters);
+    
+    while (1)
+    {
+        Task_CAN_Handle(&CAN);
+        vTaskDelay(1);
+    }
+}
+
 
 
 

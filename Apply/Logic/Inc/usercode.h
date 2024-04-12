@@ -11,6 +11,10 @@ void Start_Task(void *pvParameters);        /* 任务函数 */
 
 /* 信号量句柄 */
 extern SemaphoreHandle_t PowerDetect_Sema;  /* 电源检测信号量 */
+extern SemaphoreHandle_t BoardDetect_Sema;  /* 板卡检测信号量 */
+
+/* 消息队列 */
+extern QueueHandle_t CANRecv_Queue;
 
 /* Start_Task 任务 配置
  * 包括: 任务句柄 任务优先级 堆栈大小 创建任务
@@ -48,5 +52,12 @@ extern TaskHandle_t PowerDetect_Task_Handler;       /* 任务句柄 */
 #define SERIALSCREEN_TASK_PRIO           9           /* 任务优先级 */
 #define SERIALSCREEN_STK_SIZE            512         /* 任务堆栈大小 */
 extern TaskHandle_t SerialScreen_Task_Handler;       /* 任务句柄 */
+
+/* CAN_Task 任务 配置
+ * 包括: 任务句柄 任务优先级 堆栈大小 创建任务
+ */
+#define CAN_TASK_PRIO           11           /* 任务优先级 */
+#define CAN_STK_SIZE            1024         /* 任务堆栈大小 */
+extern TaskHandle_t CAN_Task_Handler;
 
 #endif

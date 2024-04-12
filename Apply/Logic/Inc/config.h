@@ -16,5 +16,10 @@ extern tagUART_T Uart5;
 
 extern tagADC_T PowerADC[];
 
+extern tagCAN_T CAN;
+
+extern tagGPIO_T Control[];
+
+extern tagGPIO_T SYNC[];
 
 #endif

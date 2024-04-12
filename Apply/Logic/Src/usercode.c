@@ -12,14 +12,23 @@ TaskHandle_t LWIP_Task_Handler;
 TaskHandle_t LED_Task_Handler;         
 TaskHandle_t PowerDetect_Task_Handler; 
 TaskHandle_t SerialScreen_Task_Handler;
+TaskHandle_t CAN_Task_Handler;
 
 /* 信号量 */
 SemaphoreHandle_t PowerDetect_Sema;     //电源检测信号量
+SemaphoreHandle_t BoardDetect_Sema;     //板卡检测信号量
+
+/* 消息队列 */
+QueueHandle_t CANRecv_Queue;               //CAN接收消息队列
+#define CAN_RX_QUEUE_LENGTH  200         //消息队列长度
 
 /* 用户逻辑代码 */
 void UserLogic_Code(void)
 {
-    PowerDetect_Sema = xSemaphoreCreateBinary();    //创建二值信号量
+    PowerDetect_Sema = xSemaphoreCreateBinary();            //创建二值信号量
+    BoardDetect_Sema = xSemaphoreCreateBinary();            //创建二值信号量
+
+    CANRecv_Queue = xQueueCreate(CAN_RX_QUEUE_LENGTH, 9);      //创建单个9字节长，深度为10的消息队列
 
     /* Start_Task */
     xTaskCreate((TaskFunction_t )Start_Task,
@@ -40,7 +49,21 @@ void UserLogic_Code(void)
 void Start_Task(void *pvParameters)
 {
     UNUSED(pvParameters);
-    
+
+    taskENTER_CRITICAL();           /* 进入临界区 */   
+    /* 创建CAN任务 */
+    xTaskCreate((TaskFunction_t )CAN_Task,
+                (const char*    )"CAN_Task",
+                (uint16_t       )CAN_STK_SIZE,
+                (void*          )NULL,
+                (UBaseType_t    )CAN_TASK_PRIO,
+                (TaskHandle_t*  )&CAN_Task_Handler);  
+    taskEXIT_CRITICAL();                        /* 退出临界区 */  
+
+    /* 自检 */
+    if(Task_SelfCheck())    //板卡分配ID
+        Task_SYNC_Signal();     //发送同步信号，开始采集
+
     while(lwip_comm_init() != 0)
     
     while(!ethernet_read_phy(PHY_SR))  /* 检查MCU与PHY芯片是否通信成功 */
@@ -85,13 +108,10 @@ void Start_Task(void *pvParameters)
                 (uint16_t       )SERIALSCREEN_STK_SIZE,
                 (void*          )NULL,
                 (UBaseType_t    )SERIALSCREEN_TASK_PRIO,
-                (TaskHandle_t*  )&SerialScreen_Task_Handler);  
-       
+                (TaskHandle_t*  )&SerialScreen_Task_Handler);
 
     vTaskDelete(xTaskGetCurrentTaskHandle());   /* 删除开始任务 */
     taskEXIT_CRITICAL();                        /* 退出临界区 */  
-
-    
 }
 
 

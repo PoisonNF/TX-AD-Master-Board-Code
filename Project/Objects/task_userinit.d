@@ -98,3 +98,5 @@
 .\objects\task_userinit.o: ..\Bsp\Algo\Inc\algo_conf.h
 .\objects\task_userinit.o: ..\Bsp\Dev\Inc\dev_conf.h
 .\objects\task_userinit.o: ..\Apply\Task\Inc\task_serialscreen.h
+.\objects\task_userinit.o: ..\Apply\Task\Inc\task_can.h
+.\objects\task_userinit.o: ..\Apply\Task\Inc\task_selfcheck.h

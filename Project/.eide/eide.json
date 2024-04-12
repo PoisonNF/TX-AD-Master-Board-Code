@@ -35,6 +35,9 @@
             "name": "Task",
             "files": [
               {
+                "path": "../Apply/Task/Src/task_can.c"
+              },
+              {
                 "path": "../Apply/Task/Src/task_irq.c"
               },
               {
@@ -42,6 +45,9 @@
               },
               {
                 "path": "../Apply/Task/Src/task_powerdetect.c"
+              },
+              {
+                "path": "../Apply/Task/Src/task_selfcheck.c"
               },
               {
                 "path": "../Apply/Task/Src/task_serialscreen.c"

@@ -10,5 +10,7 @@
 #include "task_lwipudp.h"
 #include "task_powerdetect.h"
 #include "task_serialscreen.h"
+#include "task_can.h"
+#include "task_selfcheck.h"
 
 #endif
