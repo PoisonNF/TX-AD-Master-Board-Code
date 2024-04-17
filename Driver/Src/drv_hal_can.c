@@ -144,8 +144,27 @@ static void S_CAN_ParamConfig(tagCAN_T *_tCAN)
         Drv_HAL_Error(__FILE__, __LINE__);
 
     /* CAN过滤器配置 */
-    if(HAL_CAN_ConfigFilter(&_tCAN->tCANHandle,&_tCAN->tCANFilter) != HAL_OK)
-        Drv_HAL_Error(__FILE__, __LINE__);
+    for(uint8_t index = 0; index < _tCAN->ucCANFilterNum; index++)
+    {
+        /* 配置过滤器 */
+        HAL_CAN_ConfigFilter(&_tCAN->tCANHandle,&_tCAN->tCANFilter[index]);
+
+        /* 根据选定的FIFO号开始对应的中断通知 */
+        if(_tCAN->tCANFilter[index].FilterFIFOAssignment == CAN_RX_FIFO0)
+        {
+            if(HAL_CAN_ActivateNotification(&_tCAN->tCANHandle, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
+                Drv_HAL_Error(__FILE__,__LINE__);
+            if(HAL_CAN_ActivateNotification(&_tCAN->tCANHandle, CAN_IT_RX_FIFO0_FULL) != HAL_OK)
+                Drv_HAL_Error(__FILE__,__LINE__);
+        }
+        else
+        {
+            if(HAL_CAN_ActivateNotification(&_tCAN->tCANHandle, CAN_IT_RX_FIFO1_MSG_PENDING) != HAL_OK)
+                Drv_HAL_Error(__FILE__,__LINE__);
+            if(HAL_CAN_ActivateNotification(&_tCAN->tCANHandle, CAN_IT_RX_FIFO1_FULL) != HAL_OK)
+                Drv_HAL_Error(__FILE__,__LINE__);
+        }
+    }
     
     /* 启动CAN外围设备 */
     if(HAL_CAN_Start(&_tCAN->tCANHandle) != HAL_OK)
@@ -154,20 +173,6 @@ static void S_CAN_ParamConfig(tagCAN_T *_tCAN)
     /* 激活CAN发送中断通知 */
     if(HAL_CAN_ActivateNotification(&_tCAN->tCANHandle,CAN_IT_TX_MAILBOX_EMPTY) != HAL_OK)
         Drv_HAL_Error(__FILE__,__LINE__);
-
-    /* 根据FIFO选择 */
-    if(_tCAN->tCANFilter.FilterFIFOAssignment == CAN_RX_FIFO0)
-    {
-        /* 激活FIFO0接收新消息通知 */
-        if(HAL_CAN_ActivateNotification(&_tCAN->tCANHandle, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
-            Drv_HAL_Error(__FILE__,__LINE__);
-    }
-    else
-    {
-        /* 激活FIFO1接收新消息通知 */
-        if(HAL_CAN_ActivateNotification(&_tCAN->tCANHandle, CAN_IT_RX_FIFO1_MSG_PENDING) != HAL_OK)
-            Drv_HAL_Error(__FILE__,__LINE__);
-    }
 
     /* 激活CAN错误中断通知 */
     if(HAL_CAN_ActivateNotification(&_tCAN->tCANHandle, CAN_IT_ERROR) != HAL_OK)
@@ -244,14 +249,15 @@ uint8_t Drv_CAN_SendMsg(tagCAN_T *_tCAN,uint8_t *ucpMsg,uint8_t ucLen)
  * @brief CAN接收数据
  * @param _tCAN-CAN结构体指针
  * @param _ucpMsg-接收数据指针
+ * @param _ulRxFifo-接收数据的FIFO号，可选CAN_FILTER_FIFO0、CAN_FILTER_FIFO1
  * @retval uint8_t 接收数据长度
 */
-uint8_t Drv_CAN_ReceMsg(tagCAN_T *_tCAN,uint8_t *_ucpMsg)
+uint8_t Drv_CAN_ReceMsg(tagCAN_T *_tCAN,uint8_t *_ucpMsg,uint32_t _ulRxFifo)
 {
     uint8_t index = 0;
     uint8_t ucTemp[8];
 
-    if(HAL_CAN_GetRxMessage(&_tCAN->tCANHandle,_tCAN->tCANFilter.FilterFIFOAssignment,&_tCAN->tCANRxHeader,ucTemp) != HAL_OK)
+    if(HAL_CAN_GetRxMessage(&_tCAN->tCANHandle,_ulRxFifo,&_tCAN->tCANRxHeader,ucTemp) != HAL_OK)
     {
         return 0;
     }

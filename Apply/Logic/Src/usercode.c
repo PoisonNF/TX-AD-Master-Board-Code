@@ -60,55 +60,55 @@ void Start_Task(void *pvParameters)
                 (TaskHandle_t*  )&CAN_Task_Handler);  
     taskEXIT_CRITICAL();                        /* 退出临界区 */  
 
+    // while(lwip_comm_init() != 0)
+    
+    // while(!ethernet_read_phy(PHY_SR))  /* 检查MCU与PHY芯片是否通信成功 */
+    // {
+    //     printf("MCU and PHY chip communication failed, please check the circuit or source code!!\r\n");
+    // }
+    
+    // while((g_lwipdev.dhcpstatus != 2)&&(g_lwipdev.dhcpstatus != 0XFF))  /* 等待DHCP获取成功/超时溢出 */
+    // {
+    //     vTaskDelay(5);
+    // }
+
     /* 自检 */
     if(Task_SelfCheck())    //板卡分配ID
         Task_SYNC_Signal();     //发送同步信号，开始采集
-
-    while(lwip_comm_init() != 0)
-    
-    while(!ethernet_read_phy(PHY_SR))  /* 检查MCU与PHY芯片是否通信成功 */
-    {
-        printf("MCU and PHY chip communication failed, please check the circuit or source code!!\r\n");
-    }
-    
-    while((g_lwipdev.dhcpstatus != 2)&&(g_lwipdev.dhcpstatus != 0XFF))  /* 等待DHCP获取成功/超时溢出 */
-    {
-        vTaskDelay(5);
-    }
     
     taskENTER_CRITICAL();           /* 进入临界区 */
 
     /* 创建lwIP UDP任务 */
-    xTaskCreate((TaskFunction_t )LwIP_UDP_Task,
-                (const char*    )"LwIP_UDP_Task",
-                (uint16_t       )LWIP_DMEO_STK_SIZE, 
-                (void*          )NULL,
-                (UBaseType_t    )LWIP_DMEO_TASK_PRIO,
-                (TaskHandle_t*  )&LWIP_Task_Handler);
+    // xTaskCreate((TaskFunction_t )LwIP_UDP_Task,
+    //             (const char*    )"LwIP_UDP_Task",
+    //             (uint16_t       )LWIP_DMEO_STK_SIZE, 
+    //             (void*          )NULL,
+    //             (UBaseType_t    )LWIP_DMEO_TASK_PRIO,
+    //             (TaskHandle_t*  )&LWIP_Task_Handler);
 
-    /* 创建LED网络指示灯任务 */
-    xTaskCreate((TaskFunction_t )LED_Task,
-                (const char*    )"LED_Task",
-                (uint16_t       )LED_STK_SIZE,
-                (void*          )NULL,
-                (UBaseType_t    )LED_TASK_PRIO,
-                (TaskHandle_t*  )&LED_Task_Handler);
+    // /* 创建LED网络指示灯任务 */
+    // xTaskCreate((TaskFunction_t )LED_Task,
+    //             (const char*    )"LED_Task",
+    //             (uint16_t       )LED_STK_SIZE,
+    //             (void*          )NULL,
+    //             (UBaseType_t    )LED_TASK_PRIO,
+    //             (TaskHandle_t*  )&LED_Task_Handler);
 
-    /* 创建电源检测任务 */
-    xTaskCreate((TaskFunction_t )PowerDetect_Task,
-                (const char*    )"PowerDetect_Task",
-                (uint16_t       )POWERDETECT_STK_SIZE,
-                (void*          )NULL,
-                (UBaseType_t    )POWERDETECT_TASK_PRIO,
-                (TaskHandle_t*  )&PowerDetect_Task_Handler);
+    // /* 创建电源检测任务 */
+    // xTaskCreate((TaskFunction_t )PowerDetect_Task,
+    //             (const char*    )"PowerDetect_Task",
+    //             (uint16_t       )POWERDETECT_STK_SIZE,
+    //             (void*          )NULL,
+    //             (UBaseType_t    )POWERDETECT_TASK_PRIO,
+    //             (TaskHandle_t*  )&PowerDetect_Task_Handler);
 
-    /* 创建串口屏任务 */
-    xTaskCreate((TaskFunction_t )SerialScreen_Task,
-                (const char*    )"SerialScreen_Task",
-                (uint16_t       )SERIALSCREEN_STK_SIZE,
-                (void*          )NULL,
-                (UBaseType_t    )SERIALSCREEN_TASK_PRIO,
-                (TaskHandle_t*  )&SerialScreen_Task_Handler);
+    // /* 创建串口屏任务 */
+    // xTaskCreate((TaskFunction_t )SerialScreen_Task,
+    //             (const char*    )"SerialScreen_Task",
+    //             (uint16_t       )SERIALSCREEN_STK_SIZE,
+    //             (void*          )NULL,
+    //             (UBaseType_t    )SERIALSCREEN_TASK_PRIO,
+    //             (TaskHandle_t*  )&SerialScreen_Task_Handler);
 
     vTaskDelete(xTaskGetCurrentTaskHandle());   /* 删除开始任务 */
     taskEXIT_CRITICAL();                        /* 退出临界区 */  

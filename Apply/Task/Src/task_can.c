@@ -48,7 +48,7 @@ static void S_Data_Process(uint8_t _ucCanID,uint8_t *_ucCanMsg)
  * @param _tCAN-CAN结构体指针
  */
 void Task_CAN_Handle(tagCAN_T *_tCAN)
-{
+{	
     // 从队列中接收CAN数据
     if(xQueueReceive(CANRecv_Queue, &HandleBuffer, 0) == pdPASS)
     {

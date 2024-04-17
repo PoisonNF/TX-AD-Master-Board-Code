@@ -167,16 +167,40 @@ tagCAN_T CAN =
 	.tCANHandle.Init.TransmitFifoPriority 				= DISABLE,						/* 优先级由报文标识符决定 */
 
 	/* CAN过滤器配置 */
-	.tCANFilter.FilterBank 								= 0,							/* 过滤器0 */
-	.tCANFilter.FilterMode 								= CAN_FILTERMODE_IDMASK,		/* 过滤器模式 */
-	.tCANFilter.FilterScale 							= CAN_FILTERSCALE_32BIT,		/* 过滤器位数 */
-	.tCANFilter.FilterIdHigh 							= 0x0000,
-	.tCANFilter.FilterIdLow 							= 0x0000,
-	.tCANFilter.FilterMaskIdHigh 						= 0x0000,
-	.tCANFilter.FilterMaskIdLow 						= 0x0000,
-	.tCANFilter.FilterFIFOAssignment 					= CAN_RX_FIFO0,					/* 过滤器关联到FIFO0 */
-	.tCANFilter.FilterActivation 						= ENABLE,						/* 激活过滤器0 */
-	.tCANFilter.SlaveStartFilterBank 					= 14,							/* 从CAN过滤器起始 */
+	.ucCANFilterNum											= 3,							/* 需要配置过滤器个数 */
+
+	.tCANFilter[0].FilterBank 								= 0,							/* 过滤器0 */
+	.tCANFilter[0].FilterMode 								= CAN_FILTERMODE_IDLIST,		/* 过滤器模式 */
+	.tCANFilter[0].FilterScale 							    = CAN_FILTERSCALE_16BIT,		/* 过滤器位数 */
+	.tCANFilter[0].FilterIdHigh 							= 0x41 << 5,		//0x41通过
+	.tCANFilter[0].FilterIdLow 							    = 0x42 << 5,		//0x42通过
+	.tCANFilter[0].FilterMaskIdHigh 						= 0xffff,			//掩码全通过
+	.tCANFilter[0].FilterMaskIdLow 						    = 0|0x02,			//只收数据帧
+	.tCANFilter[0].FilterFIFOAssignment 					= CAN_RX_FIFO0,					/* 过滤器关联到FIFO0 */
+	.tCANFilter[0].FilterActivation 						= ENABLE,						/* 激活过滤器0 */
+	.tCANFilter[0].SlaveStartFilterBank 					= 14,							/* 从CAN过滤器起始 */
+
+	.tCANFilter[1].FilterBank 								= 1,							/* 过滤器1 */
+	.tCANFilter[1].FilterMode 								= CAN_FILTERMODE_IDLIST,		/* 过滤器模式 */
+	.tCANFilter[1].FilterScale 							    = CAN_FILTERSCALE_16BIT,		/* 过滤器位数 */
+	.tCANFilter[1].FilterIdHigh 							= 0x43 << 5,		//0x43通过
+	.tCANFilter[1].FilterIdLow 							    = 0x0000,
+	.tCANFilter[1].FilterMaskIdHigh 						= 0xffff,
+	.tCANFilter[1].FilterMaskIdLow 						    = 0|0x02,			//只收数据帧
+	.tCANFilter[1].FilterFIFOAssignment 					= CAN_RX_FIFO0,					/* 过滤器关联到FIFO0 */
+	.tCANFilter[1].FilterActivation 						= ENABLE,						/* 激活过滤器0 */
+	.tCANFilter[1].SlaveStartFilterBank 					= 14,							/* 从CAN过滤器起始 */
+
+	.tCANFilter[2].FilterBank 								= 2,							/* 过滤器2 */
+	.tCANFilter[2].FilterMode 								= CAN_FILTERMODE_IDMASK,		/* 过滤器模式 */
+	.tCANFilter[2].FilterScale 							    = CAN_FILTERSCALE_32BIT,		/* 过滤器位数 */
+	.tCANFilter[2].FilterIdHigh 							= 0x44 << 5,
+	.tCANFilter[2].FilterIdLow 							    = 0x00,
+	.tCANFilter[2].FilterMaskIdHigh 						= 0x44 << 5,		//0x44为掩码
+	.tCANFilter[2].FilterMaskIdLow 						    = 0|0x02,			//只收数据帧
+	.tCANFilter[2].FilterFIFOAssignment 					= CAN_RX_FIFO1,					/* 过滤器关联到FIFO1 */
+	.tCANFilter[2].FilterActivation 						= ENABLE,						/* 激活过滤器0 */
+	.tCANFilter[2].SlaveStartFilterBank 					= 14,							/* 从CAN过滤器起始 */
 
 	/* CAN TX配置 */
 	.tCANTxHeader.StdId 								= 0x55,							/* 标准标识符 */
@@ -189,7 +213,7 @@ tagCAN_T CAN =
 	.ucTxSubPriority									= 1,							/* 发送次优先级 */
 
 	/* CAN 接收优先级 */
-	.ucRxPriority										= 5,							/* 接收主优先级 */
+	.ucRxPriority										= 0,							/* 接收主优先级 */
 	.ucRxSubPriority									= 1,							/* 接收次优先级 */
 	/* CAN GPIO配置 */
 	.tGPIO[0].tGPIOInit.Pin 							= GPIO_PIN_12,					/* GPIO引脚 */
