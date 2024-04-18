@@ -9,6 +9,8 @@
 * 文件历史：
 
 * 版本号	日期		作者		说明
+*       2024-04-17	  鲍程璐	可以设置多个过滤器使用多个FIFO
+
 *  3.1  2024-03-20	  鲍程璐	增加CAN中断模式初始化函数
 
 *    	2024-02-28	  鲍程璐	增加CAN中断相关函数
@@ -220,24 +222,27 @@ void Drv_CAN_TxIDConfig(tagCAN_T *_tCAN,uint32_t _ulID)
  * @param _ucLen-发送数据长度，最大为8
  * @retval uint8_t 0成功 1失败
 */
-uint8_t Drv_CAN_SendMsg(tagCAN_T *_tCAN,uint8_t *ucpMsg,uint8_t ucLen)
+uint8_t Drv_CAN_SendMsg(tagCAN_T *_tCAN,uint8_t *_ucpMsg,uint8_t _ucLen)
 {
-    uint8_t index = 0;
-    uint8_t ucTemp[8];
-    uint32_t ulTXMailBox;
+    uint32_t ulTXMailBox = 0;
+    static uint8_t ucMailBoxCount = 0;
 
-    _tCAN->tCANTxHeader.DLC = ucLen;    /* 发送长度设置 */
-    
-    ulTXMailBox = CAN_TX_MAILBOX0;      /* 发送邮箱设置 */
+    _tCAN->tCANTxHeader.DLC = _ucLen;    /* 发送长度设置 */
 
-    /* 数据拷贝 */
-    for(index = 0;index < ucLen;index ++)
-    {
-        ucTemp[index] = ucpMsg[index];
+    if(ucMailBoxCount == 0){
+        ulTXMailBox = CAN_TX_MAILBOX0;
     }
+    else if(ucMailBoxCount == 1){
+        ulTXMailBox = CAN_TX_MAILBOX1;
+    }
+    else if(ucMailBoxCount == 2){
+        ulTXMailBox = CAN_TX_MAILBOX2;
+        ucMailBoxCount = 0;
+    }
+    ucMailBoxCount++;
 
     /* 将数据存储到发送邮箱中 */
-    if(HAL_CAN_AddTxMessage(&_tCAN->tCANHandle,&_tCAN->tCANTxHeader,ucTemp,&ulTXMailBox))
+    if(HAL_CAN_AddTxMessage(&_tCAN->tCANHandle,&_tCAN->tCANTxHeader,_ucpMsg,&ulTXMailBox))
     {
         return 1;
     }
@@ -254,17 +259,9 @@ uint8_t Drv_CAN_SendMsg(tagCAN_T *_tCAN,uint8_t *ucpMsg,uint8_t ucLen)
 */
 uint8_t Drv_CAN_ReceMsg(tagCAN_T *_tCAN,uint8_t *_ucpMsg,uint32_t _ulRxFifo)
 {
-    uint8_t index = 0;
-    uint8_t ucTemp[8];
-
-    if(HAL_CAN_GetRxMessage(&_tCAN->tCANHandle,_ulRxFifo,&_tCAN->tCANRxHeader,ucTemp) != HAL_OK)
+    if(HAL_CAN_GetRxMessage(&_tCAN->tCANHandle,_ulRxFifo,&_tCAN->tCANRxHeader,_ucpMsg) != HAL_OK)
     {
         return 0;
-    }
-
-    for(index = 0;index < _tCAN->tCANRxHeader.DLC; index++)
-    {
-        _ucpMsg[index] = ucTemp[index];
     }
 
     return _tCAN->tCANRxHeader.DLC;

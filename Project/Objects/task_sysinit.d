@@ -86,13 +86,13 @@
 .\objects\task_sysinit.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\task_sysinit.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\task_sysinit.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-.\objects\task_sysinit.o: ..\Apply\Task\Inc\task_powerdetect.h
 .\objects\task_sysinit.o: ..\Apply\Logic\Inc\usercode.h
 .\objects\task_sysinit.o: ..\Bsp\LWIP\arch\lwip_comm.h
 .\objects\task_sysinit.o: ..\Bsp\OCD\Inc\ocd_ethernet.h
 .\objects\task_sysinit.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h
 .\objects\task_sysinit.o: ..\Bsp\RTOS\FreeRTOS\include\semphr.h
 .\objects\task_sysinit.o: ..\Bsp\RTOS\FreeRTOS\include\queue.h
+.\objects\task_sysinit.o: ..\Apply\Task\Inc\task_powerdetect.h
 .\objects\task_sysinit.o: ..\Apply\Logic\Inc\config.h
 .\objects\task_sysinit.o: ..\Bsp\OCD\Inc\ocd_conf.h
 .\objects\task_sysinit.o: ..\Bsp\Algo\Inc\algo_conf.h

@@ -175,11 +175,11 @@ void CAN1_TX_IRQHandler(void)
     taskEXIT_CRITICAL_FROM_ISR(Save_Status);            //中断级退出临界段
 }
 
-static uint16_t NO1Num = 0;
-static uint16_t NO2Num = 0;
-static uint16_t NO3Num = 0;
-static uint16_t NO4Num = 0;
-static uint16_t NO5Num = 0;
+// static uint16_t NO1Num = 0;
+// static uint16_t NO2Num = 0;
+// static uint16_t NO3Num = 0;
+// static uint16_t NO4Num = 0;
+// static uint16_t NO5Num = 0;
 
 static uint8_t CANReceFifo0Buffer[9] = {0};      //用于存放CAN接收的数据 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan1)

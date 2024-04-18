@@ -33,7 +33,7 @@ uint8_t Task_SelfCheck(void)
 		printf("\r\n");
 #endif
 
-		if(xSemaphoreTake(BoardDetect_Sema,1000) == pdTRUE)
+		if(xSemaphoreTake(BoardDetect_Sema,300) == pdTRUE)
 		{
 			printf("NO.%d Find Card\r\n",ID_Choose);
 			InsertNum++;						//插入板卡数加一	
