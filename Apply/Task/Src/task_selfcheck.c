@@ -1,15 +1,16 @@
 #include "task_selfcheck.h"
 
-#define ADBOARD_NUM_MAX	12			//最大插入上限个数
+#define ADBOARD_NUM_MAX	5			//最大插入上限个数
 
 static uint8_t SetIDBuffer[8] = {0xA1,0x00,0x00,0x00,0x00,0x00,0x00,0x00};		//设置IDBuffer
 
-static uint8_t IDCollection[13] = {0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x4C,0x4D}; //板卡ID合集，从'A' - 'L',0x4D防止最后一块板得不到ID
-
 static uint8_t SYNCBuffer[8] = {0xA2,0x53,0x00,0x00,0x00,0x00,0x00,0x00};    //同步采集信号
+
+uint8_t IDjugBuffer[12] = {0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x4C}; //板卡ID判断数组
 
 static uint8_t ID_Choose = 1;       //板卡在主板上的顺序号，NO1-12
 
+__IO uint16_t TimeOut = 0;				//自检时间超时标志位
 /**
  * @brief 自检函数，为板卡分配ID
  * @param Null
@@ -18,38 +19,47 @@ static uint8_t ID_Choose = 1;       //板卡在主板上的顺序号，NO1-12
 uint8_t Task_SelfCheck(void)
 {
     uint8_t InsertNum = 0;
+	uint8_t TryNum = 0;
 
-    for(ID_Choose = 0; ID_Choose <= ADBOARD_NUM_MAX; ID_Choose++)
-    {
-		Drv_GPIO_Toggle(&Control[ID_Choose]);    //拉低对应板卡控制引脚，选中板卡
-		vTaskDelay(50);
-        SetIDBuffer[1] = IDCollection[ID_Choose];
-        Drv_CAN_SendMsg(&CAN,SetIDBuffer,8);        //发送包含ID的报文
-		vTaskDelay(150);
-#ifdef PRINTF_DEBUG
-		printf("Send:");
-		for(int i = 0; i< 8;i++)
-        	printf("%x ", SetIDBuffer[i]);
-		printf("\r\n");
-#endif
+	for(ID_Choose = 1; ID_Choose <= ADBOARD_NUM_MAX; ID_Choose++)
+	{
+next:	Drv_GPIO_Reset(&Control[ID_Choose - 1]);
+		HAL_Delay(10);
+		SetIDBuffer[1] = IDjugBuffer[ID_Choose - 1];
+		Drv_CAN_SendMsg(&CAN,SetIDBuffer,8);	
 
-		if(xSemaphoreTake(BoardDetect_Sema,300) == pdTRUE)
+		while((CAN.tCANRxHeader.StdId != IDjugBuffer[ID_Choose - 1]) && TimeOut < 0x100)
+		{
+            TimeOut++;
+			HAL_Delay(10);
+		}
+		if(TimeOut >= 0x100)
+		{
+			TimeOut = 0;
+			TryNum++;
+			if(TryNum<3)
+			{
+				printf("NO.%d time out!!\r\n",ID_Choose);
+				goto next;
+			}
+			else
+			{
+				TryNum = 0;
+				printf("NO.%d No Card\r\n",ID_Choose);
+			}
+			
+		}else
 		{
 			printf("NO.%d Find Card\r\n",ID_Choose);
-			InsertNum++;						//插入板卡数加一	
-		}
-		else
-		{
-			printf("NO.%d No Card\r\n",ID_Choose);
+			InsertNum++;						//插入板卡数加一
 		}
 
-		Drv_GPIO_Toggle(&Control[ID_Choose]);
-    }
-
+		TimeOut = 0;
+		Drv_GPIO_Set(&Control[ID_Choose - 1]);
+	}
 	printf("Insert %d Card\r\n",InsertNum);
 
-	vSemaphoreDelete(BoardDetect_Sema);		//检验完毕后，删除信号量
-    return InsertNum;
+	return InsertNum;
 }
 
 /**

@@ -62,11 +62,11 @@ void lwip_link_status_updated(struct netif *netif);         /* DHCP×´Ì¬»Øµ÷º¯Êı 
  */
 void lwip_comm_default_ip_set(__lwip_dev *lwipx)
 {
-    /* Ä¬ÈÏÔ¶¶ËIPÎª:192.168.1.134 */
+    /* Ä¬ÈÏÔ¶¶ËIPÎª:192.168.1.102 */
     lwipx->remoteip[0] = 192;
     lwipx->remoteip[1] = 168;
     lwipx->remoteip[2] = 1;
-    lwipx->remoteip[3] = 27;
+    lwipx->remoteip[3] = 102;
     
     /* MACµØÖ·ÉèÖÃ */
     lwipx->mac[0] = 0xB8;
@@ -81,6 +81,7 @@ void lwip_comm_default_ip_set(__lwip_dev *lwipx)
     lwipx->ip[1] = 168;
     lwipx->ip[2] = 1;
     lwipx->ip[3] = 30;
+    
     /* Ä¬ÈÏ×ÓÍøÑÚÂë:255.255.255.0 */
     lwipx->netmask[0] = 255;
     lwipx->netmask[1] = 255;

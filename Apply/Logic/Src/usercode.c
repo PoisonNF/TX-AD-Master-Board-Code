@@ -28,6 +28,9 @@ QueueHandle_t CANRecv_Queue;               //CAN接收消息队列
 /* 用户逻辑代码 */
 void UserLogic_Code(void)
 {
+	    /* 自检 */
+    Task_SelfCheck();    //板卡分配ID	
+	
     PowerDetect_Sema = xSemaphoreCreateBinary();            //创建二值信号量
     BoardDetect_Sema = xSemaphoreCreateBinary();            //创建二值信号量
     UDP_SendBuffer_Mutex = xSemaphoreCreateMutex();         //创建互斥量
@@ -76,8 +79,7 @@ void Start_Task(void *pvParameters)
         vTaskDelay(5);
     }
 
-    /* 自检 */
-    Task_SelfCheck();    //板卡分配ID
+
     
     taskENTER_CRITICAL();           /* 进入临界区 */
 
@@ -113,9 +115,10 @@ void Start_Task(void *pvParameters)
                 (UBaseType_t    )SERIALSCREEN_TASK_PRIO,
                 (TaskHandle_t*  )&SerialScreen_Task_Handler);
 
-    taskEXIT_CRITICAL();                        /* 退出临界区 */ 
-
-    Task_SYNC_Signal();     //发送同步信号，开始采集 
+    taskEXIT_CRITICAL();                        /* 退出临界区 */  
+								
+		Task_SYNC_Signal();     //发送同步信号，开始采集
+								
     vTaskDelete(xTaskGetCurrentTaskHandle());   /* 删除开始任务 */
 }
 

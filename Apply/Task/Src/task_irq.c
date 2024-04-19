@@ -153,33 +153,18 @@ void TIM7_IRQHandler(void)
 
 void CAN1_RX0_IRQHandler(void)
 {
-    uint32_t Save_Status;
-    Save_Status = taskENTER_CRITICAL_FROM_ISR();        //中断级进入临界段
     Drv_CAN_IRQHandler(&CAN);
-    taskEXIT_CRITICAL_FROM_ISR(Save_Status);            //中断级退出临界段
 }
 
 void CAN1_RX1_IRQHandler(void)
 {
-    uint32_t Save_Status;
-    Save_Status = taskENTER_CRITICAL_FROM_ISR();        //中断级进入临界段
     Drv_CAN_IRQHandler(&CAN);
-    taskEXIT_CRITICAL_FROM_ISR(Save_Status);            //中断级退出临界段
 }
 
 void CAN1_TX_IRQHandler(void)
 {
-    uint32_t Save_Status;
-    Save_Status = taskENTER_CRITICAL_FROM_ISR();        //中断级进入临界段
     Drv_CAN_IRQHandler(&CAN);
-    taskEXIT_CRITICAL_FROM_ISR(Save_Status);            //中断级退出临界段
 }
-
-// static uint16_t NO1Num = 0;
-// static uint16_t NO2Num = 0;
-// static uint16_t NO3Num = 0;
-// static uint16_t NO4Num = 0;
-// static uint16_t NO5Num = 0;
 
 static uint8_t CANReceFifo0Buffer[9] = {0};      //用于存放CAN接收的数据 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan1)
@@ -195,29 +180,17 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan1)
     	    printf("%x ", CANReceFifo0Buffer[i]);
         printf("\r\n");
 #endif
-        /* 板卡插入检测 */
-        if(CANReceFifo0Buffer[0] == 0xA1 
-        && CANReceFifo0Buffer[1] == CAN.tCANRxHeader.StdId   //对应的ID号
-        && CANReceFifo0Buffer[2] == 0x4F
-        && CANReceFifo0Buffer[3] == 0x4B)    //板卡返回OK
-            xSemaphoreGiveFromISR(BoardDetect_Sema,NULL);
-        
-        CANReceFifo0Buffer[8] = CAN.tCANRxHeader.StdId;  /* 最后一个字节存储板卡ID号 */
-        
-        /* 将接收到的数据放入消息队列 */
-        xQueueSendFromISR(CANRecv_Queue, &CANReceFifo0Buffer, &xHigherPriorityTaskWoken);
-        
-        // if(CAN.tCANRxHeader.StdId == 0x41) NO1Num++;
-        // if(CAN.tCANRxHeader.StdId == 0x42) NO2Num++;
-        // if(CAN.tCANRxHeader.StdId == 0x43) NO3Num++;
-        // if(CAN.tCANRxHeader.StdId == 0x44) NO4Num++;
-        // if(CAN.tCANRxHeader.StdId == 0x45) NO5Num++;
-    }
-
-    //memset(CANReceFifo0Buffer,0,9);
-    /* 如果有更高优先级的任务需要立即运行，则进行任务切换 */
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-    
+       
+        if(xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+        {
+            CANReceFifo0Buffer[8] = CAN.tCANRxHeader.StdId;  /* 最后一个字节存储板卡ID号 */
+            
+            /* 将接收到的数据放入消息队列 */
+            xQueueSendFromISR(CANRecv_Queue, &CANReceFifo0Buffer, &xHigherPriorityTaskWoken);
+            /* 如果有更高优先级的任务需要立即运行，则进行任务切换 */
+            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        }
+    }  
 }
 
 static uint8_t CANReceFifo1Buffer[9] = {0};      //用于存放CAN接收的数据 
@@ -234,29 +207,17 @@ void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan1)
     	    printf("%x ", CANReceFifo1Buffer[i]);
         printf("\r\n");
 #endif
-        /* 板卡插入检测 */
-        if(CANReceFifo1Buffer[0] == 0xA1 
-        && CANReceFifo1Buffer[1] == CAN.tCANRxHeader.StdId   //对应的ID号
-        && CANReceFifo1Buffer[2] == 0x4F
-        && CANReceFifo1Buffer[3] == 0x4B)    //板卡返回OK
-            xSemaphoreGiveFromISR(BoardDetect_Sema,NULL);
-        
-        CANReceFifo1Buffer[8] = CAN.tCANRxHeader.StdId;  /* 最后一个字节存储板卡ID号 */
-        
-        /* 将接收到的数据放入消息队列 */
-        xQueueSendFromISR(CANRecv_Queue, &CANReceFifo1Buffer, &xHigherPriorityTaskWoken);
-        
-        // if(CAN.tCANRxHeader.StdId == 0x41) NO1Num++;
-        // if(CAN.tCANRxHeader.StdId == 0x42) NO2Num++;
-        // if(CAN.tCANRxHeader.StdId == 0x43) NO3Num++;
-        // if(CAN.tCANRxHeader.StdId == 0x44) NO4Num++;
-        // if(CAN.tCANRxHeader.StdId == 0x45) NO5Num++;
-    }
 
-    //memset(CANReceFifo1Buffer,0,9);
-    /* 如果有更高优先级的任务需要立即运行，则进行任务切换 */
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-    
+        if(xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+        {
+            CANReceFifo1Buffer[8] = CAN.tCANRxHeader.StdId;  /* 最后一个字节存储板卡ID号 */
+        
+            /* 将接收到的数据放入消息队列 */
+            xQueueSendFromISR(CANRecv_Queue, &CANReceFifo1Buffer, &xHigherPriorityTaskWoken);
+            /* 如果有更高优先级的任务需要立即运行，则进行任务切换 */
+            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        }
+    }  
 }
 
 

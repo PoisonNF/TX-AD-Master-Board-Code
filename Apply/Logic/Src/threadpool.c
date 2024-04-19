@@ -83,7 +83,7 @@ void CAN_Task(void *pvParameters)
     while (1)
     {
         Task_CAN_Handle(&CAN);
-        taskYIELD();
+		taskYIELD();
     }
 }
 

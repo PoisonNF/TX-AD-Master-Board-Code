@@ -77,14 +77,13 @@ static void S_Data_Process(uint8_t *_ucCanMsg)
 	ChannelAddrS = BoardAddrS + ChannelNumS * 3;	//通道地址在板卡地址的基础上偏移，每次偏移3个字节
 
 	/* 数据拷贝 */
-	if(xSemaphoreTake(UDP_SendBuffer_Mutex,portMAX_DELAY) == pdTRUE)	//获取互斥量，上锁
+	if(xSemaphoreTake(UDP_SendBuffer_Mutex,0) == pdTRUE)	//获取互斥量，上锁
 	{
 		memcpy(LwIP_UDP_SendBuffer + ChannelAddrF,_ucCanMsg + 1,3);				//原码拷贝
 		LwIP_UDP_SendBuffer[290 + NoNum] |= (ValidMarkF << (7 - ChannelNumF)); 	//有效位拷贝
 
 		memcpy(LwIP_UDP_SendBuffer + ChannelAddrS,_ucCanMsg + 5,3);				//原码拷贝
 		LwIP_UDP_SendBuffer[290 + NoNum] |= (ValidMarkS << (7 - ChannelNumS)); 	//有效位拷贝
-
 		xSemaphoreGive(UDP_SendBuffer_Mutex);									//释放信号量，解锁
 	}
 #endif
