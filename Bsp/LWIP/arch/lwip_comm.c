@@ -56,6 +56,31 @@ void lwip_periodic_handle(void *argument);                  /* DHCP线程 */
 void lwip_link_status_updated(struct netif *netif);         /* DHCP状态回调函数 */
 
 /**
+ * @brief LwIP初始化函数
+ * @param Null
+ * @retval Null
+ */
+void LwIP_Init(void)
+{
+    if(lwip_comm_init() != 0)
+    {
+        printf("lwip_comm_init failed!!\r\n");
+        while(1);
+    }
+    
+    if(!ethernet_read_phy(PHY_SR))  /* 检查MCU与PHY芯片是否通信成功 */
+    {
+        printf("MCU and PHY chip communication failed, please check the circuit or source code!!\r\n");
+        while(1);
+    }
+    
+    while((g_lwipdev.dhcpstatus != 2)&&(g_lwipdev.dhcpstatus != 0XFF))  /* 等待DHCP获取成功/超时溢出 */
+    {
+        vTaskDelay(5);
+    }
+}
+
+/**
  * @brief       lwip 默认IP设置
  * @param       lwipx  : lwip控制结构体指针
  * @retval      无
@@ -66,7 +91,7 @@ void lwip_comm_default_ip_set(__lwip_dev *lwipx)
     lwipx->remoteip[0] = 192;
     lwipx->remoteip[1] = 168;
     lwipx->remoteip[2] = 1;
-    lwipx->remoteip[3] = 102;
+    lwipx->remoteip[3] = 101;
     
     /* MAC地址设置 */
     lwipx->mac[0] = 0xB8;
@@ -241,7 +266,7 @@ void lwip_pkt_handle(void)
  */
 void lwip_periodic_handle(void *argument)
 {
-     struct netif *netif = (struct netif *) argument;
+    struct netif *netif = (struct netif *) argument;
     uint32_t ip = 0;
     uint32_t netmask = 0;
     uint32_t gw = 0;

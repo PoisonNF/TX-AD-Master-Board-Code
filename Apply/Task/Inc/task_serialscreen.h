@@ -6,6 +6,9 @@
 #include "usercode.h"
 #include "config.h"
 
+#include "lwipopts.h"
+#include "task_lwipudp.h"
+
 void Task_SerialScreen_Handle(tagUART_T *_tUART);
 
 #endif // !__TASKSERIALSCREEN_H_

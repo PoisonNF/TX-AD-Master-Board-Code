@@ -16,7 +16,6 @@ TaskHandle_t CAN_Task_Handler;
 
 /* 信号量 */
 SemaphoreHandle_t PowerDetect_Sema;     //电源检测信号量
-SemaphoreHandle_t BoardDetect_Sema;     //板卡检测信号量
 
 /* 互斥量 */
 SemaphoreHandle_t UDP_SendBuffer_Mutex; //UDP发送缓存读写锁
@@ -25,14 +24,17 @@ SemaphoreHandle_t UDP_SendBuffer_Mutex; //UDP发送缓存读写锁
 QueueHandle_t CANRecv_Queue;               //CAN接收消息队列
 #define CAN_RX_QUEUE_LENGTH  200         //消息队列长度
 
+/* 插入板卡数量 */
+uint8_t NumberOfBoards = 0;
+
 /* 用户逻辑代码 */
 void UserLogic_Code(void)
 {
-	    /* 自检 */
-    Task_SelfCheck();    //板卡分配ID	
+	/* 自检 */
+    NumberOfBoards = Task_SelfCheck();    //板卡分配ID	
 	
     PowerDetect_Sema = xSemaphoreCreateBinary();            //创建二值信号量
-    BoardDetect_Sema = xSemaphoreCreateBinary();            //创建二值信号量
+
     UDP_SendBuffer_Mutex = xSemaphoreCreateMutex();         //创建互斥量
 
     CANRecv_Queue = xQueueCreate(CAN_RX_QUEUE_LENGTH, 9);      //创建单个9字节长，深度为200的消息队列
@@ -67,20 +69,9 @@ void Start_Task(void *pvParameters)
                 (TaskHandle_t*  )&CAN_Task_Handler);  
     taskEXIT_CRITICAL();                        /* 退出临界区 */  
 
-    while(lwip_comm_init() != 0)
-    
-    while(!ethernet_read_phy(PHY_SR))  /* 检查MCU与PHY芯片是否通信成功 */
-    {
-        printf("MCU and PHY chip communication failed, please check the circuit or source code!!\r\n");
-    }
-    
-    while((g_lwipdev.dhcpstatus != 2)&&(g_lwipdev.dhcpstatus != 0XFF))  /* 等待DHCP获取成功/超时溢出 */
-    {
-        vTaskDelay(5);
-    }
+    /* LwIP初始化函数 */
+    LwIP_Init();
 
-
-    
     taskENTER_CRITICAL();           /* 进入临界区 */
 
     /* 创建lwIP UDP任务 */
@@ -117,7 +108,8 @@ void Start_Task(void *pvParameters)
 
     taskEXIT_CRITICAL();                        /* 退出临界区 */  
 								
-		Task_SYNC_Signal();     //发送同步信号，开始采集
+	if(NumberOfBoards != 0)
+        Task_SYNC_Signal();     //发送同步信号，开始采集
 								
     vTaskDelete(xTaskGetCurrentTaskHandle());   /* 删除开始任务 */
 }

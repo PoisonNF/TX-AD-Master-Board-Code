@@ -1,7 +1,6 @@
 #include "task_can.h"
 
 static uint8_t HandleBuffer[9] = {0};		//等待处理的缓冲区,最后一个字节为ID号
-extern uint8_t LwIP_UDP_SendBuffer[306];
 
 /**
  * @brief CAN接受的AD数据处理函数

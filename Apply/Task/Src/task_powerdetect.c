@@ -4,7 +4,8 @@
 
 static float CurrentVol = 0.0f;             //记录当前电压值，单位V
 static uint8_t CurrentVolString[10] = {0};  //电压值转成字符串
-static uint8_t VoltageSendBuffer[14] = {0x78,0x30,0x2E,0x76,0x61,0x6C,0x3D,0x30,0x30,0x30,0x30,0xFF,0xFF,0xFF}; //主板电压发送数组模板
+static uint8_t CurrentVolString_4Bit[4] = {0};   //4位的电压值存储数组，例如"12.10" 保存位 "1210"
+static uint8_t Vol_Link_SendBuffer[6] = {0x11,0xAA,0x00,0x00,0x00,0x0A}; //主板电压和连接状态发送数组模板
 
 /**
  * @brief 电源检测处理函数
@@ -36,16 +37,25 @@ void Task_PowerDetect_Handle(tagADC_T *_tADC)
 
         //赋值操作
         if(PointPos == 1)   //防止访问越界
-            VoltageSendBuffer[7] = 0x30;        //字符0
+            CurrentVolString_4Bit[0] = 0x30;        //字符'0'
         else
-            VoltageSendBuffer[7] = CurrentVolString[PointPos - 2];
+            CurrentVolString_4Bit[0] = CurrentVolString[PointPos - 2];
         
-        VoltageSendBuffer[8]  = CurrentVolString[PointPos - 1];
-        VoltageSendBuffer[9]  = CurrentVolString[PointPos + 1];
-        VoltageSendBuffer[10] = CurrentVolString[PointPos + 2];
+        CurrentVolString_4Bit[1] = CurrentVolString[PointPos - 1];
+        CurrentVolString_4Bit[2] = CurrentVolString[PointPos + 1];
+        CurrentVolString_4Bit[3] = CurrentVolString[PointPos + 2];
+
+        if(g_lwipdev.link_status == LWIP_LINK_ON)       //处于连接状态
+            Vol_Link_SendBuffer[2] = 0X0C;
+        else if(g_lwipdev.link_status == LWIP_LINK_OFF) //处于断连状态
+            Vol_Link_SendBuffer[2] = 0X0D;
+        
+        //电压值赋值，大端输入
+        Vol_Link_SendBuffer[3] = atoi((const char *)CurrentVolString_4Bit) % 256;
+        Vol_Link_SendBuffer[4] = atoi((const char *)CurrentVolString_4Bit) / 256;
 
         //向串口屏发送数据
-        Drv_Uart_Transmit(&Uart5,VoltageSendBuffer,sizeof(VoltageSendBuffer));
+        Drv_Uart_Transmit(&Uart5,Vol_Link_SendBuffer,sizeof(Vol_Link_SendBuffer));
     }
 }
 

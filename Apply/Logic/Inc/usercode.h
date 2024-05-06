@@ -11,7 +11,6 @@ void Start_Task(void *pvParameters);        /* 任务函数 */
 
 /* 信号量句柄 */
 extern SemaphoreHandle_t PowerDetect_Sema;  /* 电源检测信号量 */
-extern SemaphoreHandle_t BoardDetect_Sema;  /* 板卡检测信号量 */
 
 /* 互斥量句柄 */
 extern SemaphoreHandle_t UDP_SendBuffer_Mutex;     /* UDP发送缓存读写锁 */

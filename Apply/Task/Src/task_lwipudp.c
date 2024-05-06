@@ -4,7 +4,8 @@
 
 
 /* 远程IP地址 */
-#define REMOTE_IP_ADDR          "192.168.1.102"     //根据实际情况更改
+char RemoteIPAddrString[16] = "";                                     /* 存放远程IP地址字符串 */
+char LocalIPAddrString[16] = "";                                      /* 存放本地IP地址字符串 */
 
 #define LWIP_UDP_RX_BUFSIZE         100                         /* 最大接收数据长度 */
 #define LWIP_UDP_PORT               8080                        /* 连接的本地端口号 */
@@ -71,7 +72,8 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
     UNUSED(pvParameters);
     int SendNum = 0;
 
-    Local_info.sin_addr.s_addr = inet_addr(REMOTE_IP_ADDR);     //选定需要发送的远程IP地址
+    sprintf(RemoteIPAddrString,"%d.%d.%d.%d",g_lwipdev.remoteip[0],g_lwipdev.remoteip[1],g_lwipdev.remoteip[2],g_lwipdev.remoteip[3]);
+    Local_info.sin_addr.s_addr = inet_addr(RemoteIPAddrString);     //选定需要发送的远程IP地址
 
     while(1)
     {
