@@ -86,9 +86,7 @@
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\arch\lwip_comm.h
 .\objects\task_lwipudp.o: ..\Bsp\OCD\Inc\ocd_ethernet.h
 .\objects\task_lwipudp.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h
-.\objects\task_lwipudp.o: ..\Bsp\RTOS\FreeRTOS\include\semphr.h
-.\objects\task_lwipudp.o: ..\Bsp\RTOS\FreeRTOS\include\queue.h
-.\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/sockets.h
+.\objects\task_lwipudp.o: ..\Bsp\LWIP\../LWIP/src/include/lwip/netif.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/opt.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\arch\lwipopts.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/debug.h
@@ -98,12 +96,11 @@
 .\objects\task_lwipudp.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
 .\objects\task_lwipudp.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/opt.h
+.\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/err.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/ip_addr.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/def.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/ip4_addr.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/ip6_addr.h
-.\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/netif.h
-.\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/err.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/pbuf.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/stats.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/mem.h
@@ -113,6 +110,9 @@
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/priv/memp_priv.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/priv/mem_priv.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/stats.h
+.\objects\task_lwipudp.o: ..\Bsp\RTOS\FreeRTOS\include\semphr.h
+.\objects\task_lwipudp.o: ..\Bsp\RTOS\FreeRTOS\include\queue.h
+.\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/sockets.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/inet.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/errno.h
 .\objects\task_lwipudp.o: ..\Bsp\LWIP\src\include\lwip/api.h

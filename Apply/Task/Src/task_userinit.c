@@ -18,6 +18,9 @@ void Task_UserInit(void)
 	/* 初始化AD芯片同步引脚 */
 	Drv_GPIO_Init(SYNC, 1);
 	Drv_GPIO_Reset(SYNC);//SYNC初始化置低电平
+
+	/* 初始化片外RTC */
+	OCD_DS3231_Init(&tDS1337);
     
     /* 初始化调试串口 */
     Drv_Uart_DMAInit(&Uart1);

@@ -8,7 +8,7 @@ char RemoteIPAddrString[16] = "";                                     /* ´æ·ÅÔ¶³
 char LocalIPAddrString[16] = "";                                      /* ´æ·Å±¾µØIPµØÖ·×Ö·û´® */
 
 #define LWIP_UDP_RX_BUFSIZE         100                         /* ×î´ó½ÓÊÕÊý¾Ý³¤¶È */
-#define LWIP_UDP_PORT               8080                        /* Á¬½ÓµÄ±¾µØ¶Ë¿ÚºÅ */
+#define LWIP_UDP_PORT               4001                        /* Á¬½ÓµÄ±¾µØ¶Ë¿ÚºÅ */
 #define LWIP_SEND_THREAD_PRIO       ( tskIDLE_PRIORITY + 9 )    /* ·¢ËÍÊý¾ÝÏß³ÌÓÅÏÈ¼¶ */
 
 #define FRAMEHEADER1                0X02                        /* Ö¡Í·1 */

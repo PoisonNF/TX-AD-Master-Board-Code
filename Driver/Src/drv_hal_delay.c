@@ -25,6 +25,7 @@
 #include "drv_hal_conf.h"
 
 #ifdef DRV_HAL_DELAY_ENABLE
+
 /**
  * @brief 延时函数(ms)
  * @param _ulVal-延时时间有效值（单位ms）
@@ -60,6 +61,7 @@ void Drv_Delay_Ms(uint32_t _ulVal)
 */
 void Drv_Delay_Us(uint32_t _ulVal)
 {
+#if !defined(FREERTOS_ENABLE)
 	/* 延时小于50us使用普通延时法较为精准 */
 	if(_ulVal < 50)
 	{
@@ -83,5 +85,22 @@ void Drv_Delay_Us(uint32_t _ulVal)
 		SysTick->CTRL = 0x00; 	/* 关闭计数器 */
 		SysTick->VAL  = 0X00; 	/* 清空计数器 */
 	}
+#endif
+
+#ifdef FREERTOS_ENABLE
+    uint32_t tCnt, tDelayCnt;
+    uint32_t tStart;
+           
+    tStart = DWT_CYCCNT; /* 刚进入时的计数器值 */
+    tCnt = 0;
+    tDelayCnt = _ulVal * (SystemCoreClock / 1000000);
+    /* 需要的节拍数 */    /*SystemCoreClock :系统时钟频率*/                 
+
+    while(tCnt < tDelayCnt)
+    {
+        tCnt = DWT_CYCCNT - tStart; 
+        /* 求减过程中，如果发生第一次32位计数器重新计数，依然可以正确计算 */       
+    }
+#endif
 }
 #endif

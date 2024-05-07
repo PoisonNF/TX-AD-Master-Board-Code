@@ -5,6 +5,7 @@
 
 /* OCD层头文件包含区 */
 #include "ocd_ethernet.h"
+#include "ocd_ds3231.h"
 
 #endif
 

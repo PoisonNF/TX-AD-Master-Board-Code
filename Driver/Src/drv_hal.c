@@ -252,6 +252,16 @@ void Drv_HAL_IncTick(void)
 }
 
 /**
+ * @brief DWT外设初始化
+*/
+static void S_HAL_DWT_Init()
+{
+    DEM_CR |= DEM_CR_TRCENA; /*对DEMCR寄存器的位24控制，写1使能DWT外设。*/
+    DWT_CYCCNT = 0;/*对于DWT的CYCCNT计数寄存器清0。*/
+    DWT_CR |= DWT_CR_CYCCNTENA;/*对DWT控制寄存器的位0控制，写1使能CYCCNT寄存器。*/
+}
+
+/**
  * @brief SGA库初始化函数
  * @param Null
  * @retval Null
@@ -266,6 +276,7 @@ void Drv_HAL_Init(void)
 #endif
 
 #ifdef FREERTOS_ENABLE
+	S_HAL_DWT_Init();
 	osKernelInitialize();
 #endif
 }

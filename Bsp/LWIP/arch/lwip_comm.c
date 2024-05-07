@@ -91,7 +91,7 @@ void lwip_comm_default_ip_set(__lwip_dev *lwipx)
     lwipx->remoteip[0] = 192;
     lwipx->remoteip[1] = 168;
     lwipx->remoteip[2] = 1;
-    lwipx->remoteip[3] = 101;
+    lwipx->remoteip[3] = 104;
     
     /* MAC地址设置 */
     lwipx->mac[0] = 0xB8;
@@ -211,6 +211,38 @@ uint8_t lwip_comm_init(void)
                    LWIP_DHCP_TASK_PRIO);            /* 任务的优先级 */
 #endif
     return 0;                               /* 操作OK. */
+}
+
+/**
+ * @brief 给指定网卡更新ip 掩码 网关
+ * @param netif：网卡控制块
+ * @param ip: 需要更新的ip
+ * @param mask：更新的掩码
+ * @param gw：更新的网关
+ * @retval Null
+ */
+void LwIP_AddrUpdate(struct netif netif,uint8_t *ip,uint8_t *mask,uint8_t *gw)
+{
+    ip_addr_t ip_update;
+    ip_addr_t mask_update;
+    ip_addr_t gw_update;
+
+    //转换
+    IP4_ADDR(&ip_update, ip[0], ip[1], ip[2], ip[3]);
+    IP4_ADDR(&mask_update, mask[0], mask[1], mask[2], mask[3]);
+    IP4_ADDR(&gw_update, gw[0], gw[1], gw[2], gw[3]);
+
+    //禁用网卡
+    netif_set_down(&netif);
+
+    //1.分别设置
+    netif_set_gw(&netif, &ip_update); //重新设置网关地址
+    netif_set_netmask(&netif, &mask_update); //重新设置子网掩码
+    netif_set_ipaddr(&netif, &gw_update); //重新设置IP地址
+
+    //2.全部设置 netif_set_addr函数
+    //重新使能网卡
+    netif_set_up(&netif);
 }
 
 /**

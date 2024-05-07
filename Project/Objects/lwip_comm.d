@@ -44,8 +44,7 @@
 .\objects\lwip_comm.o: ..\Hardware\STM32F4XX\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
 .\objects\lwip_comm.o: ..\Hardware\STM32F4XX\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h
 .\objects\lwip_comm.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h
-.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\netif/etharp.h
-.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/etharp.h
+.\objects\lwip_comm.o: ..\Bsp\LWIP\../LWIP/src/include/lwip/netif.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/opt.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\arch\lwipopts.h
 .\objects\lwip_comm.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
@@ -57,13 +56,12 @@
 .\objects\lwip_comm.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
 .\objects\lwip_comm.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/opt.h
-.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/pbuf.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/err.h
-.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/ip4_addr.h
-.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/def.h
-.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/netif.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/ip_addr.h
+.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/def.h
+.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/ip4_addr.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/ip6_addr.h
+.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/pbuf.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/stats.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/mem.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/memp.h
@@ -72,6 +70,8 @@
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/priv/memp_priv.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/priv/mem_priv.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/stats.h
+.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\netif/etharp.h
+.\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/etharp.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/ip4.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/prot/ip4.h
 .\objects\lwip_comm.o: ..\Bsp\LWIP\src\include\lwip/prot/ethernet.h
