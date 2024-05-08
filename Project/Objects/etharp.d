@@ -75,11 +75,6 @@
 .\objects\etharp.o: ..\Bsp\LWIP\src\include\lwip/prot/etharp.h
 .\objects\etharp.o: ..\Bsp\LWIP\src\include\lwip/snmp.h
 .\objects\etharp.o: ..\Bsp\LWIP\src\include\lwip/dhcp.h
-.\objects\etharp.o: ..\Bsp\LWIP\src\include\lwip/udp.h
-.\objects\etharp.o: ..\Bsp\LWIP\src\include\lwip/ip.h
-.\objects\etharp.o: ..\Bsp\LWIP\src\include\lwip/ip6.h
-.\objects\etharp.o: ..\Bsp\LWIP\src\include\lwip/prot/ip.h
-.\objects\etharp.o: ..\Bsp\LWIP\src\include\lwip/prot/udp.h
 .\objects\etharp.o: ..\Bsp\LWIP\src\include\lwip/autoip.h
 .\objects\etharp.o: ..\Bsp\LWIP\src\include\lwip/prot/iana.h
 .\objects\etharp.o: ..\Bsp\LWIP\src\include\netif/ethernet.h

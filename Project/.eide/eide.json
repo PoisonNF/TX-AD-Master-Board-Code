@@ -38,6 +38,9 @@
                 "path": "../Apply/Task/Src/task_can.c"
               },
               {
+                "path": "../Apply/Task/Src/task_eeprom.c"
+              },
+              {
                 "path": "../Apply/Task/Src/task_irq.c"
               },
               {

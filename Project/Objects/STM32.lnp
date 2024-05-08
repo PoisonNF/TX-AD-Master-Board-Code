@@ -11,6 +11,7 @@
 ".\objects\task_serialscreen.o"
 ".\objects\task_can.o"
 ".\objects\task_selfcheck.o"
+".\objects\task_eeprom.o"
 ".\objects\algo_pid.o"
 ".\objects\algo_func.o"
 ".\objects\dev_ps2.o"

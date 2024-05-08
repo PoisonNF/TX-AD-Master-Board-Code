@@ -20,7 +20,10 @@ void Task_UserInit(void)
 	Drv_GPIO_Reset(SYNC);//SYNC初始化置低电平
 
 	/* 初始化片外RTC */
-	OCD_DS3231_Init(&tDS1337);
+	OCD_DS3231_Init(&DS1337);
+
+    /* 初始化AT24C02 */
+    OCD_AT24CXX_Init(&EEPROM);
     
     /* 初始化调试串口 */
     Drv_Uart_DMAInit(&Uart1);

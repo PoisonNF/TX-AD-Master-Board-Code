@@ -447,6 +447,11 @@
               <FileType>1</FileType>
               <FilePath>..\Apply\Task\Src\task_selfcheck.c</FilePath>
             </File>
+            <File>
+              <FileName>task_eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Apply\Task\Src\task_eeprom.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

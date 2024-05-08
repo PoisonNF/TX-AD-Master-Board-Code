@@ -35,6 +35,7 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
+#include "task_eeprom.h"
 
 
 __lwip_dev g_lwipdev;                   /* lwip控制结构体 */
@@ -141,7 +142,11 @@ uint8_t lwip_comm_init(void)
     
     if (ethernet_mem_malloc())return 1;         /* 内存申请失败*/
 
-    lwip_comm_default_ip_set(&g_lwipdev);         /* 设置默认IP等信息 */
+    lwip_comm_default_ip_set(&g_lwipdev);       /* 设置默认IP等信息 */
+
+#if !LWIP_DHCP
+    Task_EEPROM_ReadAddrInfo(&g_lwipdev);       /* 如果不使用DHCP则从EEPROM中读取IP信息 */
+#endif
 
     while (ethernet_init())                     /* 初始化以太网芯片,如果失败的话就重试5次 */
     {
@@ -211,38 +216,6 @@ uint8_t lwip_comm_init(void)
                    LWIP_DHCP_TASK_PRIO);            /* 任务的优先级 */
 #endif
     return 0;                               /* 操作OK. */
-}
-
-/**
- * @brief 给指定网卡更新ip 掩码 网关
- * @param netif：网卡控制块
- * @param ip: 需要更新的ip
- * @param mask：更新的掩码
- * @param gw：更新的网关
- * @retval Null
- */
-void LwIP_AddrUpdate(struct netif netif,uint8_t *ip,uint8_t *mask,uint8_t *gw)
-{
-    ip_addr_t ip_update;
-    ip_addr_t mask_update;
-    ip_addr_t gw_update;
-
-    //转换
-    IP4_ADDR(&ip_update, ip[0], ip[1], ip[2], ip[3]);
-    IP4_ADDR(&mask_update, mask[0], mask[1], mask[2], mask[3]);
-    IP4_ADDR(&gw_update, gw[0], gw[1], gw[2], gw[3]);
-
-    //禁用网卡
-    netif_set_down(&netif);
-
-    //1.分别设置
-    netif_set_gw(&netif, &ip_update); //重新设置网关地址
-    netif_set_netmask(&netif, &mask_update); //重新设置子网掩码
-    netif_set_ipaddr(&netif, &gw_update); //重新设置IP地址
-
-    //2.全部设置 netif_set_addr函数
-    //重新使能网卡
-    netif_set_up(&netif);
 }
 
 /**

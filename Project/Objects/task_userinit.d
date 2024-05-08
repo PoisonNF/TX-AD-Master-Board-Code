@@ -120,9 +120,11 @@
 .\objects\task_userinit.o: ..\Apply\Logic\Inc\config.h
 .\objects\task_userinit.o: ..\Bsp\OCD\Inc\ocd_conf.h
 .\objects\task_userinit.o: ..\Bsp\OCD\Inc\ocd_ds3231.h
+.\objects\task_userinit.o: ..\Bsp\OCD\Inc\ocd_at24cxx.h
 .\objects\task_userinit.o: ..\Bsp\Algo\Inc\algo_conf.h
 .\objects\task_userinit.o: ..\Bsp\Algo\Inc\algo_func.h
 .\objects\task_userinit.o: ..\Bsp\Dev\Inc\dev_conf.h
 .\objects\task_userinit.o: ..\Apply\Task\Inc\task_serialscreen.h
+.\objects\task_userinit.o: ..\Apply\Task\Inc\task_eeprom.h
 .\objects\task_userinit.o: ..\Apply\Task\Inc\task_can.h
 .\objects\task_userinit.o: ..\Apply\Task\Inc\task_selfcheck.h

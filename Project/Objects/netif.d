@@ -91,4 +91,3 @@
 .\objects\netif.o: ..\Bsp\LWIP\src\include\lwip/sys.h
 .\objects\netif.o: ..\Bsp\LWIP\arch/sys_arch.h
 .\objects\netif.o: ..\Bsp\LWIP\src\include\netif/ethernet.h
-.\objects\netif.o: ..\Bsp\LWIP\src\include\lwip/dhcp.h

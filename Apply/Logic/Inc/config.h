@@ -22,6 +22,8 @@ extern tagGPIO_T Control[];
 
 extern tagGPIO_T SYNC[];
 
-extern tagDS3231_T tDS1337;
+extern tagDS3231_T DS1337;
+
+extern tagAT24CXX_T EEPROM;
 
 #endif

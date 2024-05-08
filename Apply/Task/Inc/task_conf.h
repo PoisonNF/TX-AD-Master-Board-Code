@@ -12,5 +12,6 @@
 #include "task_serialscreen.h"
 #include "task_can.h"
 #include "task_selfcheck.h"
+#include "task_eeprom.h"
 
 #endif

@@ -7,6 +7,7 @@ static uint8_t Setting_Info_SendBuffer[20] = {0};   //设置信息发送缓存区
 //static uint8_t Log_Info_SendBuffer[100] = {0};   //日志信息发送缓存区
 
 static uint8_t SettingCplt_SendBuffer[3] = {0x33,0xBB,0x0A};   //设置完成返回给串口的数组
+static uint8_t All_Boards_ResetBuffer[8] = {0xA5,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   //所有板卡复位指令，通过CAN广播
 
 static uint8_t Version[4] = "V1.0";        //版本号
 
@@ -194,11 +195,21 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
         //设置成TCP模式
     }
 
-    //重新配置网络
-    LwIP_AddrUpdate(g_lwip_netif,ip,mask,gw);
+    //向所有板卡广播复位指令
+    Drv_CAN_SendMsg(&CAN,All_Boards_ResetBuffer,8);
+    //等待1s
+    vTaskDelay(1000);
+
+    //保存在EEPROM里
+    Task_EEPROM_WriteAddrInfo(ip, mask, gw);
 
     //向串口屏发送主板设置完成
-    Drv_Uart_Transmit(&Uart5,SettingCplt_SendBuffer,sizeof(SettingCplt_SendBuffer));    
+    Drv_Uart_Transmit(&Uart5,SettingCplt_SendBuffer,sizeof(SettingCplt_SendBuffer));
+
+    vTaskDelay(3000);
+
+    //主板复位
+    NVIC_SystemReset();
 }
 
 /**
@@ -217,11 +228,11 @@ static void S_TimeSYNC_Handle(uint8_t *TimeData)
     SetSysTime.ucSecond = Algo_DecToHex((TimeData[12] - '0')*10 + TimeData[13] - '0');
     SetSysTime.ucWeek = Algo_DecToHex(TimeData[14] - '0');
 
-    OCD_DS3231_TimeSetHex(&tDS1337,&SetSysTime);
+    OCD_DS3231_TimeSetHex(&DS1337,&SetSysTime);
 
 // #ifdef PRINTF_DEBUG
     // vTaskDelay(2000);
-    if(OCD_DS3231_TimeGetHex(&tDS1337,&SetSysTime))
+    if(OCD_DS3231_TimeGetHex(&DS1337,&SetSysTime))
     {
         printf("Read Time:");
         printf("20%02x/%02x/%02x %02x:%02x:%02x 周%x\r\n",

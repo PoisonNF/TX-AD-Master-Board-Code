@@ -115,6 +115,7 @@
 .\objects\task_can.o: ..\Apply\Logic\Inc\config.h
 .\objects\task_can.o: ..\Bsp\OCD\Inc\ocd_conf.h
 .\objects\task_can.o: ..\Bsp\OCD\Inc\ocd_ds3231.h
+.\objects\task_can.o: ..\Bsp\OCD\Inc\ocd_at24cxx.h
 .\objects\task_can.o: ..\Bsp\Algo\Inc\algo_conf.h
 .\objects\task_can.o: ..\Bsp\Algo\Inc\algo_func.h
 .\objects\task_can.o: ..\Bsp\Dev\Inc\dev_conf.h

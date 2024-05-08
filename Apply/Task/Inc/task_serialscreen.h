@@ -9,6 +9,7 @@
 #include "lwipopts.h"
 #include "task_lwipudp.h"
 #include "lwip_comm.h"
+#include "task_eeprom.h"
 
 void Task_SerialScreen_Handle(tagUART_T *_tUART);
 

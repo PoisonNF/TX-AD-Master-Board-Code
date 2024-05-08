@@ -235,7 +235,7 @@ tagCAN_T CAN =
 };
 
 /* DS1337片外RTC */
-tagDS3231_T tDS1337 = 
+tagDS3231_T DS1337 = 
 {
 	/* SCL线 */
 	.tIICSoft.tIICSoft[0].tGPIOInit.Pin 	= GPIO_PIN_6,				/* GPIO引脚 */
@@ -250,6 +250,24 @@ tagDS3231_T tDS1337 =
 	.tIICSoft.tIICSoft[1].tGPIOInit.Pull 	= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
 	.tIICSoft.tIICSoft[1].tGPIOInit.Speed 	= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */	
 	.tIICSoft.tIICSoft[1].tGPIOPort 		= GPIOF,					/* GPIO分组 */
+};
+
+/* AT24C02 */
+tagAT24CXX_T EEPROM = 
+{
+	/* SCL线 */
+	.tIIC.tIICSoft[0].tGPIOInit.Pin 		= GPIO_PIN_4,				/* GPIO引脚 */
+	.tIIC.tIICSoft[0].tGPIOInit.Mode		= GPIO_MODE_OUTPUT_PP,		/* GPIO模式 */
+	.tIIC.tIICSoft[0].tGPIOInit.Pull		= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+	.tIIC.tIICSoft[0].tGPIOInit.Speed		= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */	
+	.tIIC.tIICSoft[0].tGPIOPort 			= GPIOE,					/* GPIO分组 */
+	
+	/* SDA线 */
+	.tIIC.tIICSoft[1].tGPIOInit.Pin 		= GPIO_PIN_3,				/* GPIO引脚 */
+	.tIIC.tIICSoft[1].tGPIOInit.Mode		= GPIO_MODE_INPUT,			/* GPIO模式 */
+	.tIIC.tIICSoft[1].tGPIOInit.Pull		= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+	.tIIC.tIICSoft[1].tGPIOInit.Speed		= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */	
+	.tIIC.tIICSoft[1].tGPIOPort 			= GPIOE,					/* GPIO分组 */
 };
 
 /* 板卡控制引脚 */

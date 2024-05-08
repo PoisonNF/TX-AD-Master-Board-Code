@@ -66,7 +66,6 @@ typedef struct
 extern __lwip_dev g_lwipdev;          /* lwip控制结构体 */
 extern struct netif g_lwip_netif;     /* 定义一个全局的网络接口 */
 
-void LwIP_AddrUpdate(struct netif netif,uint8_t *ip,uint8_t *mask,uint8_t *gw);
 void LwIP_Init(void);
 void    lwip_comm_default_ip_set(__lwip_dev *lwipx);    /* lwip 默认IP设置 */
 uint8_t lwip_comm_init(void);                           /* LWIP初始化(LWIP启动的时候使用) */
