@@ -6,9 +6,9 @@
 /* 远程IP地址 */
 char RemoteIPAddrString[16] = "";                                     /* 存放远程IP地址字符串 */
 char LocalIPAddrString[16] = "";                                      /* 存放本地IP地址字符串 */
+uint16_t RemotePort = 4001;                                           /* 连接的远端端口号，默认4001 */
 
 #define LWIP_UDP_RX_BUFSIZE         100                         /* 最大接收数据长度 */
-#define LWIP_UDP_PORT               4001                        /* 连接的本地端口号 */
 #define LWIP_SEND_THREAD_PRIO       ( tskIDLE_PRIORITY + 9 )    /* 发送数据线程优先级 */
 
 #define FRAMEHEADER1                0X02                        /* 帧头1 */
@@ -137,7 +137,7 @@ void Task_LwIP_UDP_Handle(void)
     memset(&Local_info,0,sizeof(Local_info));
     Local_info.sin_len = sizeof(Local_info);
     Local_info.sin_family = AF_INET;                    //IPv4地址
-    Local_info.sin_port = htons(LWIP_UDP_PORT);         //端口号
+    Local_info.sin_port = htons(RemotePort);            //端口号
     Local_info.sin_addr.s_addr = htons(INADDR_ANY);     //本地IP地址
 
     //建立Socket连接

@@ -18,6 +18,9 @@ extern SemaphoreHandle_t UDP_SendBuffer_Mutex;     /* UDP发送缓存读写锁 */
 /* 消息队列 */
 extern QueueHandle_t CANRecv_Queue;
 
+/* 事件 */
+extern EventGroupHandle_t Log_Event;
+
 /* Start_Task 任务 配置
  * 包括: 任务句柄 任务优先级 堆栈大小 创建任务
  */
@@ -62,4 +65,10 @@ extern TaskHandle_t SerialScreen_Task_Handler;       /* 任务句柄 */
 #define CAN_STK_SIZE            512         /* 任务堆栈大小 */
 extern TaskHandle_t CAN_Task_Handler;
 
+/* TFCard_Task 任务 配置
+ * 包括: 任务句柄 任务优先级 堆栈大小 创建任务
+ */
+#define TFCARD_TASK_PRIO           4           /* 任务优先级 */
+#define TFCARD_STK_SIZE            512         /* 任务堆栈大小 */
+extern TaskHandle_t TFCard_Handler;
 #endif

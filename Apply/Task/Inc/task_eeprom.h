@@ -7,8 +7,9 @@
 #include "config.h"
 
 #include "lwip_comm.h"
+#include "task_lwipudp.h"
 
-void Task_EEPROM_WriteAddrInfo(uint8_t *ip,uint8_t *mask,uint8_t *gw);
+void Task_EEPROM_WriteAddrInfo(uint8_t *remoteip,uint8_t *port,uint8_t *ip,uint8_t *mask,uint8_t *gw);
 void Task_EEPROM_ReadAddrInfo(__lwip_dev *lwipx);
 
 #endif // !__TASKEEPROM_H_

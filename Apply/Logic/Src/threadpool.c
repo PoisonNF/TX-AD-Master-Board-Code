@@ -87,6 +87,25 @@ void CAN_Task(void *pvParameters)
     }
 }
 
+/**
+ * @brief TF卡存储log任务
+ * @param pvParameters : 传入参数(未用到)
+ * @retval Null
+ */
+void TFCard_Task(void *pvParameters)
+{
+    UNUSED(pvParameters);
+
+    Task_TFCard_CreateFolder(&TFCard);  //创建保存log文件夹
+
+    //xEventGroupSetBits(Log_Event,EVENT1);   //标记测试事件成立
+
+    while (1)
+    {
+        Task_TFCard_Handle(&TFCard);
+        vTaskDelay(3000);
+    }
+}
 
 
 

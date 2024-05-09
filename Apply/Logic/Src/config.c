@@ -270,6 +270,45 @@ tagAT24CXX_T EEPROM =
 	.tIIC.tIICSoft[1].tGPIOPort 			= GPIOE,					/* GPIO分组 */
 };
 
+/* TF卡使用FatFs保存日志 */
+tagFATFS_T TFCard = 
+{
+	.tSPI.tSPIHandle.Instance 				= SPI1,
+	.tSPI.tSPIHandle.Init.Mode 				= SPI_MODE_MASTER,
+	.tSPI.tSPIHandle.Init.Direction 		= SPI_DIRECTION_2LINES,
+	.tSPI.tSPIHandle.Init.DataSize 			= SPI_DATASIZE_8BIT,
+	.tSPI.tSPIHandle.Init.CLKPolarity 		= SPI_POLARITY_HIGH,
+	.tSPI.tSPIHandle.Init.CLKPhase 			= SPI_PHASE_2EDGE,
+	.tSPI.tSPIHandle.Init.NSS 				= SPI_NSS_SOFT,
+	.tSPI.tSPIHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256,
+	.tSPI.tSPIHandle.Init.FirstBit 			= SPI_FIRSTBIT_MSB,
+	.tSPI.tSPIHandle.Init.TIMode 			= SPI_TIMODE_DISABLE,
+	.tSPI.tSPIHandle.Init.CRCCalculation 	= SPI_CRCCALCULATION_DISABLE,
+	.tSPI.tSPIHandle.Init.CRCPolynomial 	= 7,	
+#if defined (STM32L4_SGA_ENABLE)
+	.tSPI.tSPIHandle.Init.CRCLength 		= SPI_CRC_LENGTH_DATASIZE,
+	.tSPI.tSPIHandle.Init.NSSPMode 			= SPI_NSS_PULSE_ENABLE,	
+#endif
+	
+	.tSPI.tGPIO[0].tGPIOInit.Pin 			= GPIO_PIN_3,				/* GPIO引脚 */
+	.tSPI.tGPIO[0].tGPIOInit.Mode 			= GPIO_MODE_AF_PP,			/* GPIO模式 */
+	.tSPI.tGPIO[0].tGPIOInit.Pull 			= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+	.tSPI.tGPIO[0].tGPIOInit.Speed 			= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */	
+	.tSPI.tGPIO[0].tGPIOPort 				= GPIOB,					/* GPIO分组 */
+	
+	.tSPI.tGPIO[1].tGPIOInit.Pin 			= GPIO_PIN_4,				/* GPIO引脚 */
+	.tSPI.tGPIO[1].tGPIOInit.Mode 			= GPIO_MODE_AF_PP,			/* GPIO模式 */
+	.tSPI.tGPIO[1].tGPIOInit.Pull 			= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+	.tSPI.tGPIO[1].tGPIOInit.Speed 			= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */	
+	.tSPI.tGPIO[1].tGPIOPort 				= GPIOB,					/* GPIO分组 */
+	
+	.tSPI.tGPIO[2].tGPIOInit.Pin 			= GPIO_PIN_5,				/* GPIO引脚 */
+	.tSPI.tGPIO[2].tGPIOInit.Mode 			= GPIO_MODE_AF_PP,			/* GPIO模式 */
+	.tSPI.tGPIO[2].tGPIOInit.Pull 			= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+	.tSPI.tGPIO[2].tGPIOInit.Speed 			= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */	
+	.tSPI.tGPIO[2].tGPIOPort 				= GPIOB,					/* GPIO分组 */
+};
+
 /* 板卡控制引脚 */
 tagGPIO_T Control[] =
 {

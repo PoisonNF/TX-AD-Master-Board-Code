@@ -26,4 +26,6 @@ extern tagDS3231_T DS1337;
 
 extern tagAT24CXX_T EEPROM;
 
+extern tagFATFS_T TFCard;
+
 #endif

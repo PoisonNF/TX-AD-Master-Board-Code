@@ -13,5 +13,6 @@
 #include "task_can.h"
 #include "task_selfcheck.h"
 #include "task_eeprom.h"
+#include "task_tfcard.h"
 
 #endif

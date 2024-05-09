@@ -452,6 +452,11 @@
               <FileType>1</FileType>
               <FilePath>..\Apply\Task\Src\task_eeprom.c</FilePath>
             </File>
+            <File>
+              <FileName>task_tfcard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Apply\Task\Src\task_tfcard.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -736,6 +741,11 @@
               <FileName>ocd_ds3231.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Bsp\OCD\Src\ocd_ds3231.c</FilePath>
+            </File>
+            <File>
+              <FileName>ocd_fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\OCD\Src\ocd_fatfs.c</FilePath>
             </File>
             <File>
               <FileName>ocd_jy901.c</FileName>

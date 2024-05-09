@@ -7,6 +7,7 @@
 #include "ocd_ethernet.h"
 #include "ocd_ds3231.h"
 #include "ocd_at24cxx.h"
+#include "ocd_fatfs.h"
 
 #endif
 

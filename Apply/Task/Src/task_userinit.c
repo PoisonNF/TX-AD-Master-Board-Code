@@ -19,6 +19,12 @@ void Task_UserInit(void)
 	Drv_GPIO_Init(SYNC, 1);
 	Drv_GPIO_Reset(SYNC);//SYNC初始化置低电平
 
+    /* 初始化TF卡和FATFS文件系统 */
+   	if(OCD_FATFS_Init(&TFCard) != 0)
+   	{
+    	printf("SDcard Error\r\n");
+   	}
+
 	/* 初始化片外RTC */
 	OCD_DS3231_Init(&DS1337);
 

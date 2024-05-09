@@ -121,6 +121,10 @@
 .\objects\threadpool.o: ..\Bsp\OCD\Inc\ocd_conf.h
 .\objects\threadpool.o: ..\Bsp\OCD\Inc\ocd_ds3231.h
 .\objects\threadpool.o: ..\Bsp\OCD\Inc\ocd_at24cxx.h
+.\objects\threadpool.o: ..\Bsp\OCD\Inc\ocd_fatfs.h
+.\objects\threadpool.o: ..\Bsp\OCD\Inc\ocd_sdcard.h
+.\objects\threadpool.o: ..\Bsp\FatFs\Inc\ff.h
+.\objects\threadpool.o: ..\Bsp\FatFs\Inc\ffconf.h
 .\objects\threadpool.o: ..\Bsp\Algo\Inc\algo_conf.h
 .\objects\threadpool.o: ..\Bsp\Algo\Inc\algo_func.h
 .\objects\threadpool.o: ..\Bsp\Dev\Inc\dev_conf.h
@@ -128,3 +132,4 @@
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_eeprom.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_can.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_selfcheck.h
+.\objects\threadpool.o: ..\Apply\Task\Inc\task_tfcard.h

@@ -121,6 +121,10 @@
 .\objects\task_sysinit.o: ..\Bsp\OCD\Inc\ocd_conf.h
 .\objects\task_sysinit.o: ..\Bsp\OCD\Inc\ocd_ds3231.h
 .\objects\task_sysinit.o: ..\Bsp\OCD\Inc\ocd_at24cxx.h
+.\objects\task_sysinit.o: ..\Bsp\OCD\Inc\ocd_fatfs.h
+.\objects\task_sysinit.o: ..\Bsp\OCD\Inc\ocd_sdcard.h
+.\objects\task_sysinit.o: ..\Bsp\FatFs\Inc\ff.h
+.\objects\task_sysinit.o: ..\Bsp\FatFs\Inc\ffconf.h
 .\objects\task_sysinit.o: ..\Bsp\Algo\Inc\algo_conf.h
 .\objects\task_sysinit.o: ..\Bsp\Algo\Inc\algo_func.h
 .\objects\task_sysinit.o: ..\Bsp\Dev\Inc\dev_conf.h
@@ -128,3 +132,4 @@
 .\objects\task_sysinit.o: ..\Apply\Task\Inc\task_eeprom.h
 .\objects\task_sysinit.o: ..\Apply\Task\Inc\task_can.h
 .\objects\task_sysinit.o: ..\Apply\Task\Inc\task_selfcheck.h
+.\objects\task_sysinit.o: ..\Apply\Task\Inc\task_tfcard.h

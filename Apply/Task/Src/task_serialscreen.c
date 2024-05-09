@@ -2,8 +2,8 @@
 
 static uint8_t SerialScreen_RecvBuffer[50] = {0};   //串口屏接收缓存区
 static uint8_t Channel_Info_SendBuffer[99] = {0};   //通道信息发送缓存区
-static uint8_t System_Info_SendBuffer[21] = {0};   //系统信息发送缓存区
-static uint8_t Setting_Info_SendBuffer[20] = {0};   //设置信息发送缓存区
+static uint8_t System_Info_SendBuffer[27] = {0};   //系统信息发送缓存区
+static uint8_t Setting_Info_SendBuffer[26] = {0};   //设置信息发送缓存区
 //static uint8_t Log_Info_SendBuffer[100] = {0};   //日志信息发送缓存区
 
 static uint8_t SettingCplt_SendBuffer[3] = {0x33,0xBB,0x0A};   //设置完成返回给串口的数组
@@ -29,16 +29,20 @@ static void S_System_Info_Handle(void)
     System_Info_SendBuffer[2] = NumberOfBoards/10 + '0';
     System_Info_SendBuffer[3] = NumberOfBoards%10 + '0';
 
-    //添加IP地址信息
-    memcpy(&System_Info_SendBuffer[4],g_lwipdev.ip,4);
-    memcpy(&System_Info_SendBuffer[8],g_lwipdev.netmask,4);
-    memcpy(&System_Info_SendBuffer[12],g_lwipdev.gateway,4);
-    
+    //添加远程IP地址和端口号信息
+    System_Info_SendBuffer[4] = RemotePort & 0xFF;
+    System_Info_SendBuffer[5] = RemotePort >> 8;
+    memcpy(&System_Info_SendBuffer[6],g_lwipdev.remoteip,4);
+
+    //添加本地IP地址信息
+    memcpy(&System_Info_SendBuffer[10],g_lwipdev.ip,4);
+    memcpy(&System_Info_SendBuffer[14],g_lwipdev.netmask,4);
+    memcpy(&System_Info_SendBuffer[18],g_lwipdev.gateway,4);    
 
     //添加版本号信息
-    memcpy(&System_Info_SendBuffer[16],Version,4);
+    memcpy(&System_Info_SendBuffer[22],Version,4);
 
-    System_Info_SendBuffer[20] = 0x0A;
+    System_Info_SendBuffer[26] = 0x0A;
 
     //向串口屏发送数据
     Drv_Uart_Transmit(&Uart5,System_Info_SendBuffer,sizeof(System_Info_SendBuffer));
@@ -57,25 +61,31 @@ static void S_Setting_Info_Handle(void)
     Setting_Info_SendBuffer[2] = NumberOfBoards*8/10 + '0';
     Setting_Info_SendBuffer[3] = NumberOfBoards*8%10 + '0';
 
-    //添加当前采样速率
-    Setting_Info_SendBuffer[4] = 0;         //先写一个250hz后面在改
-    Setting_Info_SendBuffer[5] = 250;        //先写一个250hz后面在改
+    //添加当前采样速率，后8位在前
+    Setting_Info_SendBuffer[4] = 250;         //先写一个250hz后面在改
+    Setting_Info_SendBuffer[5] = 0;        //先写一个250hz后面在改
+
+    //添加远程IP地址和端口号信息
+    Setting_Info_SendBuffer[6] = RemotePort & 0xFF;
+    Setting_Info_SendBuffer[7] = RemotePort >> 8;
+
+    memcpy(&Setting_Info_SendBuffer[8],g_lwipdev.remoteip,4);
 
     //添加当前IP地址信息
-    memcpy(&System_Info_SendBuffer[6],g_lwipdev.ip,4);
-    memcpy(&System_Info_SendBuffer[10],g_lwipdev.netmask,4);
-    memcpy(&System_Info_SendBuffer[14],g_lwipdev.gateway,4);
+    memcpy(&Setting_Info_SendBuffer[12],g_lwipdev.ip,4);
+    memcpy(&Setting_Info_SendBuffer[16],g_lwipdev.netmask,4);
+    memcpy(&Setting_Info_SendBuffer[20],g_lwipdev.gateway,4);
     
     //添加当前模式，0x01为UDP，0x02为TCP
     if(LWIP_UDP == 1)
-        Setting_Info_SendBuffer[18] = 0x01;
+        Setting_Info_SendBuffer[24] = 0x01;
     else
-        Setting_Info_SendBuffer[18] = 0x02;
+        Setting_Info_SendBuffer[24] = 0x02;
     
-    Setting_Info_SendBuffer[19] = 0x0A;
+    Setting_Info_SendBuffer[25] = 0x0A;
 
     //向串口屏发送数据
-    Drv_Uart_Transmit(&Uart5,Setting_Info_SendBuffer,sizeof(Setting_Info_SendBuffer));    
+    Drv_Uart_Transmit(&Uart5,Setting_Info_SendBuffer,sizeof(Setting_Info_SendBuffer));
 }
 
 /**
@@ -170,7 +180,8 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
 {
     uint8_t SetChannelNum = 0;          //需要设置的通道数
     uint8_t SetSamplingFreq = 0;        //需要设置的采样频率
-    uint8_t ip[4],mask[4],gw[4];        //存储IP地址信息
+    uint8_t remoteip[4],port[2];        //需要设置的远端IP地址和端口号
+    uint8_t ip[4],mask[4],gw[4];        //存储本地IP地址信息
 
     SetChannelNum = (SettingData[1] - '0')*10 + (SettingData[2] - '0');
     UNUSED(SetChannelNum);
@@ -180,17 +191,21 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
     UNUSED(SetSamplingFreq);
     //根据需要设置的采样频率进行处理，待定
 
-    //需要设置的远程IP地址
-    memcpy(ip,&SettingData[5],4);
-    memcpy(mask,&SettingData[9],4);
-    memcpy(gw,&SettingData[13],4);
+    //需要设置的远端IP地址和端口号
+    memcpy(port,&SettingData[5],2);
+    memcpy(remoteip,&SettingData[7],4);
+
+    //需要设置的本地IP地址
+    memcpy(ip,&SettingData[11],4);
+    memcpy(mask,&SettingData[15],4);
+    memcpy(gw,&SettingData[19],4);
 
     //需要设置的模式
-    if(SettingData[17] == 0x01)
+    if(SettingData[23] == 0x01)
     {
         //设置成UDP模式
     }
-    else if(SettingData[17] == 0x02)
+    else if(SettingData[23] == 0x02)
     {
         //设置成TCP模式
     }
@@ -201,7 +216,7 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
     vTaskDelay(1000);
 
     //保存在EEPROM里
-    Task_EEPROM_WriteAddrInfo(ip, mask, gw);
+    Task_EEPROM_WriteAddrInfo(remoteip, port, ip, mask, gw);
 
     //向串口屏发送主板设置完成
     Drv_Uart_Transmit(&Uart5,SettingCplt_SendBuffer,sizeof(SettingCplt_SendBuffer));
@@ -230,8 +245,8 @@ static void S_TimeSYNC_Handle(uint8_t *TimeData)
 
     OCD_DS3231_TimeSetHex(&DS1337,&SetSysTime);
 
-// #ifdef PRINTF_DEBUG
-    // vTaskDelay(2000);
+#ifdef PRINTF_DEBUG
+    vTaskDelay(2000);
     if(OCD_DS3231_TimeGetHex(&DS1337,&SetSysTime))
     {
         printf("Read Time:");
@@ -241,7 +256,7 @@ static void S_TimeSYNC_Handle(uint8_t *TimeData)
                 SetSysTime.ucWeek);
     }
 	printf("\r\n");
-// #endif
+#endif
 }
 
 /**
@@ -256,7 +271,7 @@ void Task_SerialScreen_Handle(tagUART_T *_tUART)
     SerialScreenRecvNum = Drv_Uart_Receive_DMA(_tUART,SerialScreen_RecvBuffer);
     UNUSED(SerialScreenRecvNum);
 
-#ifdef PRINTF_DEBUG
+//#ifdef PRINTF_DEBUG
     if(SerialScreenRecvNum != 0)
     {
         for(uint16_t i = 0; i < SerialScreenRecvNum;i++)
@@ -264,9 +279,8 @@ void Task_SerialScreen_Handle(tagUART_T *_tUART)
             printf("%x ",SerialScreen_RecvBuffer[i]);
             if(i == SerialScreenRecvNum) printf("\r\n");
         }
-        SerialScreenRecvNum = 0;
     }
-#endif
+//#endif
 
     /* 串口屏数据解析 */
     if(SerialScreen_RecvBuffer[SerialScreenRecvNum - 1] == 0xFF
@@ -287,10 +301,10 @@ void Task_SerialScreen_Handle(tagUART_T *_tUART)
             case 0x0D:      //上传日志   0x0D 0xFF 0xFF 0xFF
                 S_Log_Info_Handle();
                 break;
-            case 0x0E:      //设置下传信息 (按下应用按钮时发送)    0x0E 0xFF 0xFF 0xFF
+            case 0x0E:      //设置下传信息 (按下应用按钮时发送)    0x0E 信息数据 0xFF 0xFF 0xFF
                 S_Setting_Apply_Handle(SerialScreen_RecvBuffer);
                 break;
-            case 0x0F:      //设查询通道信息 (进入界面时与进入界面后每五秒发送一次) 0x0F 0xFF 0xFF 0xFF
+            case 0x0F:      //设查询通道信息 (进入界面时与进入界面后每五秒发送一次) 0x0F (0x0A-0X0D) 0xFF 0xFF 0xFF
                 S_Channel_Info_Handle(SerialScreen_RecvBuffer[1]);
                 break;
             case 0x11:      //时间同步

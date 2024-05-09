@@ -13,6 +13,7 @@ TaskHandle_t LED_Task_Handler;
 TaskHandle_t PowerDetect_Task_Handler; 
 TaskHandle_t SerialScreen_Task_Handler;
 TaskHandle_t CAN_Task_Handler;
+TaskHandle_t TFCard_Handler;
 
 /* 信号量 */
 SemaphoreHandle_t PowerDetect_Sema;     //电源检测信号量
@@ -23,6 +24,9 @@ SemaphoreHandle_t UDP_SendBuffer_Mutex; //UDP发送缓存读写锁
 /* 消息队列 */
 QueueHandle_t CANRecv_Queue;               //CAN接收消息队列
 #define CAN_RX_QUEUE_LENGTH  200         //消息队列长度
+
+/* 事件 */
+EventGroupHandle_t Log_Event;            //记录事件
 
 /* 插入板卡数量 */
 uint8_t NumberOfBoards = 0;
@@ -38,6 +42,8 @@ void UserLogic_Code(void)
     UDP_SendBuffer_Mutex = xSemaphoreCreateMutex();         //创建互斥量
 
     CANRecv_Queue = xQueueCreate(CAN_RX_QUEUE_LENGTH, 9);      //创建单个9字节长，深度为200的消息队列
+
+    Log_Event = xEventGroupCreate();    //创建事件
 
     /* Start_Task */
     xTaskCreate((TaskFunction_t )Start_Task,
@@ -105,6 +111,14 @@ void Start_Task(void *pvParameters)
                 (void*          )NULL,
                 (UBaseType_t    )SERIALSCREEN_TASK_PRIO,
                 (TaskHandle_t*  )&SerialScreen_Task_Handler);
+
+    /* 创建TF卡任务，记录log */
+    xTaskCreate((TaskFunction_t )TFCard_Task,
+                (const char*    )"TFCard_Task",
+                (uint16_t       )TFCARD_STK_SIZE,
+                (void*          )NULL,
+                (UBaseType_t    )TFCARD_TASK_PRIO,
+                (TaskHandle_t*  )&TFCard_Handler);
 
     taskEXIT_CRITICAL();                        /* 退出临界区 */  
 								

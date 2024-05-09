@@ -87,6 +87,10 @@
 .\objects\config.o: ..\Hardware\STM32F1XX\CMSIS\Include\core_cm4.h
 .\objects\config.o: ..\Bsp\OCD\Inc\ocd_ds3231.h
 .\objects\config.o: ..\Bsp\OCD\Inc\ocd_at24cxx.h
+.\objects\config.o: ..\Bsp\OCD\Inc\ocd_fatfs.h
+.\objects\config.o: ..\Bsp\OCD\Inc\ocd_sdcard.h
+.\objects\config.o: ..\Bsp\FatFs\Inc\ff.h
+.\objects\config.o: ..\Bsp\FatFs\Inc\ffconf.h
 .\objects\config.o: ..\Bsp\Algo\Inc\algo_conf.h
 .\objects\config.o: ..\Bsp\Algo\Inc\algo_func.h
 .\objects\config.o: ..\Bsp\Dev\Inc\dev_conf.h
