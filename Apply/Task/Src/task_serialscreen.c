@@ -4,12 +4,17 @@ static uint8_t SerialScreen_RecvBuffer[50] = {0};   //串口屏接收缓存区
 static uint8_t Channel_Info_SendBuffer[99] = {0};   //通道信息发送缓存区
 static uint8_t System_Info_SendBuffer[27] = {0};   //系统信息发送缓存区
 static uint8_t Setting_Info_SendBuffer[26] = {0};   //设置信息发送缓存区
-//static uint8_t Log_Info_SendBuffer[100] = {0};   //日志信息发送缓存区
+static uint8_t Log_Info_SendBuffer[104] = {0};   //日志信息发送缓存区
 
 static uint8_t SettingCplt_SendBuffer[3] = {0x33,0xBB,0x0A};   //设置完成返回给串口的数组
+static uint8_t All_Boards_StopBuffer[8] = {0xA3,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   //所有板卡停止指令，通过CAN广播
 static uint8_t All_Boards_ResetBuffer[8] = {0xA5,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   //所有板卡复位指令，通过CAN广播
 
 static uint8_t Version[4] = "V1.0";        //版本号
+
+static uint8_t IsSettingData = 0;       //标记处理设置数据
+static uint8_t SettingDataNum = 0;      //串口屏设置数据已接收长度计数
+static uint8_t SettingData_Buffer[27] = {0};    //存储串口屏设置数据
 
 #define	GET_BIT(x, bit)	((x & (1 << bit)) >> bit)	/* 获取第bit位 */
 
@@ -94,7 +99,55 @@ static void S_Setting_Info_Handle(void)
  */
 static void S_Log_Info_Handle(void)
 {
+    uint32_t ReadNum = 0;
+    uint16_t OffsetNum = 0;
+    uint8_t ReceBuffer[100] = {0};
+    char File_Name[] = "/log/1.txt";
 
+    /* 帧头帧尾赋值 */
+    Log_Info_SendBuffer[0] = 0x44;
+    Log_Info_SendBuffer[1] = 0xAA;
+    Log_Info_SendBuffer[103] = 0x0A;
+
+    /* 寻找内容的末尾，确定偏移量 */
+    do
+    {
+        OCD_FATFS_Read_SpecifyIndex(&TFCard, File_Name, ReceBuffer , LOG_SIZE , OffsetNum * LOG_SIZE , &ReadNum);
+        OffsetNum++;
+    }while(ReadNum == LOG_SIZE);
+
+    OffsetNum--;    //OffsetNum会比实际情况后面一个偏移数，所以要减一消除
+
+    if(OffsetNum <= 5)
+    {
+        for(uint8_t index = 0; index < OffsetNum; index++)
+        {
+            OCD_FATFS_Read_SpecifyIndex(&TFCard, File_Name, ReceBuffer , LOG_SIZE,index * LOG_SIZE , &ReadNum);
+            if(ReadNum)
+            {
+                printf("%s\r\n",ReceBuffer);
+                Log_Info_SendBuffer[2] = ReadNum;
+                memcpy(&Log_Info_SendBuffer[3],ReceBuffer,LOG_SIZE);
+                //向串口屏发送数据
+                Drv_Uart_Transmit(&Uart5,Log_Info_SendBuffer,sizeof(Log_Info_SendBuffer));                
+            }
+        }        
+    }
+    else
+    {
+        for(uint8_t index = OffsetNum-5; index < OffsetNum; index++)
+        {
+            OCD_FATFS_Read_SpecifyIndex(&TFCard, File_Name, ReceBuffer , LOG_SIZE, index * LOG_SIZE , &ReadNum);
+            if(ReadNum)
+            {
+                printf("%s\r\n",ReceBuffer);
+                Log_Info_SendBuffer[2] = ReadNum;
+                memcpy(&Log_Info_SendBuffer[3],ReceBuffer,LOG_SIZE);
+                //向串口屏发送数据
+                Drv_Uart_Transmit(&Uart5,Log_Info_SendBuffer,sizeof(Log_Info_SendBuffer));      
+            }
+        }
+    }
 }
 
 /**
@@ -192,7 +245,8 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
     //根据需要设置的采样频率进行处理，待定
 
     //需要设置的远端IP地址和端口号
-    memcpy(port,&SettingData[5],2);
+    port[0] = SettingData[6];
+    port[1] = SettingData[5];
     memcpy(remoteip,&SettingData[7],4);
 
     //需要设置的本地IP地址
@@ -210,6 +264,10 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
         //设置成TCP模式
     }
 
+    //向所有板卡广播停止指令
+    Drv_CAN_SendMsg(&CAN,All_Boards_StopBuffer,8);
+    vTaskDelay(1000);
+
     //向所有板卡广播复位指令
     Drv_CAN_SendMsg(&CAN,All_Boards_ResetBuffer,8);
     //等待1s
@@ -221,10 +279,28 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
     //向串口屏发送主板设置完成
     Drv_Uart_Transmit(&Uart5,SettingCplt_SendBuffer,sizeof(SettingCplt_SendBuffer));
 
-    vTaskDelay(3000);
+    vTaskDelay(2000);
 
     //主板复位
     NVIC_SystemReset();
+}
+
+/**
+ * @brief 拼接串口屏发送的设置数据
+ * @param RecvData 串口接收的数据
+ * @param RecvNum 接收到的长度
+ */
+static void S_Setting_Apply_DataRecv(uint8_t *RecvData,uint8_t RecvNum)
+{
+    memcpy(&SettingData_Buffer[SettingDataNum],RecvData,RecvNum);
+    SettingDataNum += RecvNum;
+
+    if(SettingDataNum == sizeof(SettingData_Buffer))    //说明完全接收
+    {
+        IsSettingData = 0;  //标志位恢复进入数据处理
+        SettingDataNum = 0; //计数器归零
+        S_Setting_Apply_Handle(SettingData_Buffer);
+    }
 }
 
 /**
@@ -271,16 +347,16 @@ void Task_SerialScreen_Handle(tagUART_T *_tUART)
     SerialScreenRecvNum = Drv_Uart_Receive_DMA(_tUART,SerialScreen_RecvBuffer);
     UNUSED(SerialScreenRecvNum);
 
-//#ifdef PRINTF_DEBUG
+#ifdef PRINTF_DEBUG
     if(SerialScreenRecvNum != 0)
     {
         for(uint16_t i = 0; i < SerialScreenRecvNum;i++)
         {
             printf("%x ",SerialScreen_RecvBuffer[i]);
-            if(i == SerialScreenRecvNum) printf("\r\n");
+            if(i == SerialScreenRecvNum - 1) printf("\r\n");
         }
     }
-//#endif
+#endif
 
     /* 串口屏数据解析 */
     if(SerialScreen_RecvBuffer[SerialScreenRecvNum - 1] == 0xFF
@@ -302,7 +378,9 @@ void Task_SerialScreen_Handle(tagUART_T *_tUART)
                 S_Log_Info_Handle();
                 break;
             case 0x0E:      //设置下传信息 (按下应用按钮时发送)    0x0E 信息数据 0xFF 0xFF 0xFF
-                S_Setting_Apply_Handle(SerialScreen_RecvBuffer);
+                /* 
+                    由于串口屏的发送特性，只能通过STM32进行拼接，代码在下面 
+                */
                 break;
             case 0x0F:      //设查询通道信息 (进入界面时与进入界面后每五秒发送一次) 0x0F (0x0A-0X0D) 0xFF 0xFF 0xFF
                 S_Channel_Info_Handle(SerialScreen_RecvBuffer[1]);
@@ -313,6 +391,15 @@ void Task_SerialScreen_Handle(tagUART_T *_tUART)
             default:
                 break;
         }
+    }
+
+    /* 串口屏设置数据拼接 */
+    if(SerialScreenRecvNum)
+    {
+        if(SerialScreen_RecvBuffer[0] == 0x0E)  //说明开始发送设置数据
+            IsSettingData = 1;  //标志位置1
+        if(IsSettingData)
+            S_Setting_Apply_DataRecv(SerialScreen_RecvBuffer,SerialScreenRecvNum);
     }
 
     /* 清空缓存区 */

@@ -24,14 +24,14 @@ static uint8_t Update_NO = 'N';         //不需要更新IP信息标志
  */
 void Task_EEPROM_WriteAddrInfo(uint8_t *remoteip,uint8_t *port,uint8_t *ip,uint8_t *mask,uint8_t *gw)
 {
-//#ifdef PRINTF_DEBUG
+#ifdef PRINTF_DEBUG
     printf("RemoteIP:%d.%d.%d.%d\r\nPort:%d\r\nIP:%d.%d.%d.%d\r\nMask:%d.%d.%d.%d\r\nGw:%d.%d.%d.%d\r\n",
                 remoteip[0],remoteip[1],remoteip[2],remoteip[3],
                 (port[0] << 8) + port[1],
                 ip[0], ip[1], ip[2], ip[3], 
                 mask[0], mask[1], mask[2], mask[3],
                 gw[0], gw[1], gw[2], gw[3]);
-//#endif
+#endif
     /* 将需要更改的IP信息写入对应地址上 */
     OCD_AT24CXX_Write(&EEPROM,IP_UPDATE,&Update_YES,1);
     OCD_AT24CXX_Write(&EEPROM,PORT_ADDR,port,2);
@@ -39,6 +39,7 @@ void Task_EEPROM_WriteAddrInfo(uint8_t *remoteip,uint8_t *port,uint8_t *ip,uint8
     OCD_AT24CXX_Write(&EEPROM,IP_ADDR,ip,4);
     OCD_AT24CXX_Write(&EEPROM,MASK_ADDR,mask,4);
     OCD_AT24CXX_Write(&EEPROM,GW_ADDR,gw,4);
+    printf("Write IPAddr Done!\r\n");
 }
 
 /**
@@ -70,14 +71,16 @@ void Task_EEPROM_ReadAddrInfo(__lwip_dev *lwipx)
         OCD_AT24CXX_Read(&EEPROM,GW_ADDR,lwipx->gateway,4);
         OCD_AT24CXX_Write(&EEPROM,IP_UPDATE,&Update_NO,1);
 
-//#ifdef PRINTF_DEBUG
+        printf("Read IPAddr Done!\r\n");
+
+#ifdef PRINTF_DEBUG
         printf("RemoteIP:%d.%d.%d.%d\r\nPort:%d\r\nIP:%d.%d.%d.%d\r\nMask:%d.%d.%d.%d\r\nGw:%d.%d.%d.%d\r\n",
                 lwipx->remoteip[0], lwipx->remoteip[1], lwipx->remoteip[2], lwipx->remoteip[3],
                 RemotePort,
                 lwipx->ip[0], lwipx->ip[1], lwipx->ip[2], lwipx->ip[3], 
                 lwipx->netmask[0], lwipx->netmask[1], lwipx->netmask[2], lwipx->netmask[3],
                 lwipx->gateway[0], lwipx->gateway[1], lwipx->gateway[2], lwipx->gateway[3]);
-//#endif
+#endif
     }
 }
 

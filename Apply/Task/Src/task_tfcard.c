@@ -3,6 +3,11 @@
 static uint8_t File_Name[] = "/log/1.txt";  /* 文件名 */
 static uint8_t Path_Name[] = "/log";        /* 文件夹名 */
 
+static uint8_t CurrTime_Buffer[24] = {0};       //写入时间的缓冲区
+static uint8_t WriteLog_Buffer[100] = {0};      //写入log的缓冲区
+
+static uint8_t Test_log[15] = "Hello World!";   //测试log使用
+
 /**
  * @brief TF卡创建log文件函数
  * @param _tFATFS-FATFS结构体指针
@@ -27,17 +32,47 @@ void Task_TFCard_CreateFolder(tagFATFS_T *_tFATFS)
  */
 void Task_TFCard_WriteLog(tagFATFS_T *_tFATFS,char *_cpFileName,EventBits_t event)
 {
+    uint32_t sendNum = 0;
+    tagDS3231Time_T CurrSysTime = {0};
 
-}
+    /* 获取当前时间 */
+    if(OCD_DS3231_TimeGetHex(&DS1337,&CurrSysTime))
+    {
+#ifdef PRINTF_DEBUG
+        printf("Read Time:");
+        printf("20%02x/%02x/%02x %02x:%02x:%02x 周%x\r\n",
+                CurrSysTime.ucYear,CurrSysTime.ucMonth,CurrSysTime.ucDate,
+                CurrSysTime.ucHour,CurrSysTime.ucMinute,CurrSysTime.ucSecond,
+                CurrSysTime.ucWeek);
+#endif
+        sprintf((char *)CurrTime_Buffer,"[20%02x/%02x/%02x %02x:%02x:%02x %x]",
+                CurrSysTime.ucYear,CurrSysTime.ucMonth,CurrSysTime.ucDate,
+                CurrSysTime.ucHour,CurrSysTime.ucMinute,CurrSysTime.ucSecond,
+                CurrSysTime.ucWeek);
+    }
 
-/**
- * @brief TF卡读log到文件中函数
- * @param _tFATFS-FATFS结构体指针
- * @param Logdata-日志数据
- */
-void Task_TFCard_ReadLog(tagFATFS_T *_tFATFS,uint8_t *Logdata)
-{
-    
+    /* 判断事件 */
+    if((event & EVENT1) != 0) //如果是测试事件
+    {
+        sprintf((char *)WriteLog_Buffer,"%s %s",CurrTime_Buffer,Test_log);
+    }
+    else if((event & EVENT2) != 0) //如果是测试事件
+    {
+
+    }
+    else if((event & EVENT3) != 0) //如果是测试事件
+    {
+
+    }
+
+    if(event)
+    {
+        WriteLog_Buffer[98] = '\r';
+        WriteLog_Buffer[99] = '\n';     //补回车换行
+        OCD_FATFS_Write_End(_tFATFS, (char *)_cpFileName, WriteLog_Buffer, LOG_SIZE , &sendNum);
+        if(sendNum)
+            printf("写入%d个字节 数据为%s\r\n",sendNum, WriteLog_Buffer);
+    }
 }
 
 /**
@@ -46,8 +81,7 @@ void Task_TFCard_ReadLog(tagFATFS_T *_tFATFS,uint8_t *Logdata)
  */
 void Task_TFCard_Handle(tagFATFS_T *_tFATFS)
 {
-    uint32_t sendNum = 0;
-    EventBits_t r_event;
+    EventBits_t r_event = 0;
 
     r_event = xEventGroupWaitBits(Log_Event,
                                   EVENT1|EVENT2|EVENT3,       //需要等待的事件合集
@@ -55,10 +89,7 @@ void Task_TFCard_Handle(tagFATFS_T *_tFATFS)
                                   pdFALSE,                    //或比较，满足其中一个就成立
                                   portMAX_DELAY);             //无限延时直到事件成立
     
-    if((r_event & EVENT1) != 0) //如果是测试事件
-    {
-        if(OCD_FATFS_Write_End(_tFATFS, (char *)File_Name, "abcdefghijklmnopqrtsuvwxyz", sizeof("abcdefghijklmnopqrtsuvwxyz") , &sendNum) == FR_OK)
-            printf("写入%d个字节 数据为%s\r\n",sendNum,"abcdefghijklmnopqrtsuvwxyz");
-    }
+    if(r_event != 0)
+        Task_TFCard_WriteLog(_tFATFS,(char *)File_Name,r_event);
 }
 
