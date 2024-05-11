@@ -63,21 +63,17 @@ void lwip_link_status_updated(struct netif *netif);         /* DHCP状态回调函数 
  */
 void LwIP_Init(void)
 {
-    if(lwip_comm_init() != 0)
+    uint8_t ret = 0;
+
+    ret = lwip_comm_init();
+    if(ret)
     {
-        printf("lwip_comm_init failed!!\r\n");
-        while(1);
+        printf("lwip_comm_init failed!! Error Code:%d\r\n",ret);
     }
     
     if(!ethernet_read_phy(PHY_SR))  /* 检查MCU与PHY芯片是否通信成功 */
     {
         printf("MCU and PHY chip communication failed, please check the circuit or source code!!\r\n");
-        while(1);
-    }
-    
-    while((g_lwipdev.dhcpstatus != 2)&&(g_lwipdev.dhcpstatus != 0XFF))  /* 等待DHCP获取成功/超时溢出 */
-    {
-        vTaskDelay(5);
     }
 }
 
@@ -132,7 +128,6 @@ void lwip_comm_default_ip_set(__lwip_dev *lwipx)
  */
 uint8_t lwip_comm_init(void)
 {
-    uint8_t retry = 0;
     struct netif *netif_init_flag;              /* 调用netif_add()函数时的返回值,用于判断网络初始化是否成功 */
     ip_addr_t ipaddr;                           /* ip地址 */
     ip_addr_t netmask;                          /* 子网掩码 */
@@ -148,15 +143,9 @@ uint8_t lwip_comm_init(void)
     Task_EEPROM_ReadAddrInfo(&g_lwipdev);       /* 如果不使用DHCP则从EEPROM中读取IP信息 */
 #endif
 
-    while (ethernet_init())                     /* 初始化以太网芯片,如果失败的话就重试5次 */
+    if (ethernet_init())                     /* 初始化以太网芯片,如果失败的话就返回 */
     {
-        retry++;
-
-        if (retry > 5)
-        {
-            retry = 0;                          /* 以太网芯片初始化失败 */
-            return 3;
-        }
+        return 3;
     }
 
 #if LWIP_DHCP                                   /* 使用动态IP */

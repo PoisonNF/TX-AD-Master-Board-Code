@@ -12,6 +12,8 @@ extern tagGPIO_T LED[];
 
 extern tagUART_T Uart1;
 
+extern tagUART_T Uart3;
+
 extern tagUART_T Uart5;
 
 extern tagADC_T PowerADC[];

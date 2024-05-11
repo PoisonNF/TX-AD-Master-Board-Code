@@ -63,6 +63,55 @@ tagUART_T Uart1 =
 #endif
 };
 
+/* RS232外接串口 */
+tagUART_T Uart3 = 
+{
+	//串口工作模式配置
+	.tUARTHandle.Instance 						= USART3,					/* STM32 串口设备 */
+	.tUARTHandle.Init.BaudRate   				= 115200,					/* 串口波特率 */
+	.tUARTHandle.Init.WordLength 				= UART_WORDLENGTH_8B,		/* 数据位长度 */
+	.tUARTHandle.Init.StopBits   				= UART_STOPBITS_1,			/* 停止位长度 */
+	.tUARTHandle.Init.Parity     				= UART_PARITY_NONE,			/* 校验位设置 */
+	.tUARTHandle.Init.HwFlowCtl  				= UART_HWCONTROL_NONE,		/* 硬件流控设置 */
+	.tUARTHandle.Init.Mode       				= UART_MODE_TX_RX,			/* 串口模式 */
+	.tUARTHandle.Init.OverSampling 				= UART_OVERSAMPLING_16,		/* 过采样 */
+	
+	.ucPriority									= 3,						/* 中断优先级 */
+	.ucSubPriority								= 3,						/* 中断子优先级 */
+	
+	//串口DMA接收参数配置
+	.tUartDMA.bRxEnable							= false,						/* DMA接收使能 */
+	
+	//串口DMA发送参数配置
+	.tUartDMA.bTxEnable							= false,						/* DMA发送使能 */
+
+	//串口GPIO配置
+	.tGPIO[0].tGPIOInit.Pin 					= GPIO_PIN_10,				/* GPIO引脚 */
+	.tGPIO[0].tGPIOInit.Mode 					= GPIO_MODE_AF_PP,			/* GPIO模式 */
+	.tGPIO[0].tGPIOInit.Pull 					= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+	.tGPIO[0].tGPIOInit.Speed 					= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */	
+	.tGPIO[0].tGPIOPort 						= GPIOB,					/* GPIO分组 */
+#ifdef STM32F1_SGA_ENABLE
+	.tGPIO[0].ucAFMode							= NO_REMAP,					/* GPIO重映射 */
+#endif
+#ifdef STM32F4_SGA_ENABLE
+	.tGPIO[0].tGPIOInit.Alternate				= GPIO_AF7_USART3,
+#endif
+
+	.tGPIO[1].tGPIOInit.Pin 					= GPIO_PIN_11,				/* GPIO引脚 */
+	.tGPIO[1].tGPIOInit.Pull 					= GPIO_NOPULL,				/* GPIO上下拉设置，是否需要上下拉看硬件 */
+	.tGPIO[1].tGPIOInit.Speed 					= GPIO_SPEED_FREQ_HIGH,		/* GPIO速度 */	
+	.tGPIO[1].tGPIOPort 						= GPIOB,					/* GPIO分组 */
+#ifdef STM32F1_SGA_ENABLE	
+	.tGPIO[1].tGPIOInit.Mode 					= GPIO_MODE_INPUT,			/* F4系列需要设置为输入模式 */
+	.tGPIO[1].ucAFMode							= NO_REMAP,					/* GPIO重映射 */
+#endif
+#ifdef STM32F4_SGA_ENABLE
+	.tGPIO[1].tGPIOInit.Mode 					= GPIO_MODE_AF_PP,			/* F4系列需要设置为复用推挽 */
+	.tGPIO[1].tGPIOInit.Alternate				= GPIO_AF7_USART3,
+#endif
+};
+
 /* 串口屏 */
 tagUART_T Uart5 = 
 {

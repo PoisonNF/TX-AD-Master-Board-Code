@@ -34,6 +34,9 @@ void Task_UserInit(void)
     /* 初始化调试串口 */
     Drv_Uart_DMAInit(&Uart1);
 
+    /* 初始化RS232外接串口 */
+    Drv_Uart_DMAInit(&Uart3);
+
     /* 初始化串口屏 */
     Drv_Uart_DMAInit(&Uart5);
 
