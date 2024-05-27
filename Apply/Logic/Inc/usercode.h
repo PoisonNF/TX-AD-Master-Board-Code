@@ -54,7 +54,7 @@ extern TaskHandle_t PowerDetect_Task_Handler;       /* 任务句柄 */
 /* SerialScreen_Task 任务 配置
  * 包括: 任务句柄 任务优先级 堆栈大小 创建任务
  */
-#define SERIALSCREEN_TASK_PRIO           10           /* 任务优先级 */
+#define SERIALSCREEN_TASK_PRIO           9           /* 任务优先级 */
 #define SERIALSCREEN_STK_SIZE            256         /* 任务堆栈大小 */
 extern TaskHandle_t SerialScreen_Task_Handler;       /* 任务句柄 */
 

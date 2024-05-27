@@ -103,7 +103,7 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
 
             xSemaphoreGive(UDP_SendBuffer_Mutex);									//释放信号量，解锁
         }
-        vTaskDelay(10);
+        vTaskDelay(5);
     }
 }
 

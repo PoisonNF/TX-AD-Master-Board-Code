@@ -125,3 +125,4 @@
 .\objects\task_serialscreen.o: ..\Bsp\Dev\Inc\dev_conf.h
 .\objects\task_serialscreen.o: ..\Apply\Task\Inc\task_lwipudp.h
 .\objects\task_serialscreen.o: ..\Apply\Task\Inc\task_eeprom.h
+.\objects\task_serialscreen.o: ..\Apply\Task\Inc\task_tfcard.h

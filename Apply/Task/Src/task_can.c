@@ -78,10 +78,14 @@ static void S_Data_Process(uint8_t *_ucCanMsg)
 	/* 数据拷贝 */
 	if(xSemaphoreTake(UDP_SendBuffer_Mutex,0) == pdTRUE)	//获取互斥量，上锁
 	{
-		memcpy(LwIP_UDP_SendBuffer + ChannelAddrF,_ucCanMsg + 1,3);				//原码拷贝
+		LwIP_UDP_SendBuffer[ChannelAddrF] = _ucCanMsg[1];
+		LwIP_UDP_SendBuffer[ChannelAddrF + 1] = _ucCanMsg[2];
+		LwIP_UDP_SendBuffer[ChannelAddrF + 2] = _ucCanMsg[3];
 		LwIP_UDP_SendBuffer[290 + NoNum] |= (ValidMarkF << (7 - ChannelNumF)); 	//有效位拷贝
 
-		memcpy(LwIP_UDP_SendBuffer + ChannelAddrS,_ucCanMsg + 5,3);				//原码拷贝
+		LwIP_UDP_SendBuffer[ChannelAddrS] = _ucCanMsg[5];
+		LwIP_UDP_SendBuffer[ChannelAddrS + 1] = _ucCanMsg[6];
+		LwIP_UDP_SendBuffer[ChannelAddrS + 2] = _ucCanMsg[7];
 		LwIP_UDP_SendBuffer[290 + NoNum] |= (ValidMarkS << (7 - ChannelNumS)); 	//有效位拷贝
 		xSemaphoreGive(UDP_SendBuffer_Mutex);									//释放信号量，解锁
 	}

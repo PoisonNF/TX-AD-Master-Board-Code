@@ -236,7 +236,7 @@ tagCAN_T CAN =
 	.tCANFilter[1].FilterIdLow 							    = 0x0000,
 	.tCANFilter[1].FilterMaskIdHigh 						= 0xffff,
 	.tCANFilter[1].FilterMaskIdLow 						    = 0|0x02,			//只收数据帧
-	.tCANFilter[1].FilterFIFOAssignment 					= CAN_RX_FIFO0,					/* 过滤器关联到FIFO0 */
+	.tCANFilter[1].FilterFIFOAssignment 					= CAN_RX_FIFO1,					/* 过滤器关联到FIFO0 */
 	.tCANFilter[1].FilterActivation 						= ENABLE,						/* 激活过滤器0 */
 	.tCANFilter[1].SlaveStartFilterBank 					= 14,							/* 从CAN过滤器起始 */
 
