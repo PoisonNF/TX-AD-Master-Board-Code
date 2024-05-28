@@ -7,8 +7,10 @@
 extern char RemoteIPAddrString[16]; 
 extern char LocalIPAddrString[16];  
 
-extern uint8_t LwIP_UDP_SendBuffer[306];
+extern uint8_t LwIP_UDP_SendBuffer[4][306];
 extern uint16_t RemotePort;
+
+#define SPLICE_NUM                      4                       /* 一帧UDP中拼接包数 */
 
 void Task_LwIP_UDP_Handle(void);
 

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\STM32.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\STM32.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon May 27 21:43:30 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue May 28 15:47:04 2024
 <BR><P>
 <H3>Maximum Stack Usage =        752 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -745,7 +745,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f407xx.o(RESET)
 </UL>
 <P><STRONG><a name="[5f]"></a>CAN_Task</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, threadpool.o(i.CAN_Task))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = CAN_Task &rArr; Task_CAN_Handle &rArr; S_Data_Process &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
+<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = CAN_Task &rArr; Task_CAN_Handle &rArr; S_Data_Process &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_CAN_Handle
 </UL>
@@ -1893,7 +1893,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f407xx.o(RESET)
 </UL>
 <P><STRONG><a name="[ac]"></a>Task_CAN_Handle</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, task_can.o(i.Task_CAN_Handle))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = Task_CAN_Handle &rArr; S_Data_Process &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
+<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = Task_CAN_Handle &rArr; S_Data_Process &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
 <LI><a href="#[15b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;S_Data_Process
@@ -1920,7 +1920,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[16a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;S_Setting_Apply_Handle
 </UL>
 
-<P><STRONG><a name="[13d]"></a>Task_LwIP_UDP_Handle</STRONG> (Thumb, 140 bytes, Stack size 8 bytes, task_lwipudp.o(i.Task_LwIP_UDP_Handle))
+<P><STRONG><a name="[13d]"></a>Task_LwIP_UDP_Handle</STRONG> (Thumb, 166 bytes, Stack size 8 bytes, task_lwipudp.o(i.Task_LwIP_UDP_Handle))
 <BR><BR>[Stack]<UL><LI>Max Depth = 408<LI>Call Chain = Task_LwIP_UDP_Handle &rArr; lwip_recv &rArr; lwip_recvfrom &rArr; lwip_recv_tcp &rArr; netconn_recv_tcp_pbuf_flags &rArr; netconn_recv_data_tcp &rArr; netconn_close_shutdown &rArr; netconn_apimsg &rArr; tcpip_send_msg_wait_sem &rArr; sys_mutex_unlock &rArr; xQueueGiveMutexRecursive &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
@@ -5280,7 +5280,7 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[65]"></a>S_LwIP_UDP_Send_Entrance</STRONG> (Thumb, 164 bytes, Stack size 16 bytes, task_lwipudp.o(i.S_LwIP_UDP_Send_Entrance))
+<P><STRONG><a name="[65]"></a>S_LwIP_UDP_Send_Entrance</STRONG> (Thumb, 222 bytes, Stack size 16 bytes, task_lwipudp.o(i.S_LwIP_UDP_Send_Entrance))
 <BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = S_LwIP_UDP_Send_Entrance &rArr; lwip_sendto &rArr; lwip_send &rArr;  lwip_sendto (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
@@ -5349,8 +5349,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_SerialScreen_Handle
 </UL>
 
-<P><STRONG><a name="[15b]"></a>S_Data_Process</STRONG> (Thumb, 162 bytes, Stack size 40 bytes, task_can.o(i.S_Data_Process))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = S_Data_Process &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
+<P><STRONG><a name="[15b]"></a>S_Data_Process</STRONG> (Thumb, 258 bytes, Stack size 48 bytes, task_can.o(i.S_Data_Process))
+<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = S_Data_Process &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[15c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueSemaphoreTake
 <LI><a href="#[15d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
@@ -6120,14 +6120,14 @@ Local Symbols
 <P><STRONG><a name="[2a8]"></a>tcp_close_shutdown</STRONG> (Thumb, 264 bytes, Stack size 32 bytes, tcp.o(i.tcp_close_shutdown))
 <BR><BR>[Stack]<UL><LI>Max Depth = 528<LI>Call Chain = tcp_close_shutdown &rArr; tcp_pcb_remove &rArr; tcp_output &rArr; tcp_send_empty_ack &rArr; tcp_output_control_segment &rArr; ip4_output_if &rArr; ip4_output_if_src &rArr; ip4_frag &rArr; pbuf_alloc &rArr; pbuf_free &rArr; mem_free &rArr; sys_mutex_unlock &rArr; xQueueGiveMutexRecursive &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_trigger_input_pcb_close
-<LI><a href="#[2a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_rst
+<BR>[Calls]<UL><LI><a href="#[2a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_rst
 <LI><a href="#[29f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_pcb_remove
 <LI><a href="#[2a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_pcb_purge
 <LI><a href="#[2a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_free
 <LI><a href="#[2ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_listen_closed
 <LI><a href="#[2a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown_fin
 <LI><a href="#[1ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_free
+<LI><a href="#[2aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_trigger_input_pcb_close
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[229]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_shutdown

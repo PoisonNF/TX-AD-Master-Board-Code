@@ -18,7 +18,6 @@ static uint8_t SettingData_Buffer[27] = {0};    //存储串口屏设置数据
 
 #define	GET_BIT(x, bit)	((x & (1 << bit)) >> bit)	/* 获取第bit位 */
 
-extern uint8_t LwIP_UDP_SendBuffer[306];
 extern uint8_t NumberOfBoards;
 
 /**
@@ -187,8 +186,8 @@ static void S_Channel_Info_Handle(uint8_t PageNum)
     for(index = 2; index <= 30; index += 4)
     {
         uint8_t bit = 7;
-        Channel_Info_SendBuffer[index] = GET_BIT(LwIP_UDP_SendBuffer[ValidPos], bit);
-        memcpy(&Channel_Info_SendBuffer[index + 1],&LwIP_UDP_SendBuffer[ValuePos],3);
+        Channel_Info_SendBuffer[index] = GET_BIT(LwIP_UDP_SendBuffer[0][ValidPos], bit);
+        memcpy(&Channel_Info_SendBuffer[index + 1],&LwIP_UDP_SendBuffer[0][ValuePos],3);
         bit--;
         ValuePos += 3;
     }
@@ -199,8 +198,8 @@ static void S_Channel_Info_Handle(uint8_t PageNum)
     for(index = 34; index <= 62; index += 4)
     {
         uint8_t bit = 7;
-        Channel_Info_SendBuffer[index] = GET_BIT(LwIP_UDP_SendBuffer[ValidPos], bit);
-        memcpy(&Channel_Info_SendBuffer[index + 1],&LwIP_UDP_SendBuffer[ValuePos],3);
+        Channel_Info_SendBuffer[index] = GET_BIT(LwIP_UDP_SendBuffer[0][ValidPos], bit);
+        memcpy(&Channel_Info_SendBuffer[index + 1],&LwIP_UDP_SendBuffer[0][ValuePos],3);
         bit--;
         ValuePos += 3;
     }
@@ -211,8 +210,8 @@ static void S_Channel_Info_Handle(uint8_t PageNum)
     for(index = 66; index <= 94; index += 4)
     {
         uint8_t bit = 7;
-        Channel_Info_SendBuffer[index] = GET_BIT(LwIP_UDP_SendBuffer[ValidPos], bit);
-        memcpy(&Channel_Info_SendBuffer[index + 1],&LwIP_UDP_SendBuffer[ValuePos],3);
+        Channel_Info_SendBuffer[index] = GET_BIT(LwIP_UDP_SendBuffer[0][ValidPos], bit);
+        memcpy(&Channel_Info_SendBuffer[index + 1],&LwIP_UDP_SendBuffer[0][ValuePos],3);
         bit--;
         ValuePos += 3;
     }
@@ -240,7 +239,7 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
     UNUSED(SetChannelNum);
     //根据需要设置的通道数进行处理，待定
 
-    SetSamplingFreq = SettingData[3] << 8 + SettingData[4];
+    SetSamplingFreq = (SettingData[3] << 8) + SettingData[4];
     UNUSED(SetSamplingFreq);
     //根据需要设置的采样频率进行处理，待定
 

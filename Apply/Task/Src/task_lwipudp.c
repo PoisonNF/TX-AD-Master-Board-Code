@@ -38,7 +38,7 @@ uint8_t CRC8_Table[256] = {
 /* UDP接收发送缓冲区 */
 uint8_t LwIP_UDP_RecvBuffer[LWIP_UDP_RX_BUFSIZE] = {0};
 // uint8_t LwIP_UDP_SendBuffer[] = "Test UDP\r\n";
-uint8_t LwIP_UDP_SendBuffer[306] = {0};
+uint8_t LwIP_UDP_SendBuffer[4][306] = {0};
 
 /* UDP数据帧计数器 */
 static uint16_t FrameNum = 0;
@@ -77,15 +77,16 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
 
     while(1)
     {
-        if(xSemaphoreTake(UDP_SendBuffer_Mutex,0) == pdTRUE)	//获取互斥量，上锁
+        if(xSemaphoreTake(UDP_SendBuffer_Mutex,portMAX_DELAY) == pdTRUE)	//获取互斥量，上锁
 	    {
             /* 帧计数器统计 */
-            FrameNum++;     //计数器加一
-            LwIP_UDP_SendBuffer[302] = (FrameNum & 0xff00) >> 8;
-            LwIP_UDP_SendBuffer[303] = (FrameNum & 0x00ff);
-
-            /* CRC校验 */
-            LwIP_UDP_SendBuffer[304] = S_CRC8_Table(LwIP_UDP_SendBuffer,304);
+            for(uint8_t i = 0; i < SPLICE_NUM; i++)
+            {
+                FrameNum++;     //计数器加一
+                LwIP_UDP_SendBuffer[i][302] = (FrameNum & 0xff00) >> 8;
+                LwIP_UDP_SendBuffer[i][303] = (FrameNum & 0x00ff);
+                LwIP_UDP_SendBuffer[i][304] = S_CRC8_Table(LwIP_UDP_SendBuffer[0],304); /* CRC校验 */
+            }
 
             //调用sendto函数发送，UDP需要使用sendto函数
             SendNum = sendto(Socket_fd,                     //Socket文件描述符
@@ -99,11 +100,14 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
             if(SendNum != -1) printf("Send Complete!\r\n");
 #endif
             /* 通道状态信息部分清除 */
-            memset(LwIP_UDP_SendBuffer + 290,0,12);
+            for(uint8_t i = 0; i < SPLICE_NUM; i++)
+            {
+                memset(&LwIP_UDP_SendBuffer[i][290],0,12);
+            }
 
-            xSemaphoreGive(UDP_SendBuffer_Mutex);									//释放信号量，解锁
+            xSemaphoreGive(UDP_SendBuffer_Mutex);									//释放互斥量，解锁
         }
-        vTaskDelay(5);
+        vTaskDelay(20);
     }
 }
 
@@ -126,9 +130,12 @@ void Task_LwIP_UDP_Handle(void)
     int RecvNum = 0;
 
     //将帧头帧尾信息放入缓冲区中
-    LwIP_UDP_SendBuffer[0] = FRAMEHEADER1;
-    LwIP_UDP_SendBuffer[1] = FRAMEHEADER2;
-    LwIP_UDP_SendBuffer[305] = FRAMEEND;
+    for(uint8_t i = 0; i < SPLICE_NUM; i++)
+    {
+        LwIP_UDP_SendBuffer[i][0] = FRAMEHEADER1;
+        LwIP_UDP_SendBuffer[i][1] = FRAMEHEADER2;
+        LwIP_UDP_SendBuffer[i][305] = FRAMEEND;
+    }
 
     //创建UDP发送线程
     S_LwIP_UDP_Create_Send_Thread();        
