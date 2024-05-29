@@ -1,12 +1,14 @@
 #include "task_tfcard.h"
 
-static uint8_t File_Name[] = "/log/1.txt";  /* 文件名 */
-static uint8_t Path_Name[] = "/log";        /* 文件夹名 */
+uint8_t File_Name[] = "/log/1.txt";  /* 文件名 */
+uint8_t Path_Name[] = "/log";        /* 文件夹名 */
 
 static uint8_t CurrTime_Buffer[24] = {0};       //写入时间的缓冲区
 static uint8_t WriteLog_Buffer[100] = {0};      //写入log的缓冲区
 
-static uint8_t Test_log[15] = "Hello World!";   //测试log使用
+static uint8_t Test_log[15] = "Hello World!";       //测试log使用
+static uint8_t PowerON_log[15] = "Power ON!";       //开机log使用
+static uint8_t PowerOFF_log[15] = "Power OFF!";     //关机log使用
 
 /**
  * @brief TF卡创建log文件函数
@@ -52,17 +54,21 @@ void Task_TFCard_WriteLog(tagFATFS_T *_tFATFS,char *_cpFileName,EventBits_t even
     }
 
     /* 判断事件 */
-    if((event & EVENT1) != 0) //如果是测试事件
+    if((event & TEST_EVENT) != 0) //如果是测试事件
     {
         sprintf((char *)WriteLog_Buffer,"%s %s",CurrTime_Buffer,Test_log);
     }
-    else if((event & EVENT2) != 0) //如果是测试事件
+    else if((event & SET_EVENT) != 0) //如果是设置信息事件
     {
 
     }
-    else if((event & EVENT3) != 0) //如果是测试事件
+    else if((event & POWER_ON_EVENT) != 0) //如果是开机事件
     {
-
+        sprintf((char *)WriteLog_Buffer,"%s %s",CurrTime_Buffer,PowerON_log);
+    }
+    else if((event & POWER_OFF_EVENT) != 0) //如果是关机事件
+    {
+        sprintf((char *)WriteLog_Buffer,"%s %s",CurrTime_Buffer,PowerOFF_log);
     }
 
     if(event)
@@ -84,7 +90,7 @@ void Task_TFCard_Handle(tagFATFS_T *_tFATFS)
     EventBits_t r_event = 0;
 
     r_event = xEventGroupWaitBits(Log_Event,
-                                  EVENT1|EVENT2|EVENT3,       //需要等待的事件合集
+                                  TEST_EVENT|SET_EVENT|POWER_ON_EVENT|POWER_OFF_EVENT,       //需要等待的事件合集
 								  pdTRUE,                     //退出时消除标志位，自动释放
                                   pdFALSE,                    //或比较，满足其中一个就成立
                                   portMAX_DELAY);             //无限延时直到事件成立

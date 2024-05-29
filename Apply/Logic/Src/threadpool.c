@@ -99,11 +99,12 @@ void TFCard_Task(void *pvParameters)
     Task_TFCard_CreateFolder(&TFCard);  //创建保存log文件夹
 
     //xEventGroupSetBits(Log_Event,EVENT1);   //标记测试事件成立
-
+    xEventGroupSetBits(Log_Event,POWER_ON_EVENT);   //标记开机事件成立 
+    
     while (1)
     {
         Task_TFCard_Handle(&TFCard);
-        vTaskDelay(3000);
+        vTaskDelay(1);
     }
 }
 

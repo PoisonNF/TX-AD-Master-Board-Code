@@ -128,8 +128,8 @@
 .\objects\threadpool.o: ..\Bsp\Algo\Inc\algo_conf.h
 .\objects\threadpool.o: ..\Bsp\Algo\Inc\algo_func.h
 .\objects\threadpool.o: ..\Bsp\Dev\Inc\dev_conf.h
+.\objects\threadpool.o: ..\Apply\Task\Inc\task_tfcard.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_serialscreen.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_eeprom.h
-.\objects\threadpool.o: ..\Apply\Task\Inc\task_tfcard.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_can.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_selfcheck.h

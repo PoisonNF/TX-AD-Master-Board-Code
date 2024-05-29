@@ -5,6 +5,7 @@
 
 #include "usercode.h"
 #include "config.h"
+#include "task_tfcard.h"
 
 void Task_PowerDetect_Handle(tagADC_T *_tADC);
 

@@ -150,6 +150,21 @@ void TIM7_IRQHandler(void)
     //Drv_Timer_IRQHandler(&demoTIM);
 }
 
+/**
+ * @brief PVD中断服务函数
+ * @retval Null
+*/
+void PVD_IRQHandler(void)
+{
+    Drv_PVD_IRQHandler();
+}
+
+extern uint8_t File_Name[];
+void HAL_PWR_PVDCallback(void)
+{
+    vTaskSuspendAll();  //全部线程停止调度
+    Task_TFCard_WriteLog(&TFCard,(char *)File_Name,POWER_OFF_EVENT); //记录关机信息
+}
 
 void CAN1_RX0_IRQHandler(void)
 {
