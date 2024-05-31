@@ -17,8 +17,11 @@ static uint8_t SettingDataNum = 0;      //串口屏设置数据已接收长度计数
 static uint8_t SettingData_Buffer[27] = {0};    //存储串口屏设置数据
 
 #define	GET_BIT(x, bit)	((x & (1 << bit)) >> bit)	/* 获取第bit位 */
+#define RECENT_LOGNUM       5                       /* 要读取最近log的条数 */
 
 extern uint8_t NumberOfBoards;
+extern uint8_t File_Name[];
+extern uint32_t logNum;
 
 /**
  * @brief 查询系统信息处理函数
@@ -99,53 +102,31 @@ static void S_Setting_Info_Handle(void)
 static void S_Log_Info_Handle(void)
 {
     uint32_t ReadNum = 0;
-    uint16_t OffsetNum = 0;
+    uint32_t OffSetNum = 0;
     uint8_t ReceBuffer[100] = {0};
-    char File_Name[] = "/log/1.txt";
 
     /* 帧头帧尾赋值 */
     Log_Info_SendBuffer[0] = 0x44;
     Log_Info_SendBuffer[1] = 0xAA;
     Log_Info_SendBuffer[103] = 0x0A;
 
-    /* 寻找内容的末尾，确定偏移量 */
-    do
+    /* TF卡内不足最少log条数处理 */
+    if(logNum <= RECENT_LOGNUM)
+        OffSetNum = logNum + RECENT_LOGNUM;
+    else 
+        OffSetNum = logNum;
+    
+    /* 将TF卡log内容读取并发送给串口屏 */
+    for(uint8_t index = OffSetNum - RECENT_LOGNUM; index < OffSetNum; index++)
     {
-        OCD_FATFS_Read_SpecifyIndex(&TFCard, File_Name, ReceBuffer , LOG_SIZE , OffsetNum * LOG_SIZE , &ReadNum);
-        OffsetNum++;
-    }while(ReadNum == LOG_SIZE);
-
-    OffsetNum--;    //OffsetNum会比实际情况后面一个偏移数，所以要减一消除
-
-    if(OffsetNum <= 5)
-    {
-        for(uint8_t index = 0; index < OffsetNum; index++)
+        OCD_FATFS_Read_SpecifyIndex(&TFCard, (char *)File_Name, ReceBuffer , LOG_SIZE, index * LOG_SIZE , &ReadNum);
+        if(ReadNum)
         {
-            OCD_FATFS_Read_SpecifyIndex(&TFCard, File_Name, ReceBuffer , LOG_SIZE,index * LOG_SIZE , &ReadNum);
-            if(ReadNum)
-            {
-                printf("%s\r\n",ReceBuffer);
-                Log_Info_SendBuffer[2] = ReadNum;
-                memcpy(&Log_Info_SendBuffer[3],ReceBuffer,LOG_SIZE);
-                //向串口屏发送数据
-                Drv_Uart_Transmit(&Uart5,Log_Info_SendBuffer,sizeof(Log_Info_SendBuffer));                
-            }
-        }        
-    }
-    else
-    {
-        for(uint8_t index = OffsetNum-5; index < OffsetNum; index++)
-        {
-            OCD_FATFS_Read_SpecifyIndex(&TFCard, File_Name, ReceBuffer , LOG_SIZE, index * LOG_SIZE , &ReadNum);
-            if(ReadNum)
-            {
-                printf("%s\r\n",ReceBuffer);
-                Log_Info_SendBuffer[2] = ReadNum;
-                memcpy(&Log_Info_SendBuffer[3],ReceBuffer,LOG_SIZE);
-                //向串口屏发送数据
-                Drv_Uart_Transmit(&Uart5,Log_Info_SendBuffer,sizeof(Log_Info_SendBuffer));      
-            }
-        }
+            printf("%s\r\n",ReceBuffer);
+            Log_Info_SendBuffer[2] = ReadNum;
+            memcpy(&Log_Info_SendBuffer[3],ReceBuffer,LOG_SIZE);
+            Drv_Uart_Transmit(&Uart5,Log_Info_SendBuffer,sizeof(Log_Info_SendBuffer));  //向串口屏发送数据
+        }    
     }
 }
 

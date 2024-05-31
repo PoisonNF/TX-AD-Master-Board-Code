@@ -19,7 +19,7 @@ tagUART_T Uart1 =
 {
 	//串口工作模式配置
 	.tUARTHandle.Instance 						= USART1,					/* STM32 串口设备 */
-	.tUARTHandle.Init.BaudRate   				= 115200,					/* 串口波特率 */
+	.tUARTHandle.Init.BaudRate   				= 9600,						/* 串口波特率 */
 	.tUARTHandle.Init.WordLength 				= UART_WORDLENGTH_8B,		/* 数据位长度 */
 	.tUARTHandle.Init.StopBits   				= UART_STOPBITS_1,			/* 停止位长度 */
 	.tUARTHandle.Init.Parity     				= UART_PARITY_NONE,			/* 校验位设置 */

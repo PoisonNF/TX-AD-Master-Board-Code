@@ -47,6 +47,6 @@ void Task_UserInit(void)
     Drv_CAN_ITInit(&CAN);
 
 	/* 初始化PVD电源监测 */
-	Drv_PWR_PVD_Init(PWR_PVDLEVEL_6);		//监测最低电压为3.1V
+	Drv_PWR_PVD_Init(PWR_PVDLEVEL_4);		//监测最低电压为2.7V
 }
 

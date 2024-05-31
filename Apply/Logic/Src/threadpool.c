@@ -87,6 +87,7 @@ void CAN_Task(void *pvParameters)
     }
 }
 
+extern uint32_t logNum;
 /**
  * @brief TF卡存储log任务
  * @param pvParameters : 传入参数(未用到)
@@ -98,9 +99,12 @@ void TFCard_Task(void *pvParameters)
 
     Task_TFCard_CreateFolder(&TFCard);  //创建保存log文件夹
 
-    //xEventGroupSetBits(Log_Event,EVENT1);   //标记测试事件成立
+    logNum = Task_TFCard_FindEnd(&TFCard);          //遍历TF卡计算总条数
+    printf("TF卡现有%d条log\r\n",logNum);
+
+    //xEventGroupSetBits(Log_Event,EVENT1);         //标记测试事件成立
     xEventGroupSetBits(Log_Event,POWER_ON_EVENT);   //标记开机事件成立 
-    
+
     while (1)
     {
         Task_TFCard_Handle(&TFCard);

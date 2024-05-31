@@ -10,6 +10,8 @@ static uint8_t Test_log[15] = "Hello World!";       //测试log使用
 static uint8_t PowerON_log[15] = "Power ON!";       //开机log使用
 static uint8_t PowerOFF_log[15] = "Power OFF!";     //关机log使用
 
+uint32_t logNum = 0;                                //log条数记录
+
 /**
  * @brief TF卡创建log文件函数
  * @param _tFATFS-FATFS结构体指针
@@ -75,10 +77,33 @@ void Task_TFCard_WriteLog(tagFATFS_T *_tFATFS,char *_cpFileName,EventBits_t even
     {
         WriteLog_Buffer[98] = '\r';
         WriteLog_Buffer[99] = '\n';     //补回车换行
-        OCD_FATFS_Write_End(_tFATFS, (char *)_cpFileName, WriteLog_Buffer, LOG_SIZE , &sendNum);
+        OCD_FATFS_Write_End(_tFATFS, (char *)_cpFileName, WriteLog_Buffer, LOG_SIZE , &sendNum);    //写入log日志
+        logNum++;             //log条数计数器加一
         if(sendNum)
             printf("写入%d个字节 数据为%s\r\n",sendNum, WriteLog_Buffer);
     }
+}
+
+/**
+ * @brief TF卡寻找内容的末尾，确定偏移量函数
+ * @param _tFATFS-FATFS结构体指针
+ * @return uint32_t log条数
+ */
+uint32_t Task_TFCard_FindEnd(tagFATFS_T *_tFATFS)
+{
+    uint32_t ulOffsetNum = 0;
+    uint32_t ulReadNum = 0;
+    uint8_t ucReceBuffer[100] = {0};
+
+    /* 寻找内容的末尾，确定偏移量 */
+    do
+    {
+        OCD_FATFS_Read_SpecifyIndex(&TFCard, (char *)File_Name, ucReceBuffer , LOG_SIZE , ulOffsetNum * LOG_SIZE , &ulReadNum);
+        ulOffsetNum++;
+    }while(ulReadNum == LOG_SIZE);
+
+    ulOffsetNum--;    //ulOffsetNum会比实际情况后面一个偏移数，所以要减一消除
+    return ulOffsetNum;
 }
 
 /**

@@ -17,5 +17,6 @@
 void Task_TFCard_CreateFolder(tagFATFS_T *_tFATFS);
 void Task_TFCard_WriteLog(tagFATFS_T *_tFATFS,char *_cpFileName,EventBits_t event);
 void Task_TFCard_Handle(tagFATFS_T *_tFATFS);
+uint32_t Task_TFCard_FindEnd(tagFATFS_T *_tFATFS);
 
 #endif // !__TASKTFCARD_H_
