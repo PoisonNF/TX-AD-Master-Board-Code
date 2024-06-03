@@ -38,7 +38,7 @@ void Task_UserInit(void)
     Drv_Uart_DMAInit(&Uart3);
 
     /* 初始化串口屏 */
-    Drv_Uart_DMAInit(&Uart5);
+    Drv_Uart_ITInit(&Uart5);
 
     /* 初始化电源检测ADC */
     Drv_ADC_Init(PowerADC,1);

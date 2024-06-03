@@ -8,6 +8,8 @@ char RemoteIPAddrString[16] = "";                                     /* ´æ·ÅÔ¶³
 char LocalIPAddrString[16] = "";                                      /* ´æ·Å±¾µØIPµØÖ·×Ö·û´® */
 uint16_t RemotePort = 4001;                                           /* Á¬½ÓµÄÔ¶¶Ë¶Ë¿ÚºÅ£¬Ä¬ÈÏ4001 */
 
+uint16_t CurrentSendRate = 200;                                 /* µ±Ç°´«ÊäËÙÂÊ£¬Ä¬ÈÏ200hz */
+
 #define LWIP_UDP_RX_BUFSIZE         100                         /* ×î´ó½ÓÊÕÊı¾İ³¤¶È */
 #define LWIP_SEND_THREAD_PRIO       ( tskIDLE_PRIORITY + 9 )    /* ·¢ËÍÊı¾İÏß³ÌÓÅÏÈ¼¶ */
 
@@ -107,7 +109,7 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
 
             xSemaphoreGive(UDP_SendBuffer_Mutex);									//ÊÍ·Å»¥³âÁ¿£¬½âËø
         }
-        vTaskDelay(20);
+        vTaskDelay(4000 / CurrentSendRate);
     }
 }
 

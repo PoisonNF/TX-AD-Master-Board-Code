@@ -2,6 +2,7 @@
 
 static uint8_t HandleBuffer[9] = {0};		//等待处理的缓冲区,最后一个字节为ID号
 static uint8_t StoreLineNumber[96] = {0};	//用于存放96通道在LwIP_UDP_SendBuffer的存储行号
+uint8_t CurrentChannelNum = 96;				//当前需要的通道数 [1,96]
 
 /**
  * @brief CAN接受的AD数据处理函数
@@ -83,15 +84,21 @@ static void S_Data_Process(uint8_t *_ucCanMsg)
 	/* 数据拷贝 */
 	if(xSemaphoreTake(UDP_SendBuffer_Mutex,portMAX_DELAY) == pdTRUE)	//获取互斥量，上锁
 	{
-		LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumFInAll]][ChannelAddrF] = _ucCanMsg[1];
-		LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumFInAll]][ChannelAddrF + 1] = _ucCanMsg[2];
-		LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumFInAll]][ChannelAddrF + 2] = _ucCanMsg[3];
-		LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumFInAll]][290 + NoNum] |= (ValidMarkF << (7 - ChannelNumF)); 	//有效位拷贝
+		if(ChannelNumFInAll < CurrentChannelNum)	//判断是否超过当前设置通道上限
+		{
+			LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumFInAll]][ChannelAddrF] = _ucCanMsg[1];
+			LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumFInAll]][ChannelAddrF + 1] = _ucCanMsg[2];
+			LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumFInAll]][ChannelAddrF + 2] = _ucCanMsg[3];
+			LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumFInAll]][290 + NoNum] |= (ValidMarkF << (7 - ChannelNumF)); 	//有效位拷贝
+		}
 
-		LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumSInAll]][ChannelAddrS] = _ucCanMsg[5];
-		LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumSInAll]][ChannelAddrS + 1] = _ucCanMsg[6];
-		LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumSInAll]][ChannelAddrS + 2] = _ucCanMsg[7];
-		LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumSInAll]][290 + NoNum] |= (ValidMarkS << (7 - ChannelNumS)); 	//有效位拷贝
+		if(ChannelNumSInAll < CurrentChannelNum)	//判断是否超过当前设置通道上限
+		{
+			LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumSInAll]][ChannelAddrS] = _ucCanMsg[5];
+			LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumSInAll]][ChannelAddrS + 1] = _ucCanMsg[6];
+			LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumSInAll]][ChannelAddrS + 2] = _ucCanMsg[7];
+			LwIP_UDP_SendBuffer[StoreLineNumber[ChannelNumSInAll]][290 + NoNum] |= (ValidMarkS << (7 - ChannelNumS)); 	//有效位拷贝
+		}
 		xSemaphoreGive(UDP_SendBuffer_Mutex);									//释放互斥量，解锁
 	}
 

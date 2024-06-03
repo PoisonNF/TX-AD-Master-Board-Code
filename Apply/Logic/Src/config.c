@@ -252,7 +252,7 @@ tagCAN_T CAN =
 	.tCANFilter[2].SlaveStartFilterBank 					= 14,							/* 从CAN过滤器起始 */
 
 	/* CAN TX配置 */
-	.tCANTxHeader.StdId 								= 0x55,							/* 标准标识符 */
+	.tCANTxHeader.StdId 								= 0x30,							/* 标准标识符 */
 	.tCANTxHeader.ExtId 								= 0x00,							/* 拓展标识符（29位） */
 	.tCANTxHeader.IDE 									= CAN_ID_STD,    				/* 使用标准帧 */
 	.tCANTxHeader.RTR 									= CAN_RTR_DATA,					/* 数据帧 */

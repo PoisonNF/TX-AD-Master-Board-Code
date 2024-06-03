@@ -8,6 +8,8 @@
 
 #include "task_lwipudp.h"
 
+extern uint8_t CurrentChannelNum;
+
 void Task_CAN_Handle(tagCAN_T *_tCAN);
 
 #endif // !__TASKCAN_H_

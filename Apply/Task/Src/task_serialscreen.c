@@ -12,16 +12,8 @@ static uint8_t All_Boards_ResetBuffer[8] = {0xA5,0x00,0x00,0x00,0x00,0x00,0x00,0
 
 static uint8_t Version[4] = "V1.0";        //版本号
 
-static uint8_t IsSettingData = 0;       //标记处理设置数据
-static uint8_t SettingDataNum = 0;      //串口屏设置数据已接收长度计数
-static uint8_t SettingData_Buffer[27] = {0};    //存储串口屏设置数据
-
 #define	GET_BIT(x, bit)	((x & (1 << bit)) >> bit)	/* 获取第bit位 */
 #define RECENT_LOGNUM       5                       /* 要读取最近log的条数 */
-
-extern uint8_t NumberOfBoards;
-extern uint8_t File_Name[];
-extern uint32_t logNum;
 
 /**
  * @brief 查询系统信息处理函数
@@ -68,9 +60,28 @@ static void S_Setting_Info_Handle(void)
     Setting_Info_SendBuffer[2] = NumberOfBoards*8/10 + '0';
     Setting_Info_SendBuffer[3] = NumberOfBoards*8%10 + '0';
 
-    //添加当前采样速率，后8位在前
-    Setting_Info_SendBuffer[4] = 250;         //先写一个250hz后面在改
-    Setting_Info_SendBuffer[5] = 0;        //先写一个250hz后面在改
+    //添加当前传输速率
+    switch(CurrentSendRate)
+    {
+        case 250:
+            Setting_Info_SendBuffer[4] = 0x11;
+            Setting_Info_SendBuffer[5] = 0x00;
+            break;
+        case 200:
+            Setting_Info_SendBuffer[4] = 0x10;
+            Setting_Info_SendBuffer[5] = 0x00;
+            break;
+        case 160:
+            Setting_Info_SendBuffer[4] = 0x01;
+            Setting_Info_SendBuffer[5] = 0x00;
+            break;
+        case 100:
+            Setting_Info_SendBuffer[4] = 0x00;
+            Setting_Info_SendBuffer[5] = 0x00;
+            break;
+        default:
+            break;
+    }
 
     //添加远程IP地址和端口号信息
     Setting_Info_SendBuffer[6] = RemotePort & 0xFF;
@@ -211,18 +222,21 @@ static void S_Channel_Info_Handle(uint8_t PageNum)
  */
 static void S_Setting_Apply_Handle(uint8_t *SettingData)
 {
-    uint8_t SetChannelNum = 0;          //需要设置的通道数
-    uint8_t SetSamplingFreq = 0;        //需要设置的采样频率
     uint8_t remoteip[4],port[2];        //需要设置的远端IP地址和端口号
     uint8_t ip[4],mask[4],gw[4];        //存储本地IP地址信息
 
-    SetChannelNum = (SettingData[1] - '0')*10 + (SettingData[2] - '0');
-    UNUSED(SetChannelNum);
-    //根据需要设置的通道数进行处理，待定
+    //设置通道数[1,96]，从A板卡开始计算
+    CurrentChannelNum = (SettingData[1] - '0')*10 + (SettingData[2] - '0');
 
-    SetSamplingFreq = (SettingData[3] << 8) + SettingData[4];
-    UNUSED(SetSamplingFreq);
-    //根据需要设置的采样频率进行处理，待定
+    //设置udp发送速率
+    if(SettingData[3] & 0x11)   //250hz情况，仅在16通道及以下出现
+        CurrentSendRate = 250;
+    else if(SettingData[3] & 0x10)
+        CurrentSendRate = 200;  //200hz情况
+    else if(SettingData[3] & 0x01)
+        CurrentSendRate = 160;  //160hz情况
+    else if(SettingData[3] & 0x00)
+        CurrentSendRate = 100;  //100hz情况
 
     //需要设置的远端IP地址和端口号
     port[0] = SettingData[6];
@@ -266,24 +280,6 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
 }
 
 /**
- * @brief 拼接串口屏发送的设置数据
- * @param RecvData 串口接收的数据
- * @param RecvNum 接收到的长度
- */
-static void S_Setting_Apply_DataRecv(uint8_t *RecvData,uint8_t RecvNum)
-{
-    memcpy(&SettingData_Buffer[SettingDataNum],RecvData,RecvNum);
-    SettingDataNum += RecvNum;
-
-    if(SettingDataNum == sizeof(SettingData_Buffer))    //说明完全接收
-    {
-        IsSettingData = 0;  //标志位恢复进入数据处理
-        SettingDataNum = 0; //计数器归零
-        S_Setting_Apply_Handle(SettingData_Buffer);
-    }
-}
-
-/**
  * @brief 时间同步处理函数
  * @param TimeData 串口屏的设置数据
  */
@@ -324,13 +320,13 @@ void Task_SerialScreen_Handle(tagUART_T *_tUART)
     uint8_t SerialScreenRecvNum = 0;
 
     /* 串口屏数据接收 */
-    SerialScreenRecvNum = Drv_Uart_Receive_DMA(_tUART,SerialScreen_RecvBuffer);
+    SerialScreenRecvNum = Drv_Uart_Receive_IT(_tUART,SerialScreen_RecvBuffer);
     UNUSED(SerialScreenRecvNum);
 
 #ifdef PRINTF_DEBUG
     if(SerialScreenRecvNum != 0)
     {
-        for(uint16_t i = 0; i < SerialScreenRecvNum;i++)
+        for(uint8_t i = 0; i < SerialScreenRecvNum;i++)
         {
             printf("%x ",SerialScreen_RecvBuffer[i]);
             if(i == SerialScreenRecvNum - 1) printf("\r\n");
@@ -339,47 +335,33 @@ void Task_SerialScreen_Handle(tagUART_T *_tUART)
 #endif
 
     /* 串口屏数据解析 */
-    if(SerialScreen_RecvBuffer[SerialScreenRecvNum - 1] == 0xFF
-     &&SerialScreen_RecvBuffer[SerialScreenRecvNum - 2] == 0xFF
-     &&SerialScreen_RecvBuffer[SerialScreenRecvNum - 3] == 0xFF)
+    if(SerialScreen_RecvBuffer[0] == 0x0A && SerialScreenRecvNum == 4)  //询问电压和连接状态(每秒一次)     0x0A 0xF0 0xF0 0xF0
     {
-        switch(SerialScreen_RecvBuffer[0])
-        {
-            case 0x0A:      //询问电压和连接状态(每秒一次)     0x0A 0xFF 0xFF 0xFF
-                xSemaphoreGive(PowerDetect_Sema);   //释放电压检测信号量
-                break;        
-            case 0x0B:      //查询系统信息(仅进入时发送一次)    0x0B 0xFF 0xFF 0xFF
-                S_System_Info_Handle();
-                break;
-            case 0x0C:      //查询设置数据状态(进入界面时发送一次)   0x0C 0xFF 0xFF 0xFF
-                S_Setting_Info_Handle();
-                break;
-            case 0x0D:      //上传日志   0x0D 0xFF 0xFF 0xFF
-                S_Log_Info_Handle();
-                break;
-            case 0x0E:      //设置下传信息 (按下应用按钮时发送)    0x0E 信息数据 0xFF 0xFF 0xFF
-                /* 
-                    由于串口屏的发送特性，只能通过STM32进行拼接，代码在下面 
-                */
-                break;
-            case 0x0F:      //设查询通道信息 (进入界面时与进入界面后每五秒发送一次) 0x0F (0x0A-0X0D) 0xFF 0xFF 0xFF
-                S_Channel_Info_Handle(SerialScreen_RecvBuffer[1]);
-                break;
-            case 0x11:      //时间同步
-                S_TimeSYNC_Handle(SerialScreen_RecvBuffer);
-                break;
-            default:
-                break;
-        }
+        xSemaphoreGive(PowerDetect_Sema);   //释放电压检测信号量
     }
-
-    /* 串口屏设置数据拼接 */
-    if(SerialScreenRecvNum)
+    else if(SerialScreen_RecvBuffer[0] == 0x0B && SerialScreenRecvNum == 4) //查询系统信息(仅进入时发送一次)    0x0B 0xF0 0xF0 0xF0
     {
-        if(SerialScreen_RecvBuffer[0] == 0x0E)  //说明开始发送设置数据
-            IsSettingData = 1;  //标志位置1
-        if(IsSettingData)
-            S_Setting_Apply_DataRecv(SerialScreen_RecvBuffer,SerialScreenRecvNum);
+        S_System_Info_Handle();
+    }
+    else if(SerialScreen_RecvBuffer[0] == 0x0C && SerialScreenRecvNum == 4) //查询设置数据状态(进入界面时发送一次)   0x0C 0xF0 0xF0 0xF0
+    {
+        S_Setting_Info_Handle();
+    }
+    else if(SerialScreen_RecvBuffer[0] == 0x0D && SerialScreenRecvNum == 4) //上传日志   0x0D 0xF0 0xF0 0xF0
+    {
+        S_Log_Info_Handle();
+    }
+    else if(SerialScreen_RecvBuffer[0] == 0x0E && SerialScreenRecvNum == 27)    //设置下传信息 (按下应用按钮时发送)    0x0E 信息数据 0xF0 0xF0 0xF0
+    {
+        S_Setting_Apply_Handle(SerialScreen_RecvBuffer);
+    }
+    else if(SerialScreen_RecvBuffer[0] == 0x0F && SerialScreenRecvNum == 5)     //设查询通道信息 (进入界面时与进入界面后每五秒发送一次) 0x0F (0x0A-0X0D) 0xF0 0xF0 0xF0
+    {
+        S_Channel_Info_Handle(SerialScreen_RecvBuffer[1]);
+    }
+    else if(SerialScreen_RecvBuffer[0] == 0x11 && SerialScreenRecvNum == 18)    //时间同步
+    {
+        S_TimeSYNC_Handle(SerialScreen_RecvBuffer);
     }
 
     /* 清空缓存区 */

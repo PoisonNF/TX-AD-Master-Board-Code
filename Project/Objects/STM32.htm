@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\STM32.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\STM32.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri May 31 16:21:28 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri May 31 17:30:15 2024
 <BR><P>
 <H3>Maximum Stack Usage =        752 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -465,12 +465,12 @@ Global Symbols
 <LI><a href="#[15c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
 <LI><a href="#[159]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
 <LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_SerialScreen_Handle
+<LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_sock_make_addr
+<LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_write
 <LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_take_at
 <LI><a href="#[1be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_take
 <LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy_partial
 <LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy_partial_pbuf
-<LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_sock_make_addr
-<LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_write
 <LI><a href="#[1fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_reass
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_frag
 <LI><a href="#[1ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;icmp_input
@@ -2202,36 +2202,6 @@ Global Symbols
 <LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LwIP_Init
 <LI><a href="#[18f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_UserInit
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;do_memp_malloc_pool
-<LI><a href="#[1c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;do_memp_free_pool
-<LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_trim
-<LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;plug_holes
-<LI><a href="#[21b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_init
-<LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_take_at
-<LI><a href="#[1be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_take
-<LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_send
-<LI><a href="#[1b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_check_entry
-<LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_free
-<LI><a href="#[2da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_inpkt
-<LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread_handle_msg
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread
-<LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy_partial
-<LI><a href="#[2a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abandon
-<LI><a href="#[2c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_netif_ip_addr_changed_pcblist
-<LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_listen_closed
-<LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_kill_state
-<LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown_fin
-<LI><a href="#[2b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown
-<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_remove_header
-<LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_ref
-<LI><a href="#[1fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_realloc
-<LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy_partial_pbuf
-<LI><a href="#[1f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy
-<LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_clone
-<LI><a href="#[271]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc_reference
-<LI><a href="#[270]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_add_header_impl
-<LI><a href="#[26d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netif_issue_reports
-<LI><a href="#[26c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netif_do_set_ipaddr
 <LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_sock_make_addr
 <LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recvfrom_udp_raw
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recv_tcp
@@ -2282,6 +2252,36 @@ Global Symbols
 <LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_new_with_proto_and_callback
 <LI><a href="#[243]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_getaddr
 <LI><a href="#[20e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_bind
+<LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;do_memp_malloc_pool
+<LI><a href="#[1c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;do_memp_free_pool
+<LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_trim
+<LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;plug_holes
+<LI><a href="#[21b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_init
+<LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_take_at
+<LI><a href="#[1be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_take
+<LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_send
+<LI><a href="#[1b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_check_entry
+<LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_free
+<LI><a href="#[2da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_inpkt
+<LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread_handle_msg
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread
+<LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy_partial
+<LI><a href="#[2a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abandon
+<LI><a href="#[2c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_netif_ip_addr_changed_pcblist
+<LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_listen_closed
+<LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_kill_state
+<LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown_fin
+<LI><a href="#[2b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_remove_header
+<LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_ref
+<LI><a href="#[1fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_realloc
+<LI><a href="#[274]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy_partial_pbuf
+<LI><a href="#[1f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy
+<LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_clone
+<LI><a href="#[271]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc_reference
+<LI><a href="#[270]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_add_header_impl
+<LI><a href="#[26d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netif_issue_reports
+<LI><a href="#[26c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netif_do_set_ipaddr
 <LI><a href="#[1fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_reass
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_frag
 <LI><a href="#[1ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;icmp_input
@@ -2440,9 +2440,9 @@ Global Symbols
 <P><STRONG><a name="[20f]"></a>err_to_errno</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, err.o(i.err_to_errno))
 <BR><BR>[Called By]<UL><LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_sendto
 <LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_bind
+<LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recv_tcp
 <LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_send
 <LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recvfrom
-<LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recv_tcp
 </UL>
 
 <P><STRONG><a name="[1c8]"></a>etharp_cleanup_netif</STRONG> (Thumb, 40 bytes, Stack size 16 bytes, etharp.o(i.etharp_cleanup_netif))
@@ -2772,10 +2772,10 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htons
 <LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
 <LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc
-<LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_ref
-<LI><a href="#[1f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloced_custom
 <LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_cat
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_malloc
+<LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_ref
+<LI><a href="#[1f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloced_custom
 <LI><a href="#[1fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip_frag_free_pbuf_custom_ref
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
@@ -2831,10 +2831,10 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htons
 <LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
-<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_remove_header
-<LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_clen
 <LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_cat
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_malloc
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_remove_header
+<LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_clen
 <LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip_reass_remove_oldest_datagram
 <LI><a href="#[205]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip_reass_dequeue_datagram
 <LI><a href="#[204]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip_reass_chain_frag_into_datagram_and_validate
@@ -2939,11 +2939,11 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_sendto
 <LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_bind
 <LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_LwIP_UDP_Handle
-<LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_send
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_input
 <LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_sock_make_addr
 <LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_write
 <LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_output
+<LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_send
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_input
 <LI><a href="#[1fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_reass
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_frag
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ethernet_output
@@ -3125,12 +3125,12 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 336<LI>Call Chain = lwip_sendto &rArr; lwip_send &rArr;  lwip_sendto (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htons
-<LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_send
 <LI><a href="#[1dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_socket
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netbuf_ref
 <LI><a href="#[24c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netbuf_free
 <LI><a href="#[20f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;err_to_errno
 <LI><a href="#[24b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_send
+<LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_send
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;S_LwIP_UDP_Send_Entrance
@@ -3229,15 +3229,15 @@ Global Symbols
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
-<LI><a href="#[2a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sys_check_timeouts
-<LI><a href="#[2da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_inpkt
-<LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread_handle_msg
-<LI><a href="#[2b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown
 <LI><a href="#[1b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;udp_remove
 <LI><a href="#[247]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netbuf_delete
 <LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_free
 <LI><a href="#[258]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_alloc
 <LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_new_with_proto_and_callback
+<LI><a href="#[2a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sys_check_timeouts
+<LI><a href="#[2da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_inpkt
+<LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread_handle_msg
+<LI><a href="#[2b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown
 <LI><a href="#[2b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_seg_free
 <LI><a href="#[2aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_free
 <LI><a href="#[205]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip_reass_dequeue_datagram
@@ -3263,10 +3263,10 @@ Global Symbols
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc
-<LI><a href="#[2da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_inpkt
-<LI><a href="#[271]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc_reference
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recv_udp
 <LI><a href="#[258]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_alloc
+<LI><a href="#[2da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_inpkt
+<LI><a href="#[271]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc_reference
 <LI><a href="#[1fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_reass
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_frag
 <LI><a href="#[2de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;udp_new
@@ -3544,16 +3544,16 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
 <LI><a href="#[1da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_malloc
+<LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_malloc
 <LI><a href="#[271]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc_reference
 <LI><a href="#[272]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_init_alloced_pbuf
-<LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_malloc
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;low_level_input
-<LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_send
-<LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_clone
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netbuf_ref
 <LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_write
+<LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_send
+<LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_clone
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_frag
 <LI><a href="#[1ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;icmp_input
 <LI><a href="#[1ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;icmp_send_response
@@ -3568,8 +3568,8 @@ Global Symbols
 <P><STRONG><a name="[271]"></a>pbuf_alloc_reference</STRONG> (Thumb, 60 bytes, Stack size 32 bytes, pbuf.o(i.pbuf_alloc_reference))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = pbuf_alloc_reference &rArr; memp_malloc &rArr; do_memp_malloc_pool &rArr; __2printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[272]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_init_alloced_pbuf
-<LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_malloc
+<BR>[Calls]<UL><LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_malloc
+<LI><a href="#[272]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_init_alloced_pbuf
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc
@@ -3588,8 +3588,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[273]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_chain
-<LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_write
+<BR>[Called By]<UL><LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_write
+<LI><a href="#[273]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_chain
 <LI><a href="#[1fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_reass
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_frag
 </UL>
@@ -3597,8 +3597,8 @@ Global Symbols
 <P><STRONG><a name="[273]"></a>pbuf_chain</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, pbuf.o(i.pbuf_chain))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = pbuf_chain &rArr; pbuf_cat &rArr; __2printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_ref
-<LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_cat
+<BR>[Calls]<UL><LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_cat
+<LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_ref
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;udp_sendto_if_src
 </UL>
@@ -3658,18 +3658,12 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sys_arch_unprotect
 <LI><a href="#[1a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sys_arch_protect
-<LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_free
 <LI><a href="#[208]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_free
+<LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_free
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ethernetif_input
-<LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_send
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_input
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ethernet_input
-<LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread_handle_msg
-<LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free_header
-<LI><a href="#[1fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_realloc
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recv_tcp
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netbuf_ref
 <LI><a href="#[24c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netbuf_free
@@ -3679,6 +3673,12 @@ Global Symbols
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recv_udp
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recv_tcp
 <LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_drain
+<LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_send
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_input
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ethernet_input
+<LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread_handle_msg
+<LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free_header
+<LI><a href="#[1fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_realloc
 <LI><a href="#[1fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_reass
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_frag
 <LI><a href="#[1ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;icmp_input
@@ -3838,15 +3838,15 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortEnterCritical
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_callback
+<LI><a href="#[1a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alloc_socket
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;err_tcp
+<LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_err
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;do_memp_malloc_pool
 <LI><a href="#[1c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;do_memp_free_pool
 <LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_trim
 <LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_free
 <LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_ref
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_callback
-<LI><a href="#[1a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alloc_socket
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;err_tcp
-<LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_err
 </UL>
 
 <P><STRONG><a name="[229]"></a>sys_arch_sem_wait</STRONG> (Thumb, 68 bytes, Stack size 16 bytes, sys_arch.o(i.sys_arch_sem_wait))
@@ -3864,15 +3864,15 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vPortExitCritical
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_callback
+<LI><a href="#[1a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alloc_socket
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;err_tcp
+<LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_err
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;do_memp_malloc_pool
 <LI><a href="#[1c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;do_memp_free_pool
 <LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_trim
 <LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_free
 <LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_ref
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_callback
-<LI><a href="#[1a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;alloc_socket
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;err_tcp
-<LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_err
 </UL>
 
 <P><STRONG><a name="[2a0]"></a>sys_check_timeouts</STRONG> (Thumb, 60 bytes, Stack size 24 bytes, timeouts.o(i.sys_check_timeouts))
@@ -3915,10 +3915,10 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[165]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueGenericSend
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_inpkt
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recv_udp
+<BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recv_udp
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recv_tcp
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;err_tcp
+<LI><a href="#[2da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_inpkt
 </UL>
 
 <P><STRONG><a name="[22a]"></a>sys_mutex_lock</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, sys_arch.o(i.sys_mutex_lock))
@@ -3928,13 +3928,13 @@ Global Symbols
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_malloc
-<LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_trim
-<LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_free
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread
 <LI><a href="#[25d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_send_msg_wait_sem
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_write
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_delconn
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_close
+<LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_trim
+<LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_free
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread
 </UL>
 
 <P><STRONG><a name="[253]"></a>sys_mutex_new</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, sys_arch.o(i.sys_mutex_new))
@@ -3954,13 +3954,13 @@ Global Symbols
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_malloc
-<LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_trim
-<LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_free
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread
 <LI><a href="#[25d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_send_msg_wait_sem
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_write
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_delconn
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_close
+<LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_trim
+<LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_free
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcpip_thread
 </UL>
 
 <P><STRONG><a name="[217]"></a>sys_now</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, sys_arch.o(i.sys_now))
@@ -4053,8 +4053,8 @@ Global Symbols
 <LI><a href="#[2aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_free
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_kill_state
-<LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abort
+<BR>[Called By]<UL><LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abort
+<LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_kill_state
 <LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_listen_input
 </UL>
 
@@ -4063,9 +4063,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abandon
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_netif_ip_addr_changed_pcblist
-<LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_drain
+<BR>[Called By]<UL><LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_drain
 <LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_close_internal
+<LI><a href="#[2c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_netif_ip_addr_changed_pcblist
 <LI><a href="#[1ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_input
 <LI><a href="#[2bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_process
 <LI><a href="#[2ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_alloc
@@ -4078,10 +4078,10 @@ Global Symbols
 <P><STRONG><a name="[2ab]"></a>tcp_alloc</STRONG> (Thumb, 282 bytes, Stack size 24 bytes, tcp.o(i.tcp_alloc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 592<LI>Call Chain = tcp_alloc &rArr; tcp_kill_state &rArr; tcp_abandon &rArr; tcp_pcb_remove &rArr; tcp_output &rArr; tcp_send_empty_ack &rArr; tcp_output_control_segment &rArr; ip4_output_if &rArr; ip4_output_if_src &rArr; ip4_frag &rArr; pbuf_alloc &rArr; pbuf_free &rArr; mem_free &rArr; sys_mutex_unlock &rArr; xQueueGiveMutexRecursive &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_kill_state
-<LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown_fin
-<LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abort
+<BR>[Calls]<UL><LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abort
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_malloc
+<LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_kill_state
+<LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown_fin
 <LI><a href="#[166]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[279]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_new_ip_type
@@ -4147,8 +4147,8 @@ Global Symbols
 <P><STRONG><a name="[2b9]"></a>tcp_fasttmr</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, tcp.o(i.tcp_fasttmr))
 <BR><BR>[Stack]<UL><LI>Max Depth = 584<LI>Call Chain = tcp_fasttmr &rArr; tcp_process_refused_data &rArr; tcp_recv_null &rArr; tcp_close &rArr; tcp_close_shutdown &rArr; tcp_close_shutdown_fin &rArr; tcp_output &rArr; tcp_send_empty_ack &rArr; tcp_output_control_segment &rArr; ip4_output_if &rArr; ip4_output_if_src &rArr; ip4_frag &rArr; pbuf_alloc &rArr; pbuf_free &rArr; mem_free &rArr; sys_mutex_unlock &rArr; xQueueGiveMutexRecursive &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown_fin
-<LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_output
+<BR>[Calls]<UL><LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_output
+<LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown_fin
 <LI><a href="#[2ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_process_refused_data
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_tmr
@@ -4180,10 +4180,10 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htons
 <LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
-<LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htonl
-<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_remove_header
 <LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_output
 <LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abort
+<LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htonl
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_remove_header
 <LI><a href="#[2be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_send_empty_ack
 <LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_addr_isbroadcast_u32
 <LI><a href="#[2bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_timewait_input
@@ -4247,9 +4247,9 @@ Global Symbols
 <LI><a href="#[2b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_seg_free
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown_fin
-<LI><a href="#[235]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_recved
+<BR>[Called By]<UL><LI><a href="#[235]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_recved
 <LI><a href="#[238]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_writemore
+<LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown_fin
 <LI><a href="#[1ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_input
 <LI><a href="#[2bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_timewait_input
 <LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_listen_input
@@ -4426,8 +4426,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_seg_free
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abandon
-<LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_write
+<BR>[Called By]<UL><LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_write
+<LI><a href="#[2a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abandon
 <LI><a href="#[2b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_pcb_purge
 </UL>
 
@@ -4546,8 +4546,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htons
 <LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
 <LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc
-<LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_clen
 <LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_cat
+<LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_clen
 <LI><a href="#[2d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_write_checks
 <LI><a href="#[2cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_pbuf_prealloc
 <LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_create_segment
@@ -4680,8 +4680,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[208]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_free
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_call_found
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_delconn
+<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_delconn
+<LI><a href="#[1b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_call_found
 </UL>
 
 <P><STRONG><a name="[237]"></a>udp_send</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, udp.o(i.udp_send))
@@ -4701,9 +4701,9 @@ Global Symbols
 <LI><a href="#[1f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_route
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_send
-<LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;udp_send
+<BR>[Called By]<UL><LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;udp_send
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_netconn_do_send
+<LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_send
 </UL>
 
 <P><STRONG><a name="[2df]"></a>udp_sendto_if</STRONG> (Thumb, 80 bytes, Stack size 24 bytes, udp.o(i.udp_sendto_if))
@@ -4721,9 +4721,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htons
 <LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
 <LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc
+<LI><a href="#[224]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;udp_bind
 <LI><a href="#[273]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_chain
 <LI><a href="#[1d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_add_header
-<LI><a href="#[224]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;udp_bind
 <LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ip4_output_if_src
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
@@ -5967,20 +5967,20 @@ Local Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[16b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_sendto
 <LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_bind
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_callback
 <LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_send
 <LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recvfrom
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_callback
 </UL>
 
 <P><STRONG><a name="[23e]"></a>lwip_recv_tcp</STRONG> (Thumb, 266 bytes, Stack size 40 bytes, sockets.o(i.lwip_recv_tcp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 304<LI>Call Chain = lwip_recv_tcp &rArr; netconn_recv_tcp_pbuf_flags &rArr; netconn_recv_data_tcp &rArr; netconn_close_shutdown &rArr; netconn_apimsg &rArr; tcpip_send_msg_wait_sem &rArr; sys_mutex_unlock &rArr; xQueueGiveMutexRecursive &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
-<LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free_header
-<LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy_partial
 <LI><a href="#[20f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;err_to_errno
 <LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_tcp_recvd
 <LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_recv_tcp_pbuf_flags
+<LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free_header
+<LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy_partial
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recvfrom
@@ -5989,10 +5989,10 @@ Local Symbols
 <P><STRONG><a name="[245]"></a>lwip_recvfrom_udp_raw</STRONG> (Thumb, 220 bytes, Stack size 48 bytes, sockets.o(i.lwip_recvfrom_udp_raw))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = lwip_recvfrom_udp_raw &rArr; netbuf_delete &rArr; pbuf_free &rArr; mem_free &rArr; sys_mutex_unlock &rArr; xQueueGiveMutexRecursive &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
-<BR>[Calls]<UL><LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy_partial
-<LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_sock_make_addr
+<BR>[Calls]<UL><LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_sock_make_addr
 <LI><a href="#[247]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netbuf_delete
 <LI><a href="#[246]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;netconn_recv_udp_raw_netbuf_flags
+<LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_copy_partial
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recvfrom
@@ -6005,8 +6005,8 @@ Local Symbols
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recvfrom
-<LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recvfrom_udp_raw
+<BR>[Called By]<UL><LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recvfrom_udp_raw
+<LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_recvfrom
 </UL>
 
 <P><STRONG><a name="[1de]"></a>select_check_waiters</STRONG> (Thumb, 208 bytes, Stack size 56 bytes, sockets.o(i.select_check_waiters))
@@ -6083,11 +6083,11 @@ Local Symbols
 <BR>[Calls]<UL><LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htons
 <LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
 <LI><a href="#[1bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_alloc
+<LI><a href="#[1c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;udp_sendto
 <LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_take_at
 <LI><a href="#[1be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_take
 <LI><a href="#[1bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_put_at
 <LI><a href="#[1b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dns_call_found
-<LI><a href="#[1c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;udp_sendto
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[1bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 </UL>
@@ -6205,9 +6205,9 @@ Local Symbols
 <P><STRONG><a name="[2b0]"></a>tcp_close_shutdown</STRONG> (Thumb, 264 bytes, Stack size 32 bytes, tcp.o(i.tcp_close_shutdown))
 <BR><BR>[Stack]<UL><LI>Max Depth = 528<LI>Call Chain = tcp_close_shutdown &rArr; tcp_close_shutdown_fin &rArr; tcp_output &rArr; tcp_send_empty_ack &rArr; tcp_output_control_segment &rArr; ip4_output_if &rArr; ip4_output_if_src &rArr; ip4_frag &rArr; pbuf_alloc &rArr; pbuf_free &rArr; mem_free &rArr; sys_mutex_unlock &rArr; xQueueGiveMutexRecursive &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_listen_closed
+<BR>[Calls]<UL><LI><a href="#[208]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_free
+<LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_listen_closed
 <LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_close_shutdown_fin
-<LI><a href="#[208]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_free
 <LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_trigger_input_pcb_close
 <LI><a href="#[2a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_rst
 <LI><a href="#[2a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_pcb_remove
@@ -6292,8 +6292,8 @@ Local Symbols
 <P><STRONG><a name="[2bd]"></a>tcp_listen_input</STRONG> (Thumb, 256 bytes, Stack size 32 bytes, tcp_in.o(i.tcp_listen_input))
 <BR><BR>[Stack]<UL><LI>Max Depth = 624<LI>Call Chain = tcp_listen_input &rArr; tcp_alloc &rArr; tcp_kill_state &rArr; tcp_abandon &rArr; tcp_pcb_remove &rArr; tcp_output &rArr; tcp_send_empty_ack &rArr; tcp_output_control_segment &rArr; ip4_output_if &rArr; ip4_output_if_src &rArr; ip4_frag &rArr; pbuf_alloc &rArr; pbuf_free &rArr; mem_free &rArr; sys_mutex_unlock &rArr; xQueueGiveMutexRecursive &rArr; xQueueGenericSend &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abandon
-<LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_output
+<BR>[Calls]<UL><LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_output
+<LI><a href="#[2a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_abandon
 <LI><a href="#[2c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_parseopt
 <LI><a href="#[2af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_timer_needed
 <LI><a href="#[2a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_rst
@@ -6367,9 +6367,9 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htons
 <LI><a href="#[1c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_free
+<LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_malloc
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwip_htonl
 <LI><a href="#[1d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pbuf_add_header
-<LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;memp_malloc
 <LI><a href="#[2b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tcp_seg_free
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>

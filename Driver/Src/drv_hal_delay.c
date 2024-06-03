@@ -88,17 +88,15 @@ void Drv_Delay_Us(uint32_t _ulVal)
 #endif
 
 #ifdef FREERTOS_ENABLE
-    uint32_t tCnt, tDelayCnt;
-    uint32_t tStart;
-           
-    tStart = DWT_CYCCNT; /* 刚进入时的计数器值 */
-    tCnt = 0;
-    tDelayCnt = _ulVal * (SystemCoreClock / 1000000);
-    /* 需要的节拍数 */    /*SystemCoreClock :系统时钟频率*/                 
+    uint32_t ulCnt, ulDelayCnt ,ulStart = 0;
 
-    while(tCnt < tDelayCnt)
+    ulStart = DWT_CYCCNT; /* 刚进入时的计数器值 */
+    ulCnt = 0;
+    ulDelayCnt = _ulVal * (SystemCoreClock / 1000000);     /* 需要的节拍数 */  /* SystemCoreClock :系统时钟频率 */   
+
+    while(ulCnt < ulDelayCnt)
     {
-        tCnt = DWT_CYCCNT - tStart; 
+        ulCnt = DWT_CYCCNT - ulStart; 
         /* 求减过程中，如果发生第一次32位计数器重新计数，依然可以正确计算 */       
     }
 #endif

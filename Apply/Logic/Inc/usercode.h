@@ -9,6 +9,10 @@
 void UserLogic_Code(void);
 void Start_Task(void *pvParameters);        /* 任务函数 */
 
+extern uint8_t NumberOfBoards;
+extern uint8_t File_Name[];
+extern uint32_t logNum;
+
 /* 信号量句柄 */
 extern SemaphoreHandle_t PowerDetect_Sema;  /* 电源检测信号量 */
 

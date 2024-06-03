@@ -11,6 +11,7 @@
 #include "lwip_comm.h"
 #include "task_eeprom.h"
 #include "task_tfcard.h"
+#include "task_can.h"
 
 void Task_SerialScreen_Handle(tagUART_T *_tUART);
 

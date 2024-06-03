@@ -87,8 +87,38 @@ void UART5_IRQHandler(void)
     uint32_t Save_Status;
     Save_Status = taskENTER_CRITICAL_FROM_ISR();      //中断级进入临界段
 	Drv_Uart_IRQHandler(&Uart5);
-	Drv_Uart_DMA_RxHandler(&Uart5);
     taskEXIT_CRITICAL_FROM_ISR(Save_Status);       //中断级退出临界段
+}
+
+static uint8_t FrameEndCounter = 0;     //帧尾计数器
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if(huart->Instance == UART5)
+    {
+        Uart5.tRxInfo.ucpITRxCache[Uart5.tRxInfo.usRxCnt] = Uart5.tRxInfo.ucpRxBuffer[0];
+        Uart5.tRxInfo.usRxCnt++;
+
+        /* 接收到0xF0的处理 */
+        if(Uart5.tRxInfo.ucpRxBuffer[0] == 0xF0)
+        {
+            FrameEndCounter++;
+
+            if(FrameEndCounter == 3)
+            {
+                /* 标志位清零 */
+                FrameEndCounter = 0;
+                /* 保存接收到的长度 */
+                Uart5.tRxInfo.usRxLength = Uart5.tRxInfo.usRxCnt;
+                /* 接收计数器清零 */
+                Uart5.tRxInfo.usRxCnt = 0;
+                /* 接收完成标志位置1 */
+                Uart5.tRxInfo.ucRxCplt = 1;
+            }
+        }
+
+        /* 等待下一个字节接收完成 */
+        while(HAL_UART_Receive_IT(&Uart5.tUARTHandle, Uart5.tRxInfo.ucpRxBuffer, 1) != HAL_OK);
+    }
 }
 
 /**
