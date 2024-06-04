@@ -4,13 +4,16 @@ static uint8_t SerialScreen_RecvBuffer[50] = {0};   //串口屏接收缓存区
 static uint8_t Channel_Info_SendBuffer[99] = {0};   //通道信息发送缓存区
 static uint8_t System_Info_SendBuffer[27] = {0};   //系统信息发送缓存区
 static uint8_t Setting_Info_SendBuffer[26] = {0};   //设置信息发送缓存区
-static uint8_t Log_Info_SendBuffer[104] = {0};   //日志信息发送缓存区
+static uint8_t Log_Info_SendBuffer[204] = {0};   //日志信息发送缓存区
 
 static uint8_t SettingCplt_SendBuffer[3] = {0x33,0xBB,0x0A};   //设置完成返回给串口的数组
 static uint8_t All_Boards_StopBuffer[8] = {0xA3,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   //所有板卡停止指令，通过CAN广播
 static uint8_t All_Boards_ResetBuffer[8] = {0xA5,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   //所有板卡复位指令，通过CAN广播
 
 static uint8_t Version[4] = "V1.0";        //版本号
+
+uint8_t SetRemoteip[4],SetPort[2];           //需要设置的远端IP地址和端口号
+uint8_t SetIP[4],SetMask[4],SetGW[4];        //需要设置的IP地址信息
 
 #define	GET_BIT(x, bit)	((x & (1 << bit)) >> bit)	/* 获取第bit位 */
 #define RECENT_LOGNUM       5                       /* 要读取最近log的条数 */
@@ -113,31 +116,57 @@ static void S_Setting_Info_Handle(void)
 static void S_Log_Info_Handle(void)
 {
     uint32_t ReadNum = 0;
-    uint32_t OffSetNum = 0;
-    uint8_t ReceBuffer[100] = {0};
+    uint8_t ReceBuffer[LOG_SIZE] = {0};
 
     /* 帧头帧尾赋值 */
     Log_Info_SendBuffer[0] = 0x44;
     Log_Info_SendBuffer[1] = 0xAA;
-    Log_Info_SendBuffer[103] = 0x0A;
+    Log_Info_SendBuffer[LOG_SIZE + 3] = 0x0A;
 
     /* TF卡内不足最少log条数处理 */
     if(logNum <= RECENT_LOGNUM)
-        OffSetNum = logNum + RECENT_LOGNUM;
-    else 
-        OffSetNum = logNum;
-    
-    /* 将TF卡log内容读取并发送给串口屏 */
-    for(uint8_t index = OffSetNum - RECENT_LOGNUM; index < OffSetNum; index++)
     {
-        OCD_FATFS_Read_SpecifyIndex(&TFCard, (char *)File_Name, ReceBuffer , LOG_SIZE, index * LOG_SIZE , &ReadNum);
-        if(ReadNum)
+        for(uint32_t index = 0; index < logNum; index++)
         {
-            printf("%s\r\n",ReceBuffer);
-            Log_Info_SendBuffer[2] = ReadNum;
-            memcpy(&Log_Info_SendBuffer[3],ReceBuffer,LOG_SIZE);
-            Drv_Uart_Transmit(&Uart5,Log_Info_SendBuffer,sizeof(Log_Info_SendBuffer));  //向串口屏发送数据
-        }    
+            OCD_FATFS_Read_SpecifyIndex(&TFCard, (char *)File_Name, ReceBuffer , LOG_SIZE, index * LOG_SIZE , &ReadNum);
+            if(ReadNum)
+            {
+                printf("%s\r\n",ReceBuffer);
+                Log_Info_SendBuffer[2] = ReadNum;
+                memcpy(&Log_Info_SendBuffer[3],ReceBuffer,LOG_SIZE);
+#ifdef PRINTF_DEBUG
+                for(uint8_t i = 0; i < sizeof(Log_Info_SendBuffer);i++)
+                {
+                    printf("%x ",Log_Info_SendBuffer[i]);
+                    if(i == sizeof(Log_Info_SendBuffer) - 1) printf("\r\n");
+                }
+#endif
+                Drv_Uart_Transmit(&Uart5,Log_Info_SendBuffer,sizeof(Log_Info_SendBuffer));  //向串口屏发送数据
+            }
+        }
+    }
+
+    /* TF卡内大于最少log条数处理 */
+    else
+    {
+        for(uint32_t index = logNum - RECENT_LOGNUM; index < logNum; index++)
+        {
+            OCD_FATFS_Read_SpecifyIndex(&TFCard, (char *)File_Name, ReceBuffer , LOG_SIZE, index * LOG_SIZE , &ReadNum);
+            if(ReadNum)
+            {
+                printf("%s\r\n",ReceBuffer);
+                Log_Info_SendBuffer[2] = ReadNum;
+                memcpy(&Log_Info_SendBuffer[3],ReceBuffer,LOG_SIZE);
+#ifdef PRINTF_DEBUG
+                for(uint8_t i = 0; i < sizeof(Log_Info_SendBuffer);i++)
+                {
+                    printf("%x ",Log_Info_SendBuffer[i]);
+                    if(i == sizeof(Log_Info_SendBuffer) - 1) printf("\r\n");
+                }
+#endif
+                Drv_Uart_Transmit(&Uart5,Log_Info_SendBuffer,sizeof(Log_Info_SendBuffer));  //向串口屏发送数据
+            }            
+        }
     }
 }
 
@@ -222,31 +251,28 @@ static void S_Channel_Info_Handle(uint8_t PageNum)
  */
 static void S_Setting_Apply_Handle(uint8_t *SettingData)
 {
-    uint8_t remoteip[4],port[2];        //需要设置的远端IP地址和端口号
-    uint8_t ip[4],mask[4],gw[4];        //存储本地IP地址信息
-
     //设置通道数[1,96]，从A板卡开始计算
     CurrentChannelNum = (SettingData[1] - '0')*10 + (SettingData[2] - '0');
 
     //设置udp发送速率
-    if(SettingData[3] & 0x11)   //250hz情况，仅在16通道及以下出现
+    if(SettingData[3] == 0x11)   //250hz情况，仅在16通道及以下出现
         CurrentSendRate = 250;
-    else if(SettingData[3] & 0x10)
+    else if(SettingData[3] == 0x10)
         CurrentSendRate = 200;  //200hz情况
-    else if(SettingData[3] & 0x01)
+    else if(SettingData[3] == 0x01)
         CurrentSendRate = 160;  //160hz情况
-    else if(SettingData[3] & 0x00)
+    else if(SettingData[3] == 0x00)
         CurrentSendRate = 100;  //100hz情况
 
     //需要设置的远端IP地址和端口号
-    port[0] = SettingData[6];
-    port[1] = SettingData[5];
-    memcpy(remoteip,&SettingData[7],4);
+    SetPort[0] = SettingData[6];
+    SetPort[1] = SettingData[5];
+    memcpy(SetRemoteip,&SettingData[7],4);
 
     //需要设置的本地IP地址
-    memcpy(ip,&SettingData[11],4);
-    memcpy(mask,&SettingData[15],4);
-    memcpy(gw,&SettingData[19],4);
+    memcpy(SetIP,&SettingData[11],4);
+    memcpy(SetMask,&SettingData[15],4);
+    memcpy(SetGW,&SettingData[19],4);
 
     //需要设置的模式
     if(SettingData[23] == 0x01)
@@ -258,6 +284,9 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
         //设置成TCP模式
     }
 
+    //标记设置事件成立，将信息保存到TF卡内
+    xEventGroupSetBits(Log_Event,SET_EVENT);
+
     //向所有板卡广播停止指令
     Drv_CAN_SendMsg(&CAN,All_Boards_StopBuffer,8);
     vTaskDelay(1000);
@@ -267,11 +296,11 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
     //等待1s
     vTaskDelay(1000);
 
-    //保存在EEPROM里
-    Task_EEPROM_WriteAddrInfo(remoteip, port, ip, mask, gw);
+    //往EEPROM里保存IP地址信息
+    Task_EEPROM_WriteAddrInfo(SetRemoteip, SetPort, SetIP, SetMask, SetGW);
 
-    //向串口屏发送主板设置完成
-    Drv_Uart_Transmit(&Uart5,SettingCplt_SendBuffer,sizeof(SettingCplt_SendBuffer));
+    //往EEPROM里保存通道数量和传输速率信息
+    Task_EEPROM_WriteParameter(CurrentChannelNum, CurrentSendRate);
 
     vTaskDelay(2000);
 
@@ -309,6 +338,16 @@ static void S_TimeSYNC_Handle(uint8_t *TimeData)
     }
 	printf("\r\n");
 #endif
+}
+
+/**
+ * @brief 告知串口屏复位完毕
+ * @param _tUART-串口实例指针
+ */
+void Task_TellSerialScreen_ResetCplt(void)
+{
+    //向串口屏发送主板设置完成
+    Drv_Uart_Transmit(&Uart5,SettingCplt_SendBuffer,sizeof(SettingCplt_SendBuffer));
 }
 
 /**

@@ -126,3 +126,5 @@
 .\objects\task_serialscreen.o: ..\Apply\Task\Inc\task_lwipudp.h
 .\objects\task_serialscreen.o: ..\Apply\Task\Inc\task_eeprom.h
 .\objects\task_serialscreen.o: ..\Apply\Task\Inc\task_tfcard.h
+.\objects\task_serialscreen.o: ..\Apply\Task\Inc\task_serialscreen.h
+.\objects\task_serialscreen.o: ..\Apply\Task\Inc\task_can.h

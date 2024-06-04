@@ -10,8 +10,12 @@
 #define MASK_ADDR           11       //Mask存储地址 11-14
 #define GW_ADDR             15       //Gw存储地址 15-18
 
-static uint8_t Update_YES = 'Y';        //需要更新IP信息标志
-static uint8_t Update_NO = 'N';         //不需要更新IP信息标志
+#define PARAM_UPDATE        19      //需要更新参数信息标志位地址
+#define CHANNEL_ADDR        20      //通道数存储地址 20
+#define SENDRATE_ADDR       21      //传输速率存储地址 21-22
+
+static uint8_t Update_YES = 'Y';        //需要更新信息标志
+static uint8_t Update_NO = 'N';         //不需要更新信息标志
 
 /**
  * @brief 往EEPROM中保存远端和本地的IP信息
@@ -84,4 +88,62 @@ void Task_EEPROM_ReadAddrInfo(__lwip_dev *lwipx)
     }
 }
 
+/**
+ * @brief 往EEPROM中保存通道数量和传输速率信息
+ * @param _ucChannelsNum: 需要更新的通道数量
+ * @param _usTransmissionRate: 需要更新的传输速率
+ * @retval Null
+ */
+void Task_EEPROM_WriteParameter(uint8_t _ucChannelsNum,uint16_t _usTransmissionRate)
+{
+    uint8_t TxRateWriteTemp[2] = {0};    //用于分割_usTransmissionRate
+
+#ifdef PRINTF_DEBUG
+    printf("Write --- ChannelsNum:%d  TransmissionRate:%d\r\n",
+                _ucChannelsNum,_usTransmissionRate);
+#endif
+
+    TxRateWriteTemp[0] = _usTransmissionRate >> 8;
+    TxRateWriteTemp[1] = _usTransmissionRate & 0xFF;
+
+    /* 将需要更改的通道数量和传输速率信息写入对应地址上 */
+    OCD_AT24CXX_Write(&EEPROM,PARAM_UPDATE,&Update_YES,1);
+    OCD_AT24CXX_Write(&EEPROM,CHANNEL_ADDR,&_ucChannelsNum,1);
+    OCD_AT24CXX_Write(&EEPROM,SENDRATE_ADDR,TxRateWriteTemp,2);
+    printf("Write Parameter Done!\r\n");
+}
+
+/**
+ * @brief 从EEPROM中读取保存通道数量和传输速率信息
+ * @param _ucpChannelsNum: 读取的通道数量
+ * @param _uspTransmissionRate: 读取的传输速率
+ * @retval Null
+ */
+void Task_EEPROM_ReadParameter(uint8_t *_ucpChannelsNum,uint16_t *_uspTransmissionRate)
+{
+    uint8_t Param_Update_flag = 0;      //需要更新参数的标志
+    uint8_t TxRateReadTemp[2] = {0};    //用于合并_usTransmissionRate
+
+    /* 读取IP信息标志位 */
+    OCD_AT24CXX_Read(&EEPROM,PARAM_UPDATE,&Param_Update_flag,1);
+
+#ifdef PRINTF_DEBUG
+    printf("Param_Update_flag %c\r\n",Param_Update_flag);
+#endif
+
+    if(Param_Update_flag == Update_YES)
+    {
+        /* 从对应地址上读取需要更改的通道数量和传输速率信息 */
+        OCD_AT24CXX_Read(&EEPROM,CHANNEL_ADDR,_ucpChannelsNum,1);
+        OCD_AT24CXX_Read(&EEPROM,SENDRATE_ADDR,TxRateReadTemp,2);
+        OCD_AT24CXX_Write(&EEPROM,PARAM_UPDATE,&Update_NO,1);
+        *_uspTransmissionRate = (TxRateReadTemp[0] << 8) + TxRateReadTemp[1];
+
+#ifdef PRINTF_DEBUG
+        printf("Read --- ChannelsNum:%d  TransmissionRate:%d\r\n",
+                    *_ucpChannelsNum,*_uspTransmissionRate);
+#endif
+        printf("Read Parameter Done!\r\n");
+    }
+}
 

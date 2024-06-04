@@ -124,3 +124,8 @@
 .\objects\task_powerdetect.o: ..\Bsp\Algo\Inc\algo_func.h
 .\objects\task_powerdetect.o: ..\Bsp\Dev\Inc\dev_conf.h
 .\objects\task_powerdetect.o: ..\Apply\Task\Inc\task_tfcard.h
+.\objects\task_powerdetect.o: ..\Apply\Task\Inc\task_serialscreen.h
+.\objects\task_powerdetect.o: ..\Apply\Task\Inc\task_lwipudp.h
+.\objects\task_powerdetect.o: ..\Apply\Task\Inc\task_eeprom.h
+.\objects\task_powerdetect.o: ..\Apply\Task\Inc\task_tfcard.h
+.\objects\task_powerdetect.o: ..\Apply\Task\Inc\task_can.h

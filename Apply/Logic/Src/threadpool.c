@@ -63,7 +63,10 @@ void PowerDetect_Task(void *pvParameters)
 void SerialScreen_Task(void *pvParameters)
 {
     UNUSED(pvParameters);
-    
+
+    //告知串口屏复位完毕
+    Task_TellSerialScreen_ResetCplt();
+
     while (1)
     {
         Task_SerialScreen_Handle(&Uart5);

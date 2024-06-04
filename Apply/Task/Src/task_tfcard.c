@@ -4,9 +4,10 @@ uint8_t File_Name[] = "/log/1.txt";  /* 文件名 */
 uint8_t Path_Name[] = "/log";        /* 文件夹名 */
 
 static uint8_t CurrTime_Buffer[24] = {0};       //写入时间的缓冲区
-static uint8_t WriteLog_Buffer[100] = {0};      //写入log的缓冲区
+static uint8_t WriteLog_Buffer[200] = {0};      //写入log的缓冲区
 
 static uint8_t Test_log[15] = "Hello World!";       //测试log使用
+static uint8_t Set_log[176] = "";                    //设置log使用
 static uint8_t PowerON_log[15] = "Power ON!";       //开机log使用
 static uint8_t PowerOFF_log[15] = "Power OFF!";     //关机log使用
 
@@ -62,7 +63,14 @@ void Task_TFCard_WriteLog(tagFATFS_T *_tFATFS,char *_cpFileName,EventBits_t even
     }
     else if((event & SET_EVENT) != 0) //如果是设置信息事件
     {
-
+        sprintf((char *)Set_log,"\r\nChannelNum:%d SendRate:%d \r\nLocal IP:%d.%d.%d.%d Mask:%d.%d.%d.%d GW:%d.%d.%d.%d \r\nRemote IP:%d.%d.%d.%d Port:%d",
+                                    CurrentChannelNum,CurrentSendRate,
+                                    SetIP[0],SetIP[1],SetIP[2],SetIP[3],
+                                    SetMask[0],SetMask[1],SetMask[2],SetMask[3],
+                                    SetGW[0],SetGW[1],SetGW[2],SetGW[3],
+                                    SetRemoteip[0],SetRemoteip[1],SetRemoteip[2],SetRemoteip[3],
+                                    (SetPort[0] << 8) + SetPort[1]);
+        sprintf((char *)WriteLog_Buffer,"%s %s",CurrTime_Buffer,Set_log);
     }
     else if((event & POWER_ON_EVENT) != 0) //如果是开机事件
     {
@@ -75,8 +83,8 @@ void Task_TFCard_WriteLog(tagFATFS_T *_tFATFS,char *_cpFileName,EventBits_t even
 
     if(event)
     {
-        WriteLog_Buffer[98] = '\r';
-        WriteLog_Buffer[99] = '\n';     //补回车换行
+        WriteLog_Buffer[sizeof(WriteLog_Buffer) - 2] = '\r';
+        WriteLog_Buffer[sizeof(WriteLog_Buffer) - 1] = '\n';     //补回车换行
         OCD_FATFS_Write_End(_tFATFS, (char *)_cpFileName, WriteLog_Buffer, LOG_SIZE , &sendNum);    //写入log日志
         logNum++;             //log条数计数器加一
         if(sendNum)
@@ -93,7 +101,7 @@ uint32_t Task_TFCard_FindEnd(tagFATFS_T *_tFATFS)
 {
     uint32_t ulOffsetNum = 0;
     uint32_t ulReadNum = 0;
-    uint8_t ucReceBuffer[100] = {0};
+    uint8_t ucReceBuffer[LOG_SIZE] = {0};
 
     /* 寻找内容的末尾，确定偏移量 */
     do

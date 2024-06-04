@@ -131,5 +131,6 @@
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_tfcard.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_serialscreen.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_eeprom.h
+.\objects\threadpool.o: ..\Apply\Task\Inc\task_tfcard.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_can.h
 .\objects\threadpool.o: ..\Apply\Task\Inc\task_selfcheck.h
