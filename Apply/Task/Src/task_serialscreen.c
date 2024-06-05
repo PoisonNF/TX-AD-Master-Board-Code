@@ -60,8 +60,8 @@ static void S_Setting_Info_Handle(void)
     Setting_Info_SendBuffer[1] = 0xAA;
 
     //添加当前通道数
-    Setting_Info_SendBuffer[2] = NumberOfBoards*8/10 + '0';
-    Setting_Info_SendBuffer[3] = NumberOfBoards*8%10 + '0';
+    Setting_Info_SendBuffer[2] = CurrentChannelNum / 10 + '0';
+    Setting_Info_SendBuffer[3] = CurrentChannelNum % 10 + '0';
 
     //添加当前传输速率
     switch(CurrentSendRate)

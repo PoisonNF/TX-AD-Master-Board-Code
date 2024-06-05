@@ -47,7 +47,7 @@ static uint16_t FrameNum = 0;
 
 /* Socket相关 */
 struct sockaddr_in Local_info;      /* 本地Socket地址信息 */
-socklen_t Socket_fd;                /* 定义一个Socket文件描述符 */
+int Socket_fd;                /* 定义一个Socket文件描述符 */
 
 /**
  * @brief CRC8校验函数-查表
@@ -129,7 +129,8 @@ static inline void S_LwIP_UDP_Create_Send_Thread(void)
 void Task_LwIP_UDP_Handle(void)
 {
     //BaseType_t LwIP_Err;    //返回值判断
-    int RecvNum = 0;
+    //int RecvNum = 0;
+    int ret = 0;
 
     //将帧头帧尾信息放入缓冲区中
     for(uint8_t i = 0; i < SPLICE_NUM; i++)
@@ -137,10 +138,7 @@ void Task_LwIP_UDP_Handle(void)
         LwIP_UDP_SendBuffer[i][0] = FRAMEHEADER1;
         LwIP_UDP_SendBuffer[i][1] = FRAMEHEADER2;
         LwIP_UDP_SendBuffer[i][305] = FRAMEEND;
-    }
-
-    //创建UDP发送线程
-    S_LwIP_UDP_Create_Send_Thread();        
+    }   
 
     //本地Socket地址信息配置
     memset(&Local_info,0,sizeof(Local_info));
@@ -151,19 +149,41 @@ void Task_LwIP_UDP_Handle(void)
 
     //建立Socket连接
     Socket_fd = socket(AF_INET,SOCK_DGRAM,0);           //创建UDP类型的Socket
-
+    if(Socket_fd == -1)
+    {
+        goto error;
+    }
     //建立Bind
-    bind(Socket_fd,(struct sockaddr *)&Local_info,sizeof(struct sockaddr_in));
+    ret = bind(Socket_fd,(struct sockaddr *)&Local_info,sizeof(struct sockaddr_in));
+    if(ret == -1)
+    {
+        goto error;
+    }
+
+    //创建UDP发送线程
+    S_LwIP_UDP_Create_Send_Thread();     
+
+    // while(1)
+    // {
+    //     //UDP接收处理
+    //     memset(LwIP_UDP_RecvBuffer,0,sizeof(LwIP_UDP_RecvBuffer));
+
+    //     RecvNum = recv(Socket_fd,LwIP_UDP_RecvBuffer,sizeof(LwIP_UDP_RecvBuffer),0);
+    //     if(RecvNum != -1) printf("%s\r\n",LwIP_UDP_RecvBuffer);
+
+    //     vTaskDelay(1);  //主动切换线程
+    // }
 
     while(1)
     {
-        //UDP接收处理
-        memset(LwIP_UDP_RecvBuffer,0,sizeof(LwIP_UDP_RecvBuffer));
+        vTaskDelay(10000);
+    }
 
-        RecvNum = recv(Socket_fd,LwIP_UDP_RecvBuffer,sizeof(LwIP_UDP_RecvBuffer),0);
-        if(RecvNum != -1) printf("%s\r\n",LwIP_UDP_RecvBuffer);
-
-        vTaskDelay(1);  //主动切换线程
+error:
+    while(1)
+    {
+        printf("Error\r\n");
+        vTaskDelay(2000);
     }
 }
 

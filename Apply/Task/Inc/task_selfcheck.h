@@ -6,6 +6,8 @@
 #include "usercode.h"
 #include "config.h"
 
+#include "task_can.h"
+
 uint8_t Task_SelfCheck(void);
 
 void Task_SYNC_Signal(void);

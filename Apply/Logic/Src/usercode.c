@@ -93,12 +93,12 @@ void Start_Task(void *pvParameters)
                 (TaskHandle_t*  )&LWIP_Task_Handler);
 
     /* 创建LED网络指示灯任务 */
-    xTaskCreate((TaskFunction_t )LED_Task,
-                (const char*    )"LED_Task",
-                (uint16_t       )LED_STK_SIZE,
-                (void*          )NULL,
-                (UBaseType_t    )LED_TASK_PRIO,
-                (TaskHandle_t*  )&LED_Task_Handler);
+    // xTaskCreate((TaskFunction_t )LED_Task,
+    //             (const char*    )"LED_Task",
+    //             (uint16_t       )LED_STK_SIZE,
+    //             (void*          )NULL,
+    //             (UBaseType_t    )LED_TASK_PRIO,
+    //             (TaskHandle_t*  )&LED_Task_Handler);
 
     /* 创建电源检测任务 */
     xTaskCreate((TaskFunction_t )PowerDetect_Task,

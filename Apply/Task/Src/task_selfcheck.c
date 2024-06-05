@@ -58,7 +58,7 @@ next:	Drv_GPIO_Reset(&Control[ID_Choose - 1]);
 		Drv_GPIO_Set(&Control[ID_Choose - 1]);
 	}
 	printf("Insert %d Card\r\n",InsertNum);
-
+	CurrentChannelNum = InsertNum * 8;		//记录当前通道数
 	return InsertNum;
 }
 
