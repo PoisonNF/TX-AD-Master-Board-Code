@@ -36,8 +36,8 @@ extern TaskHandle_t Start_Task_Handler;      /* 任务句柄 */
 /* LwIP_UDP_Task 任务 配置
  * 包括: 任务句柄 任务优先级 堆栈大小 创建任务
  */
-#define LWIP_DMEO_TASK_PRIO     11          /* 任务优先级 */
-#define LWIP_DMEO_STK_SIZE      1024        /* 任务堆栈大小 */
+#define LWIP_DEMO_TASK_PRIO     11          /* 任务优先级 */
+#define LWIP_DEMO_STK_SIZE      1024        /* 任务堆栈大小 */
 extern TaskHandle_t LWIP_Task_Handler;      /* 任务句柄 */
 
 
@@ -74,5 +74,12 @@ extern TaskHandle_t CAN_Task_Handler;
  */
 #define TFCARD_TASK_PRIO           4           /* 任务优先级 */
 #define TFCARD_STK_SIZE            512         /* 任务堆栈大小 */
-extern TaskHandle_t TFCard_Handler;
+extern TaskHandle_t TFCard_Task_Handler;
+
+/* Test_Task 任务 配置
+ * 包括: 任务句柄 任务优先级 堆栈大小 创建任务
+ */
+#define TEST_TASK_PRIO           3           /* 任务优先级 */
+#define TEST_STK_SIZE            128         /* 任务堆栈大小 */
+extern TaskHandle_t Test_Task_Handler;
 #endif

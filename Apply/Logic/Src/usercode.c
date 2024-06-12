@@ -13,7 +13,8 @@ TaskHandle_t LED_Task_Handler;
 TaskHandle_t PowerDetect_Task_Handler; 
 TaskHandle_t SerialScreen_Task_Handler;
 TaskHandle_t CAN_Task_Handler;
-TaskHandle_t TFCard_Handler;
+TaskHandle_t TFCard_Task_Handler;
+TaskHandle_t Test_Task_Handler;
 
 /* 信号量 */
 SemaphoreHandle_t PowerDetect_Sema;     //电源检测信号量
@@ -87,9 +88,9 @@ void Start_Task(void *pvParameters)
     /* 创建lwIP UDP任务 */
     xTaskCreate((TaskFunction_t )LwIP_UDP_Task,
                 (const char*    )"LwIP_UDP_Task",
-                (uint16_t       )LWIP_DMEO_STK_SIZE, 
+                (uint16_t       )LWIP_DEMO_STK_SIZE, 
                 (void*          )NULL,
-                (UBaseType_t    )LWIP_DMEO_TASK_PRIO,
+                (UBaseType_t    )LWIP_DEMO_TASK_PRIO,
                 (TaskHandle_t*  )&LWIP_Task_Handler);
 
     /* 创建LED网络指示灯任务 */
@@ -122,7 +123,15 @@ void Start_Task(void *pvParameters)
                 (uint16_t       )TFCARD_STK_SIZE,
                 (void*          )NULL,
                 (UBaseType_t    )TFCARD_TASK_PRIO,
-                (TaskHandle_t*  )&TFCard_Handler);
+                (TaskHandle_t*  )&TFCard_Task_Handler);
+
+    /* 创建测试任务，用于测试 */
+    xTaskCreate((TaskFunction_t )Test_Task,
+                (const char*    )"Test_Task",
+                (uint16_t       )TEST_STK_SIZE,
+                (void*          )NULL,
+                (UBaseType_t    )TEST_TASK_PRIO,
+                (TaskHandle_t*  )&Test_Task_Handler);
 
     taskEXIT_CRITICAL();                        /* 退出临界区 */  
 								

@@ -12,6 +12,7 @@ static uint8_t PowerON_log[15] = "Power ON!";       //开机log使用
 static uint8_t PowerOFF_log[15] = "Power OFF!";     //关机log使用
 
 uint32_t logNum = 0;                                //log条数记录
+bool TKCardIsExist = true;                          //TF卡是否存在标志
 
 /**
  * @brief TF卡创建log文件函数

@@ -12,7 +12,7 @@ extern uint16_t RemotePort;
 
 extern uint16_t CurrentSendRate;
 
-#define SPLICE_NUM                      4                       /* 一帧UDP中拼接包数 */
+#define SPLICE_NUM                      1                       /* 一帧UDP中拼接包数 */
 
 void Task_LwIP_UDP_Handle(void);
 

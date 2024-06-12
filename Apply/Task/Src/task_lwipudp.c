@@ -11,7 +11,7 @@ uint16_t RemotePort = 4001;                                           /* Á¬½ÓµÄÔ
 uint16_t CurrentSendRate = 200;                                 /* µ±Ç°´«ÊäËÙÂÊ£¬Ä¬ÈÏ200hz */
 
 #define LWIP_UDP_RX_BUFSIZE         100                         /* ×î´ó½ÓÊÕÊý¾Ý³¤¶È */
-#define LWIP_SEND_THREAD_PRIO       ( tskIDLE_PRIORITY + 9 )    /* ·¢ËÍÊý¾ÝÏß³ÌÓÅÏÈ¼¶ */
+#define LWIP_SEND_THREAD_PRIO       ( tskIDLE_PRIORITY + 12 )    /* ·¢ËÍÊý¾ÝÏß³ÌÓÅÏÈ¼¶ */
 
 #define FRAMEHEADER1                0X02                        /* Ö¡Í·1 */
 #define FRAMEHEADER2                0X48                        /* Ö¡Í·2 */
@@ -93,7 +93,7 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
             //µ÷ÓÃsendtoº¯Êý·¢ËÍ£¬UDPÐèÒªÊ¹ÓÃsendtoº¯Êý
             SendNum = sendto(Socket_fd,                     //SocketÎÄ¼þÃèÊö·û
                             LwIP_UDP_SendBuffer,            //·¢ËÍµÄÊý¾Ý
-                            sizeof(LwIP_UDP_SendBuffer),    //·¢ËÍµÄÊý¾Ý³¤¶È
+                            SPLICE_NUM * 306,               //·¢ËÍµÄÊý¾Ý³¤¶È
                             0,                              //·¢ËÍµÄ±êÖ¾
                             (struct sockaddr *)&Local_info,
                             sizeof(Local_info));
@@ -109,7 +109,7 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
 
             xSemaphoreGive(UDP_SendBuffer_Mutex);									//ÊÍ·Å»¥³âÁ¿£¬½âËø
         }
-        vTaskDelay(4000 / CurrentSendRate);
+        vTaskDelay(1000 * SPLICE_NUM / CurrentSendRate);
     }
 }
 
@@ -117,7 +117,7 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
  * @brief ´´½¨UDP·¢ËÍÏß³Ì
  * @param Null
  */
-static inline void S_LwIP_UDP_Create_Send_Thread(void)
+static void S_LwIP_UDP_Create_Send_Thread(void)
 {
     sys_thread_new("lwip_send_thread",S_LwIP_UDP_Send_Entrance,NULL,512,LWIP_SEND_THREAD_PRIO);
 }
@@ -129,7 +129,7 @@ static inline void S_LwIP_UDP_Create_Send_Thread(void)
 void Task_LwIP_UDP_Handle(void)
 {
     //BaseType_t LwIP_Err;    //·µ»ØÖµÅÐ¶Ï
-    //int RecvNum = 0;
+    int RecvNum = 0;
     int ret = 0;
 
     //½«Ö¡Í·Ö¡Î²ÐÅÏ¢·ÅÈë»º³åÇøÖÐ
@@ -163,20 +163,15 @@ void Task_LwIP_UDP_Handle(void)
     //´´½¨UDP·¢ËÍÏß³Ì
     S_LwIP_UDP_Create_Send_Thread();     
 
-    // while(1)
-    // {
-    //     //UDP½ÓÊÕ´¦Àí
-    //     memset(LwIP_UDP_RecvBuffer,0,sizeof(LwIP_UDP_RecvBuffer));
-
-    //     RecvNum = recv(Socket_fd,LwIP_UDP_RecvBuffer,sizeof(LwIP_UDP_RecvBuffer),0);
-    //     if(RecvNum != -1) printf("%s\r\n",LwIP_UDP_RecvBuffer);
-
-    //     vTaskDelay(1);  //Ö÷¶¯ÇÐ»»Ïß³Ì
-    // }
-
     while(1)
     {
-        vTaskDelay(10000);
+        //UDP½ÓÊÕ´¦Àí
+        memset(LwIP_UDP_RecvBuffer,0,sizeof(LwIP_UDP_RecvBuffer));
+
+        RecvNum = recv(Socket_fd,LwIP_UDP_RecvBuffer,sizeof(LwIP_UDP_RecvBuffer),0);
+        if(RecvNum != -1) printf("%s\r\n",LwIP_UDP_RecvBuffer);
+
+        vTaskDelay(1);  //Ö÷¶¯ÇÐ»»Ïß³Ì
     }
 
 error:

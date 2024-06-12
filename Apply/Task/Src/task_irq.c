@@ -29,26 +29,8 @@ void USART1_IRQHandler(void)
 {
 	/* 示例 */
     //Drv_Uart_IRQHandler(&tPCUart);		/* 必需部分 */
-    //Drv_Uart_IRQHandler(&demoUart);
-//    Drv_Uart_DMA_RxHandler(&demoUart);
+    Drv_Uart_IRQHandler(&Uart1);
 }
-
-/*****************************以下函数在DMA发送时必须写***********************************/
-/* 找到串口对应的DMA号和数据流号 */
-//void DMA2_Stream7_IRQHandler(void)
-//{
-//    Drv_Uart_DMA_IRQHandler(&demoUart);
-//}
-///***************************************************************************************/
-
-///*****************************以下函数在DMA发送时选择性写***********************************/
-
-//void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-//{
-//    Drv_Uart_DMA_TxHandler(&demoUart);
-//}
-
-/***************************************************************************************/
 
 /**
  * @brief 串口2中断服务函数
@@ -66,7 +48,7 @@ void USART2_IRQHandler(void)
 */
 void USART3_IRQHandler(void)
 {
-
+    Drv_Uart_IRQHandler(&Uart3);
 }
 
 /**

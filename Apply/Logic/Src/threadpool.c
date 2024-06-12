@@ -100,18 +100,42 @@ void TFCard_Task(void *pvParameters)
 {
     UNUSED(pvParameters);
 
-    Task_TFCard_CreateFolder(&TFCard);  //创建保存log文件夹
+    /* 如果TF卡存在进行下述操作，否则删除自身任务 */
+    if(TKCardIsExist == true)
+    {
+        Task_TFCard_CreateFolder(&TFCard);  //创建保存log文件夹
 
-    logNum = Task_TFCard_FindEnd(&TFCard);          //遍历TF卡计算总条数
-    printf("TF卡现有%d条log\r\n",logNum);
+        logNum = Task_TFCard_FindEnd(&TFCard);          //遍历TF卡计算总条数
+        printf("TF卡现有%d条log\r\n",logNum);
 
-    //xEventGroupSetBits(Log_Event,EVENT1);         //标记测试事件成立
-    //xEventGroupSetBits(Log_Event,POWER_ON_EVENT);   //标记开机事件成立 
+        //xEventGroupSetBits(Log_Event,EVENT1);         //标记测试事件成立
+        //xEventGroupSetBits(Log_Event,POWER_ON_EVENT);   //标记开机事件成立 
+
+        while (1)
+        {
+            Task_TFCard_Handle(&TFCard);
+            vTaskDelay(1);
+        }
+    }
+    printf("TFcard no find!\r\n");
+    vTaskDelete(xTaskGetCurrentTaskHandle());   /* 删除开始任务 */
+}
+
+/**
+ * @brief 测试任务
+ * @param pvParameters : 传入参数(未用到)
+ * @retval Null
+ */
+void Test_Task(void *pvParameters)
+{
+    UNUSED(pvParameters);
+    uint16_t ShowCnt = 0;
 
     while (1)
     {
-        Task_TFCard_Handle(&TFCard);
-        vTaskDelay(1);
+        printf("Running %d!\r\n",ShowCnt);
+        ShowCnt++;
+        vTaskDelay(1000);
     }
 }
 
