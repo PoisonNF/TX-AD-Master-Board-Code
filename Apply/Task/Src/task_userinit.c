@@ -21,7 +21,7 @@ void Task_UserInit(void)
 
     /* 初始化TF卡和FATFS文件系统 */
    	if(OCD_FATFS_Init(&TFCard) != 0)
-		TKCardIsExist = false;		//标记TF卡并不存在，后续将不对TF卡操作
+		TFCardIsExist = false;		//标记TF卡并不存在，后续将不对TF卡操作
 
 	/* 初始化片外RTC */
 	OCD_DS3231_Init(&DS1337);

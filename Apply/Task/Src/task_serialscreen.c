@@ -117,11 +117,16 @@ static void S_Log_Info_Handle(void)
 {
     uint32_t ReadNum = 0;
     uint8_t ReceBuffer[LOG_SIZE] = {0};
+    uint8_t TipsBuffer[] = "No TF card, please check!";   //用于在没有插入TF卡下的提示
 
     /* 帧头帧尾赋值 */
     Log_Info_SendBuffer[0] = 0x44;
     Log_Info_SendBuffer[1] = 0xAA;
     Log_Info_SendBuffer[LOG_SIZE + 3] = 0x0A;
+
+    /* TF卡存在检测 */
+    if(TFCardIsExist != true)
+        goto TFCardError;
 
     /* TF卡内不足最少log条数处理 */
     if(logNum <= RECENT_LOGNUM)
@@ -168,6 +173,15 @@ static void S_Log_Info_Handle(void)
             }            
         }
     }
+
+    return;
+
+/* 没有TF卡的处理，向串口屏打印提示信息 */
+TFCardError:
+    printf("No TF card, please check!\r\n");    //串口打印调试
+    Log_Info_SendBuffer[2] = LOG_SIZE;
+    memcpy(&Log_Info_SendBuffer[3],TipsBuffer,LOG_SIZE);
+    Drv_Uart_Transmit(&Uart5,Log_Info_SendBuffer,sizeof(Log_Info_SendBuffer));  //向串口屏发送数据
 }
 
 /**

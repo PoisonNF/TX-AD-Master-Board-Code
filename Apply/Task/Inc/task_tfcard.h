@@ -16,7 +16,9 @@
 
 #define LOG_SIZE        200 //每组log的长度
 
-extern bool TKCardIsExist;
+extern uint8_t File_Name[];
+extern uint32_t logNum;
+extern bool TFCardIsExist;
 
 void Task_TFCard_CreateFolder(tagFATFS_T *_tFATFS);
 void Task_TFCard_WriteLog(tagFATFS_T *_tFATFS,char *_cpFileName,EventBits_t event);

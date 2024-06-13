@@ -101,7 +101,7 @@ void TFCard_Task(void *pvParameters)
     UNUSED(pvParameters);
 
     /* 如果TF卡存在进行下述操作，否则删除自身任务 */
-    if(TKCardIsExist == true)
+    if(TFCardIsExist == true)
     {
         Task_TFCard_CreateFolder(&TFCard);  //创建保存log文件夹
 
@@ -118,7 +118,7 @@ void TFCard_Task(void *pvParameters)
         }
     }
     printf("TFcard no find!\r\n");
-    vTaskDelete(xTaskGetCurrentTaskHandle());   /* 删除开始任务 */
+    vTaskDelete(xTaskGetCurrentTaskHandle());   /* 删除TF卡任务 */
 }
 
 /**
