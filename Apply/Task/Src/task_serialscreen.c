@@ -15,8 +15,8 @@ static uint8_t Version[4] = "V1.0";        //版本号
 uint8_t SetRemoteip[4],SetPort[2];           //需要设置的远端IP地址和端口号
 uint8_t SetIP[4],SetMask[4],SetGW[4];        //需要设置的IP地址信息
 
-#define	GET_BIT(x, bit)	((x & (1 << bit)) >> bit)	/* 获取第bit位 */
 #define RECENT_LOGNUM       5                       /* 要读取最近log的条数 */
+#define GET_VALIDITY(x) ((x) < (290 + CurrentChannelNum / 8) ? 1 : 0)   /* 获取有效性，如果有效，在串口屏上显示绿色 */
 
 /**
  * @brief 查询系统信息处理函数
@@ -221,7 +221,7 @@ static void S_Channel_Info_Handle(uint8_t PageNum)
     for(index = 2; index <= 30; index += 4)
     {
         uint8_t bit = 7;
-        Channel_Info_SendBuffer[index] = GET_BIT(LwIP_UDP_SendBuffer[0][ValidPos], bit);
+        Channel_Info_SendBuffer[index] = GET_VALIDITY(ValidPos);
         memcpy(&Channel_Info_SendBuffer[index + 1],&LwIP_UDP_SendBuffer[0][ValuePos],3);
         bit--;
         ValuePos += 3;
@@ -233,7 +233,7 @@ static void S_Channel_Info_Handle(uint8_t PageNum)
     for(index = 34; index <= 62; index += 4)
     {
         uint8_t bit = 7;
-        Channel_Info_SendBuffer[index] = GET_BIT(LwIP_UDP_SendBuffer[0][ValidPos], bit);
+        Channel_Info_SendBuffer[index] = GET_VALIDITY(ValidPos);
         memcpy(&Channel_Info_SendBuffer[index + 1],&LwIP_UDP_SendBuffer[0][ValuePos],3);
         bit--;
         ValuePos += 3;
@@ -245,7 +245,7 @@ static void S_Channel_Info_Handle(uint8_t PageNum)
     for(index = 66; index <= 94; index += 4)
     {
         uint8_t bit = 7;
-        Channel_Info_SendBuffer[index] = GET_BIT(LwIP_UDP_SendBuffer[0][ValidPos], bit);
+        Channel_Info_SendBuffer[index] = GET_VALIDITY(ValidPos);
         memcpy(&Channel_Info_SendBuffer[index + 1],&LwIP_UDP_SendBuffer[0][ValuePos],3);
         bit--;
         ValuePos += 3;

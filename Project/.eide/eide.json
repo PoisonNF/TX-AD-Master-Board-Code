@@ -2,9 +2,7 @@
   "name": "STM32",
   "type": "ARM",
   "dependenceList": [],
-  "srcDirs": [
-    ".eide/deps"
-  ],
+  "srcDirs": [],
   "virtualFolder": {
     "name": "<virtual_root>",
     "files": [],
@@ -789,11 +787,9 @@
           "../Bsp/LWIP/src/include",
           "../Bsp/MALLOC",
           ".cmsis/include",
-          "RTE/_Demo",
-          ".eide/deps"
+          "RTE/_Demo"
         ],
         "libList": [],
-        "sourceDirList": [],
         "defineList": [
           "USE_HAL_DRIVER",
           "STM32F407xx",
@@ -802,5 +798,5 @@
       }
     }
   },
-  "version": "3.3"
+  "version": "3.4"
 }
