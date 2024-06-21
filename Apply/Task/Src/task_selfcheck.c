@@ -1,6 +1,6 @@
 #include "task_selfcheck.h"
 
-#define ADBOARD_NUM_MAX	4			//×î´ó²åÈëÉÏÏŞ¸öÊı
+#define ADBOARD_NUM_MAX			12			//×î´ó²åÈëÉÏÏŞ¸öÊı
 
 static uint8_t SetIDBuffer[8] = {0xA1,0x00,0x00,0x00,0x00,0x00,0x00,0x00};		//ÉèÖÃIDBuffer
 
@@ -8,7 +8,11 @@ static uint8_t SYNCBuffer[8] = {0xA2,0x53,0x00,0x00,0x00,0x00,0x00,0x00};    //Í
 
 uint8_t IDjugBuffer[12] = {0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x4C}; //°å¿¨IDÅĞ¶ÏÊı×é
 
+static uint8_t All_Boards_SpeedChangeBuffer[8] = {0xA4,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   //ËùÓĞ°å¿¨µ÷ÕûËÙÂÊ£¬Í¨¹ıCAN¹ã²¥
+
 static uint8_t ID_Choose = 1;       //°å¿¨ÔÚÖ÷°åÉÏµÄË³ĞòºÅ£¬NO1-12
+
+static uint16_t BoardSpeedSet;		//¸æÖª²É¼¯°å¿¨Éè¶¨·¢ËÍËÙÂÊ
 
 __IO uint16_t TimeOut = 0;				//×Ô¼ìÊ±¼ä³¬Ê±±êÖ¾Î»
 /**
@@ -59,6 +63,31 @@ next:	Drv_GPIO_Reset(&Control[ID_Choose - 1]);
 	}
 	printf("Insert %d Card\r\n",InsertNum);
 	CurrentChannelNum = InsertNum * 8;		//¼ÇÂ¼µ±Ç°Í¨µÀÊı
+
+	/* ¸ù¾İ²åÈë°å¿¨ÊıÏŞÖÆ²É¼¯°å¿¨µÄ·¢ËÍËÙÂÊ */
+	if(InsertNum <= 2){
+		BoardSpeedSet = 400;					//°å¿¨·¢ËÍËÙ¶È
+		CurrentSendRate = 250;					//Ö÷°å·¢ËÍËÙÂÊ
+	}
+	else if(InsertNum <= 4){
+		BoardSpeedSet = 400;					//°å¿¨·¢ËÍËÙ¶È
+		CurrentSendRate = 200;					//Ö÷°å·¢ËÍËÙÂÊ
+	}
+	else if(InsertNum <= 6){
+		BoardSpeedSet = 400;					//°å¿¨·¢ËÍËÙ¶È
+		CurrentSendRate = 160;					//Ö÷°å·¢ËÍËÙÂÊ
+	}
+	else if(InsertNum <= 12){
+		BoardSpeedSet = 200;					//°å¿¨·¢ËÍËÙ¶È
+		CurrentSendRate = 100;					//Ö÷°å·¢ËÍËÙÂÊ
+	}
+
+	All_Boards_SpeedChangeBuffer[1] = BoardSpeedSet >> 24;
+	All_Boards_SpeedChangeBuffer[2] = BoardSpeedSet >> 16;
+	All_Boards_SpeedChangeBuffer[3] = BoardSpeedSet >> 8;
+	All_Boards_SpeedChangeBuffer[4] = BoardSpeedSet;
+    Drv_CAN_SendMsg(&CAN,All_Boards_SpeedChangeBuffer,8);
+
 	return InsertNum;
 }
 

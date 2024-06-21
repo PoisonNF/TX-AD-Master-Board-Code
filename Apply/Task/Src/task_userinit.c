@@ -7,6 +7,7 @@ void Task_UserInit(void)
 {
     /* 初始化LED指示灯 */
 	Drv_GPIO_Init(LED, 1);
+	Drv_GPIO_Set(&LED[0]);
 
 	/* 初始化板卡控制引脚 */
 	Drv_GPIO_Init(Control, 12);

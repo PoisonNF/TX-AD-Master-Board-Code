@@ -165,6 +165,7 @@ void Task_LwIP_UDP_Handle(void)
 
     while(1)
     {
+#if 0
         //UDP接收处理
         memset(LwIP_UDP_RecvBuffer,0,sizeof(LwIP_UDP_RecvBuffer));
 
@@ -172,6 +173,10 @@ void Task_LwIP_UDP_Handle(void)
         if(RecvNum != -1) printf("%s\r\n",LwIP_UDP_RecvBuffer);
 
         vTaskDelay(1);  //主动切换线程
+#else
+        UNUSED(RecvNum);
+        vTaskDelete(xTaskGetCurrentTaskHandle());   /* 删除当前任务 */
+#endif
     }
 
 error:

@@ -24,7 +24,7 @@ SemaphoreHandle_t UDP_SendBuffer_Mutex; //UDP发送缓存读写锁
 
 /* 消息队列 */
 QueueHandle_t CANRecv_Queue;               //CAN接收消息队列
-#define CAN_RX_QUEUE_LENGTH  200         //消息队列长度
+#define CAN_RX_QUEUE_LENGTH  1000         //消息队列长度
 
 /* 事件 */
 EventGroupHandle_t Log_Event;            //记录事件
@@ -94,12 +94,12 @@ void Start_Task(void *pvParameters)
                 (TaskHandle_t*  )&LWIP_Task_Handler);
 
     /* 创建LED网络指示灯任务 */
-    // xTaskCreate((TaskFunction_t )LED_Task,
-    //             (const char*    )"LED_Task",
-    //             (uint16_t       )LED_STK_SIZE,
-    //             (void*          )NULL,
-    //             (UBaseType_t    )LED_TASK_PRIO,
-    //             (TaskHandle_t*  )&LED_Task_Handler);
+    xTaskCreate((TaskFunction_t )LED_Task,
+                (const char*    )"LED_Task",
+                (uint16_t       )LED_STK_SIZE,
+                (void*          )NULL,
+                (UBaseType_t    )LED_TASK_PRIO,
+                (TaskHandle_t*  )&LED_Task_Handler);
 
     /* 创建电源检测任务 */
     xTaskCreate((TaskFunction_t )PowerDetect_Task,
