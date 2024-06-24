@@ -7,6 +7,7 @@
 #include "config.h"
 
 #include "task_can.h"
+#include "task_eeprom.h"
 
 uint8_t Task_SelfCheck(void);
 

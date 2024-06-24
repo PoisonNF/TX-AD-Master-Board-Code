@@ -68,9 +68,6 @@ void Start_Task(void *pvParameters)
 
     taskENTER_CRITICAL();           /* 进入临界区 */   
 
-    /* 从EEPROM中读取保存通道数量和传输速率信息 */
-    Task_EEPROM_ReadParameter(&CurrentChannelNum, &CurrentSendRate);
-
     /* 创建CAN任务 */
     xTaskCreate((TaskFunction_t )CAN_Task,
                 (const char*    )"CAN_Task",
