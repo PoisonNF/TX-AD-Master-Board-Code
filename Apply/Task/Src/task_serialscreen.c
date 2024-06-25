@@ -8,6 +8,7 @@ static uint8_t Log_Info_SendBuffer[204] = {0};   //日志信息发送缓存区
 
 static uint8_t SettingCplt_SendBuffer[3] = {0x33,0xBB,0x0A};   //设置完成返回给串口的数组
 static uint8_t All_Boards_StopBuffer[8] = {0xA3,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   //所有板卡停止指令，通过CAN广播
+static uint8_t All_Boards_ResetBuffer[8] = {0xA5,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   //所有板卡复位指令，通过CAN广播
 
 static uint8_t Version[4] = "V1.0";        //版本号
 
@@ -312,6 +313,11 @@ static void S_Setting_Apply_Handle(uint8_t *SettingData)
 
     vTaskDelay(1000);
 
+    //向所有板卡广播复位指令
+    Drv_CAN_SendMsg(&CAN,All_Boards_ResetBuffer,8);
+    //等待1s
+    vTaskDelay(1000);
+    
     //主板复位
     NVIC_SystemReset();
 }

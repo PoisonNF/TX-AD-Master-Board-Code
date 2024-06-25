@@ -109,7 +109,7 @@ void TFCard_Task(void *pvParameters)
         printf("TF卡现有%d条log\r\n",logNum);
 
         //xEventGroupSetBits(Log_Event,EVENT1);         //标记测试事件成立
-        //xEventGroupSetBits(Log_Event,POWER_ON_EVENT);   //标记开机事件成立 
+        xEventGroupSetBits(Log_Event,POWER_ON_EVENT);   //标记开机事件成立 
 
         while (1)
         {
