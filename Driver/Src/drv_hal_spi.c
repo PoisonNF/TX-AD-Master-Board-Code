@@ -120,6 +120,8 @@ void Drv_SPI_SpeedConfig(tagSPI_T *_tSPI, uint8_t _ucSpeed)
 			Drv_HAL_Error(__FILE__, __LINE__);
 		break;
 	}
+
+	Drv_SPI_Init(_tSPI);
 }
 
 /**

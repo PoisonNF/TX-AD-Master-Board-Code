@@ -23,11 +23,10 @@ __IO uint16_t TimeOut = 0;				//自检时间超时标志位
 uint8_t Task_SelfCheck(void)
 {
     uint8_t InsertNum = 0;
-	uint8_t TryNum = 0;
 
 	for(ID_Choose = 1; ID_Choose <= ADBOARD_NUM_MAX; ID_Choose++)
 	{
-next:	Drv_GPIO_Reset(&Control[ID_Choose - 1]);
+		Drv_GPIO_Reset(&Control[ID_Choose - 1]);
 		Drv_Delay_Ms(10);
 		SetIDBuffer[1] = IDjugBuffer[ID_Choose - 1];
 		Drv_CAN_SendMsg(&CAN,SetIDBuffer,8);	
@@ -40,19 +39,9 @@ next:	Drv_GPIO_Reset(&Control[ID_Choose - 1]);
 		if(TimeOut >= 0x100)
 		{
 			TimeOut = 0;
-			TryNum++;
-			if(TryNum<3)
-			{
-				printf("NO.%d time out!!\r\n",ID_Choose);
-				goto next;
-			}
-			else
-			{
-				TryNum = 0;
-				printf("NO.%d No Card\r\n",ID_Choose);
-			}
-			
-		}else
+			printf("NO.%d No Card\r\n",ID_Choose);
+		}
+		else
 		{
 			printf("NO.%d Find Card\r\n",ID_Choose);
 			InsertNum++;						//插入板卡数加一
