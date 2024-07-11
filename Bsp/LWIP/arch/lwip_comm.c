@@ -138,6 +138,7 @@ uint8_t lwip_comm_init(void)
     if (ethernet_mem_malloc())return 1;         /* 内存申请失败*/
 
     lwip_comm_default_ip_set(&g_lwipdev);       /* 设置默认IP等信息 */
+    Task_EEPROM_WriteDefaultAddrInfo(&g_lwipdev);    /* 如果AT24C02未被使用，写入默认IP信息 */
 
 #if !LWIP_DHCP
     Task_EEPROM_ReadAddrInfo(&g_lwipdev);       /* 如果不使用DHCP则从EEPROM中读取IP信息 */
