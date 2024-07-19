@@ -125,3 +125,4 @@
 .\objects\task_selfcheck.o: ..\Bsp\Dev\Inc\dev_conf.h
 .\objects\task_selfcheck.o: ..\Apply\Task\Inc\task_can.h
 .\objects\task_selfcheck.o: ..\Apply\Task\Inc\task_lwipudp.h
+.\objects\task_selfcheck.o: ..\Apply\Task\Inc\task_eeprom.h

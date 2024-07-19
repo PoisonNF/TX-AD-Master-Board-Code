@@ -84,19 +84,11 @@ void LwIP_Init(void)
  */
 void lwip_comm_default_ip_set(__lwip_dev *lwipx)
 {
-    /* 默认远端IP为:192.168.1.102 */
+    /* 默认远端IP为:192.168.1.104 */
     lwipx->remoteip[0] = 192;
     lwipx->remoteip[1] = 168;
     lwipx->remoteip[2] = 1;
     lwipx->remoteip[3] = 104;
-    
-    /* MAC地址设置 */
-    lwipx->mac[0] = 0xB8;
-    lwipx->mac[1] = 0xAE;
-    lwipx->mac[2] = 0x1D;
-    lwipx->mac[3] = 0x00;
-    lwipx->mac[4] = 0x01;
-    lwipx->mac[5] = 0x00;
     
     /* 默认本地IP为:192.168.1.30 */
     lwipx->ip[0] = 192;
@@ -116,6 +108,50 @@ void lwip_comm_default_ip_set(__lwip_dev *lwipx)
     lwipx->gateway[2] = 1;
     lwipx->gateway[3] = 1;
     lwipx->dhcpstatus = 0; /* 没有DHCP */
+}
+
+/**
+ * @brief 简单的哈希函数，用于生成伪随机数
+ * @param x  : 输入数字
+ * @retval uint32_t
+ */
+static uint32_t hash(uint8_t x)
+{
+    x = ((x >> 16) ^ x) * 0x45d9f3b;
+    x = ((x >> 16) ^ x) * 0x45d9f3b;
+    x = (x >> 16) ^ x;
+    return x;
+}
+
+/**
+ * @brief 使用随机数种子根据当前本地IP末尾地址生成mac地址
+ * @param input  : 输入本地IP末尾地址
+ * @param output : 输出的mac地址数组
+ * @retval      无
+ */
+static void generateMACParts(uint8_t input, uint8_t *output)
+{
+    srand(hash(input)); // 使用哈希后的输入数初始化随机数种子
+
+    for(uint8_t i = 0; i < 6; i++){
+        output[i] = rand() % 256; // 生成0到255之间的数
+    }
+}
+
+/**
+ * @brief       lwip IP mac设置
+ * @param       lwipx  : lwip控制结构体指针
+ * @retval      无
+ */
+void lwip_comm_mac_set(__lwip_dev *lwipx)
+{
+    /* MAC地址设置 */
+    generateMACParts(lwipx->ip[3], lwipx->mac);
+#ifdef PRINTF_DEBUG
+    for(uint8_t i = 0; i < 6; i++) {
+        printf("%x:",lwipx->mac[i]);
+    }
+#endif
 }
 
 /**
@@ -143,6 +179,8 @@ uint8_t lwip_comm_init(void)
 #if !LWIP_DHCP
     Task_EEPROM_ReadAddrInfo(&g_lwipdev);       /* 如果不使用DHCP则从EEPROM中读取IP信息 */
 #endif
+
+    lwip_comm_mac_set(&g_lwipdev);           /* 设置独一无二的mac地址 */
 
     if (ethernet_init())                     /* 初始化以太网芯片,如果失败的话就返回 */
     {

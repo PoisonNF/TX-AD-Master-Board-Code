@@ -10,6 +10,8 @@ uint8_t IDjugBuffer[12] = {0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4
 
 static uint8_t All_Boards_SpeedChangeBuffer[8] = {0xA4,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   //所有板卡调整速率，通过CAN广播
 
+static uint8_t All_Boards_ResetBuffer[8] = {0xA5,0x00,0x00,0x00,0x00,0x00,0x00,0x00};   //所有板卡复位指令，通过CAN广播
+
 static uint8_t ID_Choose = 1;       //板卡在主板上的顺序号，NO1-12
 
 static uint16_t BoardSpeedSet;		//告知采集板卡设定发送速率
@@ -23,7 +25,11 @@ __IO uint16_t TimeOut = 0;				//自检时间超时标志位
 uint8_t Task_SelfCheck(void)
 {
     uint8_t InsertNum = 0;
-
+    
+    //向所有板卡广播复位指令
+    Drv_CAN_SendMsg(&CAN,All_Boards_ResetBuffer,8);
+    Drv_Delay_Ms(1000);
+    
 	for(ID_Choose = 1; ID_Choose <= ADBOARD_NUM_MAX; ID_Choose++)
 	{
 		Drv_GPIO_Reset(&Control[ID_Choose - 1]);
