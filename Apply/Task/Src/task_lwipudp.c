@@ -11,7 +11,7 @@ uint16_t RemotePort = 4001;                                           /* ¡¨Ω”µƒ‘
 uint16_t CurrentSendRate = 200;                                 /* µ±«∞¥´ ‰ÀŸ¬ £¨ƒ¨»œ200hz */
 
 #define LWIP_UDP_RX_BUFSIZE         100                         /* ◊Ó¥ÛΩ” ’ ˝æ›≥§∂» */
-#define LWIP_SEND_THREAD_PRIO       ( tskIDLE_PRIORITY + 12 )    /* ∑¢ÀÕ ˝æ›œﬂ≥Ã”≈œ»º∂ */
+#define LWIP_SEND_THREAD_PRIO       ( tskIDLE_PRIORITY + 3 )    /* ∑¢ÀÕ ˝æ›œﬂ≥Ã”≈œ»º∂ */
 
 #define FRAMEHEADER1                0X02                        /* ÷°Õ∑1 */
 #define FRAMEHEADER2                0X48                        /* ÷°Õ∑2 */
@@ -109,7 +109,7 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
 
             xSemaphoreGive(UDP_SendBuffer_Mutex);									// Õ∑≈ª•≥‚¡ø£¨Ω‚À¯
         }
-        vTaskDelay(1000 * SPLICE_NUM / CurrentSendRate);
+        vTaskDelay((TickType_t)1000 * SPLICE_NUM / CurrentSendRate);
     }
 }
 
@@ -119,7 +119,7 @@ static void S_LwIP_UDP_Send_Entrance(void *pvParameters)
  */
 static void S_LwIP_UDP_Create_Send_Thread(void)
 {
-    sys_thread_new("lwip_send_thread",S_LwIP_UDP_Send_Entrance,NULL,512,LWIP_SEND_THREAD_PRIO);
+    sys_thread_new("lwip_send_thread",S_LwIP_UDP_Send_Entrance,NULL,1024,LWIP_SEND_THREAD_PRIO);
 }
 
 /**

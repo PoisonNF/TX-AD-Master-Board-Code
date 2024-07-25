@@ -1,6 +1,6 @@
 #include "task_selfcheck.h"
 
-#define ADBOARD_NUM_MAX			12			//最大插入上限个数
+#define ADBOARD_NUM_MAX			4			//最大插入上限个数
 
 static uint8_t SetIDBuffer[8] = {0xA1,0x00,0x00,0x00,0x00,0x00,0x00,0x00};		//设置IDBuffer
 
